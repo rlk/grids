@@ -1,0 +1,26 @@
+
+.grid {
+	display: inline;
+	vertical-align: middle;
+}
+
+.grid text.label {
+	font-family: Arial, sans;
+    font-size:   8px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.grid circle.circle { stroke: black; fill: white }
+.grid circle.dot    { stroke: black; fill: black }
+.grid path.square   { stroke: black; fill: white }
+.grid path.diamond  { stroke: black; fill: white }
+.grid path.cross    { stroke: black }
+.grid path.board    { stroke: dimgray }
+
+.grid .column {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+}

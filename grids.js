@@ -1,0 +1,183 @@
+
+var    stopSize     = 3.5;
+var    stopFraction = 0.5;
+var  stringDistance = 8;
+var    fretDistance = 16;
+var   labelDistance = 5;
+
+function elem(tag, attributes, text) {
+  var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for ([k, v] of attributes) {
+    if (v) {
+      e.setAttribute(k, v);
+    }
+  }
+  if (text) {
+    e.appendChild(document.createTextNode(text));
+  }
+  return e
+}
+
+function color(elem, stroke, fill) {
+  style = []
+
+  if (stroke) {
+    style.push(`stroke: ${stroke}`)
+  }
+  if (fill) {
+    style.push(`fill: ${fill}`)
+  }
+  if (style.length > 0) {
+    elem.setAttribute('style', style.join('; '))
+  }
+  return elem
+}
+
+function crossPath(x, y, d) {
+  return `M ${x - d} ${y - d} L ${x + d} ${y + d} M ${x - d} ${y + d} L ${x + d} ${y - d}`
+}
+
+function diamondPath(x, y, d) {
+  return `M ${x - d} ${y} L ${x} ${y + d} L ${x + d} ${y} L ${x} ${y - d} z`
+}
+
+function squarePath(x, y, d) {
+  return `M ${x - d} ${y - d} L ${x - d} ${y + d} L ${x + d} ${y + d} L ${x + d} ${y - d} z`
+}
+
+function boardPath(smin, smax, fmin, fmax, x, y) {
+  path = []
+  for (var f = fmin; f <= fmax; f++) {
+    path.push(`M ${x(smin)} ${y(f)} L${x(smax)} ${y(f)}`);
+  }
+  for (var s = smin; s <= smax; s++) {
+    path.push(`M ${x(s)} ${y(fmin)} L${x(s)} ${y(fmax)}`);
+  }
+  return path.join(' ')
+}
+
+function createGrid(text) {
+  var grid = elem('svg', []);
+  var fmin = Number.MAX_VALUE;
+  var smin = 1;
+  var fmax = 0;
+  var smax = 0;
+  var fgap = 0;
+  var name = undefined;
+  var note = undefined;
+  var marks = [];
+
+  for (const t of text.split(/\s+/)) {
+    if (t.length > 0) {
+      var a = t.split(':');
+
+      if ("_dosSxtT".search(a[0]) >= 0) {
+        if (a[1] && !isNaN(a[1])) {
+          smin = Math.min(smin, a[1]);
+          smax = Math.max(smax, a[1]);
+        }
+        if (a[2] && !isNaN(a[2])) {
+          fmin = Math.min(fmin, a[2]);
+          fmax = Math.max(fmax, a[2]);
+        }
+      }
+      marks.push([a[0], a[1], a[2], a[3]]);
+    }
+  }
+
+  fmin = Math.max(fmin - 1, 0);
+
+  function x(s) {
+    return (2 + smax - smin - s) * stringDistance;
+  }
+
+  function y(f) {
+    return 1 + stopSize + (f - fmin) * fretDistance;
+  }
+
+  function stop(f) {
+    var y0 = y(f);
+    var y1 = y(f - 1);
+    return Math.max(y(0), y0 + (y1 - y0) * stopFraction);
+  }
+
+  function label(x, y, t) {
+    return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
+  }
+
+  function dot(x, y, k) {
+    return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  }
+
+  function circle(x, y, k) {
+    return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  }
+
+  function cross(x, y, k) {
+    return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
+  }
+
+  function diamond(x, y, k) {
+    return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
+  }
+
+  function square(x, y, k) {
+    return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
+  }
+
+  function board() {
+    return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
+  }
+
+  grid.appendChild(board())
+
+  for (const [d, s, f, c] of marks) {
+    switch (d) {
+      case '_': break;
+      case 'n': name = s; break;
+      case 'N': note = s; break;
+      case 'd': grid.appendChild(color(    dot(x(s), stop(f), 1.0), c, c)); break;
+      case 'o': grid.appendChild(color( circle(x(s), stop(f), 1.0), c)); break;
+      case 's': grid.appendChild(color( square(x(s), stop(f), 1.0), c)); break;
+      case 'S': grid.appendChild(color( square(x(s), stop(f), 1.2), c)); break;
+      case 'x': grid.appendChild(color(  cross(x(s), stop(f), 1.0), c)); break;
+      case 't': grid.appendChild(color(diamond(x(s), stop(f), 1.2), c)); break;
+      case 'T': grid.appendChild(color(diamond(x(s), stop(f), 1.6), c)); break;
+      case 'f': grid.appendChild(color(  label(x(s), y(fmax) + labelDistance, f.toString()), undefined, c)); fgap = 1; break;
+      case 'F': grid.appendChild(color(  label(x(s) - labelDistance, y(f),    f.toString()), undefined, c));           break;
+      default:  grid.appendChild(color(  label(x(s), stop(f), d), undefined, c)); break;
+    }
+  }
+
+  var width  = (smax - smin + 2) * stringDistance;
+  var height = (fmax - fmin + fgap * 0.5) * fretDistance + 2 * stopSize;
+
+  grid.setAttribute('width',  width);
+  grid.setAttribute('height', height);
+
+  if (name || note) {
+    column = document.createElement('span');
+    column.setAttribute('class', 'column');
+    if (name) {
+      var e = document.createElement('span')
+      e.innerHTML = name;
+      column.appendChild(e);
+    }
+    column.appendChild(grid);
+    if (note) {
+      var e = document.createElement('span')
+      e.innerHTML = note;
+      column.appendChild(e);
+    }
+    return column
+  }
+  return grid;
+}
+
+function render() {
+  for (element of document.getElementsByClassName('grid')) {
+    element.replaceChildren(createGrid(element.innerHTML));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() { render() }, false);
