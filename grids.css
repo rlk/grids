@@ -1,11 +1,11 @@
 
 .grid {
-	display: inline;
-	vertical-align: middle;
+    display: inline;
+    vertical-align: middle;
 }
 
 .grid text.label {
-	font-family: Arial, sans;
+    font-family: Arial, sans;
     font-size:   8px;
     font-weight: bold;
     text-anchor: middle;
@@ -20,7 +20,7 @@
 .grid path.board    { stroke: dimgray }
 
 .grid .column {
-	display: inline-flex;
-	flex-direction: column;
-	align-items: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
 }

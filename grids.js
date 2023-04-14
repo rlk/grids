@@ -1,6 +1,5 @@
 
 var    stopSize     = 3.5;
-var    stopFraction = 0.5;
 var  stringDistance = 8;
 var    fretDistance = 16;
 var   labelDistance = 5;
@@ -13,7 +12,7 @@ function elem(tag, attributes, text) {
     }
   }
   if (text) {
-    e.appendChild(document.createTextNode(text));
+    e.innerHTML = text;
   }
   return e
 }
@@ -71,7 +70,7 @@ function createGrid(text) {
     if (t.length > 0) {
       var a = t.split(':');
 
-      if ("_dosSxtT".search(a[0]) >= 0) {
+      if (a != "n" && a != "N" && a != "f" && a != "F") {
         if (a[1] && !isNaN(a[1])) {
           smin = Math.min(smin, a[1]);
           smax = Math.max(smax, a[1]);
@@ -90,41 +89,31 @@ function createGrid(text) {
   function x(s) {
     return (2 + smax - smin - s) * stringDistance;
   }
-
   function y(f) {
     return 1 + stopSize + (f - fmin) * fretDistance;
   }
-
-  function stop(f) {
-    var y0 = y(f);
-    var y1 = y(f - 1);
-    return Math.max(y(0), y0 + (y1 - y0) * stopFraction);
+  function t(f) {
+    return Math.max(y(0), (y(f) + y(f - 1)) * 0.5);
   }
 
   function label(x, y, t) {
     return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
   }
-
   function dot(x, y, k) {
     return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
   }
-
   function circle(x, y, k) {
     return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
   }
-
   function cross(x, y, k) {
     return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
   }
-
   function diamond(x, y, k) {
     return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
   }
-
   function square(x, y, k) {
     return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
   }
-
   function board() {
     return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
   }
@@ -133,19 +122,19 @@ function createGrid(text) {
 
   for (const [d, s, f, c] of marks) {
     switch (d) {
-      case '_': break;
-      case 'n': name = s; break;
-      case 'N': note = s; break;
-      case 'd': grid.appendChild(color(    dot(x(s), stop(f), 1.0), c, c)); break;
-      case 'o': grid.appendChild(color( circle(x(s), stop(f), 1.0), c)); break;
-      case 's': grid.appendChild(color( square(x(s), stop(f), 1.0), c)); break;
-      case 'S': grid.appendChild(color( square(x(s), stop(f), 1.2), c)); break;
-      case 'x': grid.appendChild(color(  cross(x(s), stop(f), 1.0), c)); break;
-      case 't': grid.appendChild(color(diamond(x(s), stop(f), 1.2), c)); break;
-      case 'T': grid.appendChild(color(diamond(x(s), stop(f), 1.6), c)); break;
-      case 'f': grid.appendChild(color(  label(x(s), y(fmax) + labelDistance, f.toString()), undefined, c)); fgap = 1; break;
-      case 'F': grid.appendChild(color(  label(x(s) - labelDistance, y(f),    f.toString()), undefined, c));           break;
-      default:  grid.appendChild(color(  label(x(s), stop(f), d), undefined, c)); break;
+      case "_": break;
+      case "n": name = s; break;
+      case "N": note = s; break;
+      case "d": grid.appendChild(color(    dot(x(s), t(f), 1.0), c, c)); break;
+      case "o": grid.appendChild(color( circle(x(s), t(f), 1.0), c)); break;
+      case "s": grid.appendChild(color( square(x(s), t(f), 1.0), c)); break;
+      case "S": grid.appendChild(color( square(x(s), t(f), 1.2), c)); break;
+      case "x": grid.appendChild(color(  cross(x(s), t(f), 1.0), c)); break;
+      case "t": grid.appendChild(color(diamond(x(s), t(f), 1.2), c)); break;
+      case "T": grid.appendChild(color(diamond(x(s), t(f), 1.6), c)); break;
+      case "f": grid.appendChild(color(  label(x(s),  labelDistance + y(fmax), f.toString()), undefined, c)); fgap = 1; break;
+      case "F": grid.appendChild(color(  label(x(s) - labelDistance,  y(f),    f.toString()), undefined, c));           break;
+      default:  grid.appendChild(color(  label(x(s), t(f), d), undefined, c)); break;
     }
   }
 
