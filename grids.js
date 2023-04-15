@@ -46,6 +46,10 @@ function squarePath(x, y, d) {
 
 function boardPath(smin, smax, fmin, fmax, x, y) {
   path = []
+  if (fmin == 0) {
+    path.push(`M ${x(smin)} ${y(fmin)} L ${x(smin)} ${y(fmin) - 2} `
+            + `L ${x(smax)} ${y(fmin) - 2} L ${x(smax)} ${y(fmin)} z`);
+  }
   for (var f = fmin; f <= fmax; f++) {
     path.push(`M ${x(smin)} ${y(f)} L${x(smax)} ${y(f)}`);
   }
@@ -70,7 +74,7 @@ function createGrid(text) {
     if (t.length > 0) {
       var a = t.split(':');
 
-      if (a != "n" && a != "N" && a != "f" && a != "F") {
+      if (a[0] != "n" && a[0] != "N" && a[0] != "f" && a[0] != "F") {
         if (a[1] && !isNaN(a[1])) {
           smin = Math.min(smin, a[1]);
           smax = Math.max(smax, a[1]);
@@ -125,15 +129,15 @@ function createGrid(text) {
       case "_": break;
       case "n": name = s; break;
       case "N": note = s; break;
-      case "d": grid.appendChild(color(    dot(x(s), t(f), 1.0), c, c)); break;
+      case "+": grid.appendChild(color(    dot(x(s), t(f), 1.0), c, c)); break;
       case "o": grid.appendChild(color( circle(x(s), t(f), 1.0), c)); break;
       case "s": grid.appendChild(color( square(x(s), t(f), 1.0), c)); break;
       case "S": grid.appendChild(color( square(x(s), t(f), 1.2), c)); break;
       case "x": grid.appendChild(color(  cross(x(s), t(f), 1.0), c)); break;
-      case "t": grid.appendChild(color(diamond(x(s), t(f), 1.2), c)); break;
-      case "T": grid.appendChild(color(diamond(x(s), t(f), 1.6), c)); break;
+      case "d": grid.appendChild(color(diamond(x(s), t(f), 1.2), c)); break;
+      case "D": grid.appendChild(color(diamond(x(s), t(f), 1.6), c)); break;
       case "f": grid.appendChild(color(  label(x(s),  labelDistance + y(fmax), f.toString()), undefined, c)); fgap = 1; break;
-      case "F": grid.appendChild(color(  label(x(s) - labelDistance,  y(f),    f.toString()), undefined, c));           break;
+      case "F": grid.appendChild(color(  label(x(smax) - labelDistance,  y(s), s.toString()), undefined, c));           break;
       default:  grid.appendChild(color(  label(x(s), t(f), d), undefined, c)); break;
     }
   }
@@ -149,12 +153,14 @@ function createGrid(text) {
     column.setAttribute('class', 'column');
     if (name) {
       var e = document.createElement('span')
+      e.setAttribute('class', 'name');
       e.innerHTML = name;
       column.appendChild(e);
     }
     column.appendChild(grid);
     if (note) {
       var e = document.createElement('span')
+      e.setAttribute('class', 'note');
       e.innerHTML = note;
       column.appendChild(e);
     }

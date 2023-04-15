@@ -12,15 +12,22 @@
     dominant-baseline: central;
 }
 
-.grid circle.circle { stroke: black; fill: white }
-.grid circle.dot    { stroke: black; fill: black }
-.grid path.square   { stroke: black; fill: white }
-.grid path.diamond  { stroke: black; fill: white }
-.grid path.cross    { stroke: black }
-.grid path.board    { stroke: dimgray }
+.grid circle.circle { stroke: black; fill: white; }
+.grid circle.dot    { stroke: black; fill: black; }
+.grid path.square   { stroke: black; fill: white; }
+.grid path.diamond  { stroke: black; fill: white; }
+.grid path.cross    { stroke: black; }
+.grid path.board    { stroke: dimgray; fill: none; }
 
 .grid .column {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
+}
+
+.grid .column .name {
+    font-variant: small-caps;
+}
+.grid .column .note {
+    font-size: smaller;
 }
