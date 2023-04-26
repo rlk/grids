@@ -70,26 +70,6 @@ function createGrid(text) {
   var note = undefined;
   var marks = [];
 
-  for (const t of text.split(/\s+/)) {
-    if (t.length > 0) {
-      var a = t.split(':');
-
-      if (a[0] != "n" && a[0] != "N" && a[0] != "f" && a[0] != "F") {
-        if (a[1] && !isNaN(a[1])) {
-          smin = Math.min(smin, a[1]);
-          smax = Math.max(smax, a[1]);
-        }
-        if (a[2] && !isNaN(a[2])) {
-          fmin = Math.min(fmin, a[2]);
-          fmax = Math.max(fmax, a[2]);
-        }
-      }
-      marks.push([a[0], a[1], a[2], a[3]]);
-    }
-  }
-
-  fmin = Math.max(fmin - 1, 0);
-
   function x(s) {
     return (2 + smax - smin - s) * stringDistance;
   }
@@ -99,6 +79,42 @@ function createGrid(text) {
   function t(f) {
     return Math.max(y(0), (y(f) + y(f - 1)) * 0.5);
   }
+  function n(a) {
+    if (isNaN(a)) {
+      if ("A" <= a && a <= "Z") {
+        return a.charCodeAt() - 55;
+      }
+      return NaN;
+    }
+    return a;
+  }
+
+  for (const t of text.split(/\s+/)) {
+    if (t.length > 0) {
+      var a = t.split(':');
+      var d = a[0]
+      var s = a[1]
+      var f = a[2]
+      var c = a[3]
+
+      if (d != "n" && d != "N") {
+        s = n(s);
+        f = n(f);
+        if (d != "f" && d != "F") {
+          if (!isNaN(s)) {
+            smin = Math.min(smin, s);
+            smax = Math.max(smax, s);
+          }
+          if (!isNaN(f)) {
+            fmin = Math.min(fmin, f);
+            fmax = Math.max(fmax, f);
+          }
+        }
+      }
+      marks.push([d, s, f, c]);
+    }
+  }
+  fmin = Math.max(fmin - 1, 0);
 
   function label(x, y, t) {
     return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
@@ -129,7 +145,7 @@ function createGrid(text) {
       case "_": break;
       case "n": name = s; break;
       case "N": note = s; break;
-      case "+": grid.appendChild(color(    dot(x(s), t(f), 1.0), c, c)); break;
+      case "+": grid.appendChild(color(    dot(x(s), t(f), 0.5), c, c)); break;
       case "o": grid.appendChild(color( circle(x(s), t(f), 1.0), c)); break;
       case "s": grid.appendChild(color( square(x(s), t(f), 1.0), c)); break;
       case "S": grid.appendChild(color( square(x(s), t(f), 1.2), c)); break;
