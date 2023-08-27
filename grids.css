@@ -4,6 +4,14 @@
     vertical-align: middle;
 }
 
+.grid span.name {
+    font-family: Helvetica Neue, Arial;
+}
+
+.grid span.note {
+    font-family: Helvetica Neue, Arial;
+}
+
 .grid text.label {
     font-family: Arial, sans;
     font-size:   8px;
