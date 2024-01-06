@@ -14,12 +14,12 @@ The text is a series of words, separated by white space. Each word consists of a
 |-----|----------------|-----------|-----------------------------------|
 | `n` | Chord name     | `n:C`     | appears above the grid            |
 | `+` | Dot mark       | `+:5:3`   | appears on the grid               |
-| `o` | Open dot mark  | `o:5:3`   | appears on the grid               |
 | `x` | Cross mark     | `x:5:3`   | appears on the grid               |
 | `s` | Square mark    | `s:5:3`   | appears on the grid               |
 | `d` | Diamond mark   | `t:5:3`   | appears on the grid               |
 | `S` | Large square   | `S:5:3`   | overlays onto another mark        |
 | `D` | Large diamond  | `D:5:3`   | overlays onto another mark        |
+| `o` | Open dot mark  | `o:5:3`   | appears on the grid               |
 | `_` | Invisible mark | `_:5:3`   | influences the layout             |
 | `f` | Finger number  | `f:5:3`   | appears at the bottom of the grid |
 | `F` | Fret number    | `F:5`     | appears to the left of the grid   |

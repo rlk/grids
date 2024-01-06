@@ -40,26 +40,29 @@
     font-size: smaller;
 }
 
-body.sheet {
+.bar {
+    font-size: 250%;
+    display: inline;
+    vertical-align: middle;
+}
+
+body {
     font-family: Helvetica Neue, Arial;
 }
-dt {
-    float: left;
-}
-dd {
-    margin-block-end: 1em;    
-}
-h1.sheet {
+h1 {
     font-weight: normal;
     font-variant: small-caps;
     text-align: center;
 }
-h2.sheet {
+h2 {
     font-weight: normal;
     font-style: italic;
     text-align: center;
 }
-h3.sheet {
+h3 {
     font-weight: normal;
     text-align: center;
+}
+h4 {
+    font-weight: normal;
 }
