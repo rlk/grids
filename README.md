@@ -31,11 +31,15 @@ The size of the grid is determined by the string and fret numbers used. The invi
 
 All elements may by styled using CSS. All grid elements (except `n` or `N`) take an optional final parameter giving a CSS color override. For example, `+:5:3:red` produces a red mark. 
 
-## Examples
+## Tunes
 
-- [Let's Call the Whole Thing Off](lets-call-the-whole-thing-off.html)
 - [Christmas Time is Here](christmas-time-is-here.html)
+- [Let's Call the Whole Thing Off](lets-call-the-whole-thing-off.html)
+- [Theme from Star Trek](star-trek.html)
+
+## References
+
+- [Diatonic chords in C, in five positions](diatonic-chords-in-five-positions.html)
+- [Diatanic seventh arpeggios in C, in five positions](c-seventh-arpeggios.html)
 - [I-IV-V in five keys, in five positions](I-IV-V-five-keys-five-positions.html)
 - [I-V triads in C, in five positions](c-I-V-triads.html)
-- [Diatanic seventh arpeggios in C, in five positions](c-seventh-arpeggios.html)
-- [Diatonic chords in C, in five positions](diatonic-chords-in-five-positions.html)
