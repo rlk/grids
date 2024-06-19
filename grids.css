@@ -46,6 +46,11 @@
     vertical-align: middle;
 }
 
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 body {
     font-family: "Noto Music", "Helvetica Neue", Arial, sans;
 }
