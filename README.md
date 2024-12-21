@@ -40,7 +40,7 @@ All elements may by styled using CSS. All grid elements (except `n` or `N`) take
 
 ## References
 
-- [I-IV-V in Five Forms and Five Keys](I-IV-V-five-forms-five-keys.html)
-- [I-IV-V in Five Forms and Five Positions](I-IV-V-five-forms-five-positions.html)
-- [I-IV-V in Five Keys and Five Positions](I-IV-V-five-keys-five-positions.html)
+- [I-IV-V in Five Keys](I-IV-V-in-five-keys.html)
+- [I-IV-V in Five Positions](I-IV-V-in-five-positions.html)
 - [Diatonic Seventh Arpeggios in C in Five Positions](c-seventh-arpeggios.html)
+- [I-V Triads in C](c-I-V-triads.html)
