@@ -16,7 +16,7 @@ The text is a series of words, separated by white space. Each word consists of a
 | `+` | Dot mark       | `+:5:3`   | appears on the grid               |
 | `x` | Cross mark     | `x:5:3`   | appears on the grid               |
 | `s` | Square mark    | `s:5:3`   | appears on the grid               |
-| `d` | Diamond mark   | `t:5:3`   | appears on the grid               |
+| `d` | Diamond mark   | `d:5:3`   | appears on the grid               |
 | `S` | Large square   | `S:5:3`   | overlays onto another mark        |
 | `D` | Large diamond  | `D:5:3`   | overlays onto another mark        |
 | `o` | Open dot mark  | `o:5:3`   | appears on the grid               |
@@ -40,7 +40,7 @@ All elements may by styled using CSS. All grid elements (except `n` or `N`) take
 
 ## References
 
-- [Diatonic chords in C, in five positions](diatonic-chords-in-five-positions.html)
-- [Diatanic seventh arpeggios in C, in five positions](c-seventh-arpeggios.html)
-- [I-IV-V in five keys, in five positions](I-IV-V-five-keys-five-positions.html)
-- [I-V triads in C, in five positions](c-I-V-triads.html)
+- [I-IV-V in Five Forms and Five Keys](I-IV-V-five-forms-five-keys.html)
+- [I-IV-V in Five Forms and Five Positions](I-IV-V-five-forms-five-positions.html)
+- [I-IV-V in Five Keys and Five Positions](I-IV-V-five-keys-five-positions.html)
+- [Diatonic Seventh Arpeggios in C in Five Positions](c-seventh-arpeggios.html)
