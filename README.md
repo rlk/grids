@@ -43,4 +43,5 @@ All elements may by styled using CSS. All grid elements (except `n` or `N`) take
 - [I-IV-V in Five Keys](I-IV-V-in-five-keys.html)
 - [I-IV-V in Five Positions](I-IV-V-in-five-positions.html)
 - [Diatonic Seventh Arpeggios in C in Five Positions](c-seventh-arpeggios.html)
+- [Diatanic Chords in C in Five Forms](diatonic-chords-in-five-forms.html)
 - [I-V Triads in C](c-I-V-triads.html)
