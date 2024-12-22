@@ -71,3 +71,7 @@ h3 {
 h4 {
     font-weight: normal;
 }
+footer {
+    text-align: right;
+    font-size: smaller;
+}
