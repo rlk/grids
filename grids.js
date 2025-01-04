@@ -81,7 +81,7 @@ function boardPath(smin, smax, fmin, fmax, x, y) {
 function createGrid(text) {
   var grid = elem('svg', []);
   var fmin = Number.MAX_VALUE;
-  var smin = 1;
+  var smin = Number.MAX_VALUE;
   var fmax = 0;
   var smax = 0;
   var fgap = 0;
@@ -90,7 +90,7 @@ function createGrid(text) {
   var marks = [];
 
   function x(s) {
-    return (2 + smax - smin - s) * stringDistance;
+    return (1 + smax - s) * stringDistance;
   }
   function y(f) {
     return 1 + stopSize + (f - fmin) * fretDistance;
