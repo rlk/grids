@@ -47,4 +47,4 @@ All elements may by styled using CSS. All grid elements (except `n` or `N`) take
 - [I-V Triads in C](c-I-V-triads.html)
 - [Diatonic Seventh Chord Scales (short grids)](chord-scales-short.html)
 - [Diatonic Seventh Chord Scales (long grids)](chord-scales-long.html)
-- [Diatonic Seventh Chord Scales in G major](chord-scales-tables.html)
+- [Diatonic Seventh Chord Scales in G major](chord-scale-tables.html)
