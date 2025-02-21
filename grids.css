@@ -36,6 +36,10 @@
 .grid .column .name {
     font-variant: small-caps;
 }
+.grid .column .extn {
+    vertical-align: super;
+    font-size: 70%;
+}
 .grid .column .note {
     font-size: smaller;
 }

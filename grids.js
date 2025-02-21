@@ -86,6 +86,7 @@ function createGrid(text) {
   var smax = 0;
   var fgap = 0;
   var name = undefined;
+  var extn = undefined;
   var note = undefined;
   var marks = [];
 
@@ -116,7 +117,7 @@ function createGrid(text) {
       var f = a[2]
       var c = a[3]
 
-      if (d != "n" && d != "N") {
+      if (d != "n" && d != "e" && d != "N") {
         s = n(s);
         f = n(f);
         if (d != "f" && d != "F") {
@@ -163,6 +164,7 @@ function createGrid(text) {
     switch (d) {
       case "_": break;
       case "n": name = s; break;
+      case "e": extn = s; break;
       case "N": note = s; break;
       case "+": grid.appendChild(color(    dot(x(s), t(f), 0.5), c, c)); break;
       case "o": grid.appendChild(color( circle(x(s), t(f), 1.0), c)); break;
@@ -183,14 +185,26 @@ function createGrid(text) {
   grid.setAttribute('width',  width);
   grid.setAttribute('height', height);
 
-  if (name || note) {
+  if (name || extn || note) {
     column = document.createElement('span');
     column.setAttribute('class', 'column');
-    if (name) {
-      var e = document.createElement('span')
-      e.setAttribute('class', 'name');
-      e.innerHTML = name;
-      column.appendChild(e);
+
+    if (name || extn) {
+      var head = document.createElement('span')
+      head.setAttribute('class', 'head');
+      if (name) {
+        var e = document.createElement('span')
+        e.setAttribute('class', 'name');
+        e.innerHTML = name;
+        head.appendChild(e);
+      }
+      if (extn) {
+        var e = document.createElement('span')
+        e.setAttribute('class', 'extn');
+        e.innerHTML = extn;
+        head.appendChild(e);
+      }
+      column.appendChild(head)
     }
     column.appendChild(grid);
     if (note) {
