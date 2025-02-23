@@ -64,16 +64,17 @@ function squarePath(x, y, d) {
 }
 
 function boardPath(smin, smax, fmin, fmax, x, y) {
+  ftop = Math.max(fmin, 0)
   path = []
-  if (fmin == 0) {
-    path.push(`M ${x(smin)} ${y(fmin)} L ${x(smin)} ${y(fmin) - 2} `
-            + `L ${x(smax)} ${y(fmin) - 2} L ${x(smax)} ${y(fmin)} z`);
+  if (fmin <= 0 <= fmax) {
+    path.push(`M ${x(smin)} ${y(0)} L ${x(smin)} ${y(0) - 2} `
+            + `L ${x(smax)} ${y(0) - 2} L ${x(smax)} ${y(0)} z`);
   }
-  for (var f = fmin; f <= fmax; f++) {
+  for (var f = ftop; f <= fmax; f++) {
     path.push(`M ${x(smin)} ${y(f)} L${x(smax)} ${y(f)}`);
   }
   for (var s = smin; s <= smax; s++) {
-    path.push(`M ${x(s)} ${y(fmin)} L${x(s)} ${y(fmax)}`);
+    path.push(`M ${x(s)} ${y(ftop)} L${x(s)} ${y(fmax)}`);
   }
   return path.join(' ')
 }
@@ -134,7 +135,7 @@ function createGrid(text) {
       marks.push([d, s, f, c]);
     }
   }
-  fmin = Math.max(fmin - 1, 0);
+  fmin = fmin - 1;
 
   function label(x, y, t) {
     return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)

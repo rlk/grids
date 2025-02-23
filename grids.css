@@ -25,7 +25,7 @@
 .grid path.square   { stroke: black; fill: white; }
 .grid path.diamond  { stroke: black; fill: white; }
 .grid path.cross    { stroke: black; }
-.grid path.board    { stroke: dimgray; fill: none; }
+.grid path.board    { stroke: dimgray; fill: none; stroke-linecap: round;}
 
 .grid .column {
     display: inline-flex;
@@ -38,7 +38,7 @@
 }
 .grid .column .extn {
     vertical-align: super;
-    font-size: 70%;
+    font-size: smaller;
 }
 .grid .column .note {
     font-size: smaller;
