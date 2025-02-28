@@ -29,22 +29,22 @@ The tag may actually be any HTML that doesn't include white space or a colon, an
 
 The size of the grid is determined by the string and fret numbers used. The invisible mark may be used to pad for alignment or string count.
 
-All elements may by styled using CSS. All grid elements (except `n` or `N`) take an optional final parameter giving a CSS color override. For example, `+:5:3:red` produces a red mark. 
+All elements may by styled using CSS. All grid elements (except `n` or `N`) take an optional final parameter giving a CSS color override. For example, `+:5:3:red` produces a red mark.
 
 ## Tunes
 
-- [Christmas Time is Here](christmas-time-is-here.html)
-- [Julia](julia.html)
-- [Let's Call the Whole Thing Off](lets-call-the-whole-thing-off.html)
-- [Theme from Star Trek](star-trek.html)
+- [Christmas Time is Here](etc/christmas-time-is-here.html)
+- [Julia](etc/julia.html)
+- [Let's Call the Whole Thing Off](etc/lets-call-the-whole-thing-off.html)
+- [Theme from Star Trek](etc/star-trek.html)
 
 ## References
 
-- [I-IV-V in Five Keys](I-IV-V-in-five-keys.html)
-- [I-IV-V in Five Positions](I-IV-V-in-five-positions.html)
-- [Diatonic Seventh Arpeggios in C in Five Positions](c-seventh-arpeggios.html)
-- [Diatanic Chords in C in Five Forms](c-diatonic-chords-in-five-forms.html)
-- [I-V Triads in C](c-I-V-triads.html)
-- [Diatonic Seventh Chord Scales (short grids)](chord-scales-short.html)
-- [Diatonic Seventh Chord Scales (long grids)](chord-scales-long.html)
-- [Diatonic Seventh Chord Scales in G major](g-chord-scale-tables.html)
+- [I-IV-V in Five Keys](etc/I-IV-V-in-five-keys.html)
+- [I-IV-V in Five Positions](etc/I-IV-V-in-five-positions.html)
+- [Diatonic Seventh Arpeggios in C in Five Positions](etc/c-seventh-arpeggios.html)
+- [Diatanic Chords in C in Five Forms](etc/c-diatonic-chords-in-five-forms.html)
+- [I-V Triads in C](etc/c-I-V-triads.html)
+- [Diatonic Seventh Chord Scales (short grids)](etc/chord-scales-short.html)
+- [Diatonic Seventh Chord Scales (long grids)](etc/chord-scales-long.html)
+- [Diatonic Seventh Chord Scales in G major](etc/g-chord-scale-tables.html)
