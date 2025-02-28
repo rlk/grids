@@ -20,7 +20,7 @@
 
 var    stopSize     = 3.5;
 var  stringDistance = 8;
-var    fretDistance = 16;
+var    fretDistance = 14;
 var   labelDistance = 5;
 
 function elem(tag, attributes, text) {
