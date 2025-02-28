@@ -18,14 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-var    stopSize     = 3.5;
-var  stringDistance = 8;
-var    fretDistance = 14;
-var   labelDistance = 5;
+var   stopSize     = 3.5;
+var stringDistance = 8;
+var   fretDistance = 14;
+var  labelDistance = 5;
 
 function elem(tag, attributes, text) {
   var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  for ([k, v] of attributes) {
+  for (const [k, v] of attributes) {
     if (v) {
       e.setAttribute(k, v);
     }
@@ -37,7 +37,7 @@ function elem(tag, attributes, text) {
 }
 
 function color(elem, stroke, fill) {
-  style = []
+  var style = []
 
   if (stroke) {
     style.push(`stroke: ${stroke}`)
@@ -64,8 +64,8 @@ function squarePath(x, y, d) {
 }
 
 function boardPath(smin, smax, fmin, fmax, x, y) {
-  ftop = Math.max(fmin, 0)
-  path = []
+  const ftop = Math.max(fmin, 0)
+  var path = []
   if (fmin <= 0 <= fmax) {
     path.push(`M ${x(smin)} ${y(0)} L ${x(smin)} ${y(0) - 2} `
             + `L ${x(smax)} ${y(0) - 2} L ${x(smax)} ${y(0)} z`);
@@ -79,7 +79,7 @@ function boardPath(smin, smax, fmin, fmax, x, y) {
   return path.join(' ')
 }
 
-function createGrid(text) {
+export function createGrid(text) {
   var grid = elem('svg', []);
   var fmin = Number.MAX_VALUE;
   var smin = Number.MAX_VALUE;
@@ -187,7 +187,7 @@ function createGrid(text) {
   grid.setAttribute('height', height);
 
   if (name || extn || note) {
-    column = document.createElement('span');
+    var column = document.createElement('span');
     column.setAttribute('class', 'column');
 
     if (name || extn) {
@@ -218,11 +218,3 @@ function createGrid(text) {
   }
   return grid;
 }
-
-function render() {
-  for (element of document.getElementsByClassName('grid')) {
-    element.replaceChildren(createGrid(element.innerHTML));
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() { render() }, false);
