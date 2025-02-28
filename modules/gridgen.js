@@ -68,6 +68,14 @@ export class Stop {
       && 1 <= this.degree && this.degree <= 7;
   }
 
+  incString() {
+    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
+  }
+
+  decString() {
+    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label)
+  }
+
   incDegree() {
     return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], _degree(this.degree + 1), this.label)
   }
@@ -82,13 +90,5 @@ export class Stop {
 
   decToDegree(degree) {
     return this.degree == degree ? this : this.decDegree().decToDegree(degree);
-  }
-
-  incString() {
-    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
-  }
-
-  decString() {
-    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label)
   }
 }

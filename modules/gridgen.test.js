@@ -82,6 +82,32 @@ test('Stop.isValid label unknown', () => {
     expect(new Stop(1, 1, 8, '@').isValid()).toBe(false);
 });
 
+// incString / decString
+
+test('Stop.incString', () => {
+    expect(new Stop(2, 1, 1).incString()).toStrictEqual(new Stop(3, 5, 1));
+});
+
+test('Stop.decString', () => {
+    expect(new Stop(3, 5, 1).decString()).toStrictEqual(new Stop(2, 1, 1));
+});
+
+test('Stop.incString invalid', () => {
+    expect(new Stop(6, 1, 4).incString().isValid()).toBe(false);
+});
+
+test('Stop.decString invalid', () => {
+    expect(new Stop(1, 1, 4).decString().isValid()).toBe(false);
+});
+
+test('Stop.incString temporarily invalid', () => {
+    expect(new Stop(6, 1, 4).incString().decString()).toStrictEqual(new Stop(6, 1, 4));
+});
+
+test('Stop.decString temporarily invalid', () => {
+    expect(new Stop(1, 1, 4).decString().incString()).toStrictEqual(new Stop(1, 1, 4));
+});
+
 // incDegree / decDegree
 
 test('Stop.incDegree', () => {
@@ -116,30 +142,4 @@ test('Stop.decToDegree invalid', () => {
 
 test('Stop.decToDegree temporarily invalid', () => {
     expect(new Stop(2, 1, 1).decToDegree(5).incToDegree(1)).toStrictEqual(new Stop(2, 1, 1));
-});
-
-// incString / decString
-
-test('Stop.incString', () => {
-    expect(new Stop(2, 1, 1).incString()).toStrictEqual(new Stop(3, 5, 1));
-});
-
-test('Stop.decString', () => {
-    expect(new Stop(3, 5, 1).decString()).toStrictEqual(new Stop(2, 1, 1));
-});
-
-test('Stop.incString invalid', () => {
-    expect(new Stop(6, 1, 4).incString().isValid()).toBe(false);
-});
-
-test('Stop.decString invalid', () => {
-    expect(new Stop(1, 1, 4).decString().isValid()).toBe(false);
-});
-
-test('Stop.incString temporarily invalid', () => {
-    expect(new Stop(6, 1, 4).incString().decString()).toStrictEqual(new Stop(6, 1, 4));
-});
-
-test('Stop.decString temporarily invalid', () => {
-    expect(new Stop(1, 1, 4).decString().incString()).toStrictEqual(new Stop(1, 1, 4));
 });
