@@ -18,6 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+const pitchIncAtDegree = { 1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1 }
+const pitchDecAtDegree = { 1: 1, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 7: 2 }
+
 export function flatten(name) {
   return (name + '♭').replace('♯♭', '').replace('♭♭', '𝄫');
 }
@@ -26,12 +29,36 @@ export function sharpen(name) {
   return (name + '♯').replace('♭♯', '').replace('♯♯', '𝄪');
 }
 
+function _degree(degree) {
+  if (degree < 1) {
+    return _degree(degree + 7);
+  }
+  if (degree > 7) {
+    return _degree(degree - 7);
+  }
+  return degree;
+}
+
+function _pitch(pitch) {
+  if (pitch < 1) {
+    return _pitch(pitch + 12);
+  }
+  if (pitch > 12) {
+    return _pitch(pitch - 12);
+  }
+  return pitch;
+}
+
 export class Stop {
-  constructor(string, fret, degree, label) {
+  constructor(string, fret, degree, label = '+') {
     this.string = string;
     this.fret = fret;
     this.degree = degree;
     this.label = label;
+  }
+
+  toString() {
+    return `${this.label}:${this.string}:${this.fret}`;
   }
 
   isValid() {
@@ -41,7 +68,27 @@ export class Stop {
       && 1 <= this.degree && this.degree <= 7;
   }
 
-  toString() {
-    return `{this.label}:{this.string}:{this.fret}`;
+  incDegree() {
+    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], _degree(this.degree + 1), this.label)
+  }
+
+  decDegree() {
+    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], _degree(this.degree - 1), this.label)
+  }
+
+  incToDegree(degree) {
+    return this.degree == degree ? this : this.incDegree().incToDegree(degree);
+  }
+
+  decToDegree(degree) {
+    return this.degree == degree ? this : this.decDegree().decToDegree(degree);
+  }
+
+  incString() {
+    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
+  }
+
+  decString() {
+    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label)
   }
 }
