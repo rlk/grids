@@ -1,4 +1,4 @@
-import { flatten, sharpen, Stop, Chord } from './gridgen.js';
+import { flatten, sharpen, Stop, Symbol, Chord } from './gridgen.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
   new Stop(5, 0, 6),
@@ -349,144 +349,144 @@ test('Chord.decInversion temporarily invalid', () => {
 
 test('Chord.symbol_ma', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5]).symbol())
-    .toStrictEqual({root: 'B', triad: '', extension: ''});
+    .toStrictEqual(new Symbol('B'));
 });
 
 test('Chord.symbol_mi', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 4, 5]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: ''});
+    .toStrictEqual(new Symbol('B', 'mi'));
 });
 
 test('Chord.symbol_dim', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 3, 5]).symbol())
-    .toStrictEqual({root: 'B', triad: 'dim', extension: ''});
+    .toStrictEqual(new Symbol('B', 'dim'));
 });
 
 test('Chord.symbol_aug', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 5, 5]).symbol())
-    .toStrictEqual({root: 'B', triad: 'aug', extension: ''});
+    .toStrictEqual(new Symbol('B', 'aug'));
 });
 
 test('Chord.symbol_sus', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 7, 4], [4, 4, 5]).symbol())
-    .toStrictEqual({root: 'B', triad: 'sus', extension: ''});
+    .toStrictEqual(new Symbol('B', 'sus'));
 });
 
 test('Chord.symbol_ma6', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 1, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: '', extension: '6'});
+    .toStrictEqual(new Symbol('B', '', '6'));
 });
 
 test('Chord.symbol_mi6', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 4, 5], [3, 1, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '6'});
+    .toStrictEqual(new Symbol('B', 'mi', '6'));
 });
 
 test('Chord.symbol_ma7', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 3, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'ma', extension: '7'});
+    .toStrictEqual(new Symbol('B', 'ma', '7'));
 });
 
 test('Chord.symbol_ma9', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 3, 7], [2, 2, 2]).symbol())
-    .toStrictEqual({root: 'B', triad: 'ma', extension: '9'});
+    .toStrictEqual(new Symbol('B', 'ma', '9'));
 });
 
 test('Chord.symbol_ma13', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 3, 7], [2, 2, 2], [1, 4, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: 'ma', extension: '13'});
+    .toStrictEqual(new Symbol('B', 'ma', '13'));
 });
 
 test('Chord.symbol_7', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 2, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: '', extension: '7'});
+    .toStrictEqual(new Symbol('B', '', '7'));
 });
 
 test('Chord.symbol_9', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 2, 7], [2, 2, 2]).symbol())
-    .toStrictEqual({root: 'B', triad: '', extension: '9'});
+    .toStrictEqual(new Symbol('B', '', '9'));
 });
 
 test('Chord.symbol_13', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 4, 5], [3, 2, 7], [2, 2, 2], [1, 4, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: '', extension: '13'});
+    .toStrictEqual(new Symbol('B', '', '13'));
 });
 
 test('Chord.symbol_sus7', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 7, 4], [4, 4, 5], [3, 2, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'sus', extension: '7'});
+    .toStrictEqual(new Symbol('B', 'sus', '7'));
 });
 
 test('Chord.symbol_sus9', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 7, 4], [4, 4, 5], [3, 2, 7], [2, 2, 2]).symbol())
-    .toStrictEqual({root: 'B', triad: 'sus', extension: '9'});
+    .toStrictEqual(new Symbol('B', 'sus', '9'));
 });
 
 test('Chord.symbol_sus13', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 7, 4], [4, 4, 5], [3, 2, 7], [2, 2, 2], [1, 4, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: 'sus', extension: '13'});
+    .toStrictEqual(new Symbol('B', 'sus', '13'));
 });
 
 test('Chord.symbol_mi7', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 4, 5], [3, 2, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '7'});
+    .toStrictEqual(new Symbol('B', 'mi', '7'));
 });
 
 test('Chord.symbol_mi9', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 4, 5], [3, 2, 7], [2, 2, 2]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '9'});
+    .toStrictEqual(new Symbol('B', 'mi', '9'));
 });
 
 test('Chord.symbol_mi13', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 4, 5], [3, 2, 7], [2, 2, 2], [1, 4, 6]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '13'});
+    .toStrictEqual(new Symbol('B', 'mi', '13'));
 });
 
 test('Chord.symbol_ma7flat5', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 3, 5], [3, 3, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'ma', extension: '7♭5'});
+    .toStrictEqual(new Symbol('B', 'ma', '7♭5'));
 });
 
 test('Chord.symbol_mi7flat5', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 3, 5], [3, 2, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '7♭5'});
+    .toStrictEqual(new Symbol('B', 'mi', '7♭5'));
 });
 
 test('Chord.symbol_ma7sharp5', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 6, 3], [4, 5, 5], [3, 3, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'ma', extension: '7♯5'});
+    .toStrictEqual(new Symbol('B', 'ma', '7♯5'));
 });
 
 test('Chord.symbol_mi7sharp5', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 5, 5], [3, 2, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'mi', extension: '7♯5'});
+    .toStrictEqual(new Symbol('B', 'mi', '7♯5'));
 });
 
 test('Chord.symbol_dim7', () => {
   expect(new Chord('A', 2).add([6, 7, 1], [5, 5, 3], [4, 3, 5], [3, 1, 7]).symbol())
-    .toStrictEqual({root: 'B', triad: 'dim', extension: '7'});
+    .toStrictEqual(new Symbol('B', 'dim', '7'));
 });
 
 // Chord.symbol edge cases
 
 test('Chord.symbol_7_flat_root', () => {
   expect(new Chord('A', 2).add([6, 6, 1], [5, 5, 3], [4, 3, 5], [3, 1, 7]).symbol())
-    .toStrictEqual({root: 'B♭', triad: '', extension: '7'});
+    .toStrictEqual(new Symbol('B♭', '', '7'));
 });
 
 test('Chord.symbol_7_sharp_root', () => {
   expect(new Chord('A', 2).add([6, 8, 1], [5, 7, 3], [4, 5, 5], [3, 3, 7]).symbol())
-    .toStrictEqual({root: 'B♯', triad: '', extension: '7'});
+    .toStrictEqual(new Symbol('B♯', '', '7'));
 });
 
 test('Chord.symbol_offset_underflow', () => {
   expect(new Chord('F', 1).add([4, 3, 1], [3, 1, 3], [2, 0, 5]).symbol())
-    .toStrictEqual({root: 'F', triad: 'dim', extension: ''});
+    .toStrictEqual(new Symbol('F', 'dim'));
 });
 
 test('Chord.symbol_offset_overflow', () => {
   expect(new Chord('E', 1).add([4, 2, 1], [3, 1, 3], [2, 1, 5]).symbol())
-    .toStrictEqual({root: 'E', triad: 'aug', extension: ''});
+    .toStrictEqual(new Symbol('E', 'aug'));
 });
 
 // Chord.symbol of computed chords

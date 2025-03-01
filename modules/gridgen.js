@@ -183,6 +183,18 @@ export class Stop {
   }
 }
 
+export class Symbol {
+  constructor(root, triad = '', extension = '') {
+    this.root = root;
+    this.triad = triad;
+    this.extension = extension;
+  }
+
+  toString() {
+    return `n:${this.root}${this.triad} e:${extension}`
+  }
+}
+
 export class Chord {
   constructor(key, degree, stops=[]) {
     this.key = key
@@ -288,23 +300,21 @@ export class Chord {
           _offset(root, stop.pitch(), stop.interval(this.degree)));
 
     if (spelling[1] == -1) {
-      return [flatten(name), spelling.map((pitch) => pitch + 1).toString()];
+      return [flatten(name), spelling.map((offset) => offset + 1).toString()];
     }
     if (spelling[1] == +1) {
-      return [sharpen(name), spelling.map((pitch) => pitch - 1).toString()];
+      return [sharpen(name), spelling.map((offset) => offset - 1).toString()];
     }
     return [name, spelling.toString()];
   }
 
   symbol() {
     const [name, spelling] = this.spelling()
-
     if (spelling in symbolOfSpelling) {
       const [triad, extension] = symbolOfSpelling[spelling];
-      return { root: name, triad: triad, extension: extension};
+      return new Symbol(name, triad, extension);
     } else {
-      console.log(spelling);
-      return { root: name, triad: '?', extension: '?'};
+      return new Symbol(name, '?', '?');
     }
   }
 }
