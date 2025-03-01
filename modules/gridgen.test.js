@@ -1,4 +1,4 @@
-import { flatten, sharpen, Stop, Symbol, Chord } from './gridgen.js';
+import { flatten, sharpen, Stop, Symbol, Chord, Sequence } from './gridgen.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
   new Stop(5, 0, 6),
@@ -582,4 +582,52 @@ test('Chord.symbol inc_inversion', () => {
 
 test('Chord.symbol dec_inversion', () => {
   expect(GDOM7_3.symbol()).toStrictEqual(GDOM7_3.decInversion().symbol());
+});
+
+// Sequence
+
+test('Sequence.constructor', () => {
+  expect(new Sequence(CMA7_5).top()).toStrictEqual(CMA7_5);
+});
+
+test('Sequence.addNextUp', () => {
+  expect(new Sequence(CMA7_5).addNextUp().top()).toStrictEqual(DMI7_5);
+});
+
+test('Sequence.addNextDown', () => {
+  expect(new Sequence(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
+});
+
+test('Sequence.alignMarks', () => {
+  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignMarks();
+
+  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
+    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
+
+  expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
+    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
+
+  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(2);
+  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(2);
+});
+
+test('Sequence.alignMarks with size', () => {
+  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignMarks(5);
+
+  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
+    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
+
+    expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
+    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
+
+  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(5);
+  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(5);
+});
+
+test('Sequence.alignFrets', () => {
+  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignFrets();
+  expect(sequence.chords[0].minFret).toBe(sequence.chords[1].minFret);
+  expect(sequence.chords[1].minFret).toBe(sequence.chords[2].minFret);
+  expect(sequence.chords[0].maxFret).toBe(sequence.chords[1].maxFret);
+  expect(sequence.chords[1].maxFret).toBe(sequence.chords[2].maxFret);
 });

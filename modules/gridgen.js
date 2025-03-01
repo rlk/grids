@@ -70,9 +70,9 @@ const symbolOfSpelling = {
   ',0,0,0,,0,,0':    ['ma', '9'],
   ',0,0,0,,0,0,0':   ['ma', '13'],
 
-  ',0,,0,,0,,-1':    ['', '7'],
-  ',0,0,0,,0,,-1':   ['', '9'],
-  ',0,0,0,,0,0,-1':  ['', '13'],
+  ',0,,0,,0,,-1':    ['',   '7'],
+  ',0,0,0,,0,,-1':   ['',   '9'],
+  ',0,0,0,,0,0,-1':  ['',   '13'],
 
   ',0,,,0,0,,-1':    ['sus', '7'],
   ',0,0,,0,0,,-1':   ['sus', '9'],
@@ -204,14 +204,14 @@ export class Chord {
     this.key = key
     this.degree = degree
     this.stops = stops
-    this.min_fret = null
-    this.max_fret = null
+    this.minFret = null
+    this.maxFret = null
   }
 
   toString() {
     const frets = this.stops.map((s) => s.fret)
-    const stop1 = new Stop(1, this.min_fret ?? Math.min(...frets), 0, '_');
-    const stop6 = new Stop(6, this.max_fret ?? Math.max(...frets), 0, '_');
+    const stop1 = new Stop(1, this.minFret ?? Math.min(...frets), 0, '_');
+    const stop6 = new Stop(6, this.maxFret ?? Math.max(...frets), 0, '_');
     const stops = this.stops.concat([stop1, stop6]).sort()
 
     if (this.mark()) {
@@ -226,6 +226,14 @@ export class Chord {
       && this.degree >= 1
       && this.degree <= 7
       && this.key in nameOfDegreePerKey;
+  }
+
+  _minFret() {
+    return Math.min(...this.stops.map((stop) => stop.fret));
+  }
+
+  _maxFret() {
+    return Math.max(...this.stops.map((stop) => stop.fret));
   }
 
   _add(label, ...notes) {
@@ -289,10 +297,9 @@ export class Chord {
   }
 
   mark() {
-    const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
-    const roots = this.stops.toSorted((a, b) => b.string - a.string)
-                              .filter((stop) => stop.degree == this.degree);
-    return roots.length ? roots[0].fret : frets[0].fret;
+    const roots = this.stops.filter((stop) => stop.degree == this.degree)
+                          .toSorted((a, b) => b.string - a.string);
+    return roots.length ? roots[0].fret : this._minFret();
   }
 
   spelling() {
@@ -321,5 +328,59 @@ export class Chord {
     } else {
       return new Symbol(name, '?', '?');
     }
+  }
+}
+
+export class Sequence {
+  constructor(chord) {
+    this.chords = [chord];
+  }
+
+  top() {
+    return this.chords[this.chords.length - 1];
+  }
+
+  add(chord) {
+    this.chords.push(chord)
+    return this
+  }
+
+  addNextUp() {
+    return this.add(this.top().incDegree());
+  }
+
+  addNextDown() {
+    return this.add(this.top().decDegree());
+  }
+
+  addFourthUp() {
+    return this.add(this.top().incDegree().incDegree().incDegree().decString());
+  }
+
+  addFifthDown() {
+    return this.add(this.top().decDegree().decDegree().decDegree().decDegree().incString());
+  }
+
+  alignMarks(size = undefined) {
+    var lo = Math.max(...this.chords.map((chord) => chord.mark() - chord._minFret()));
+    var hi = Math.max(...this.chords.map((chord) => chord._maxFret() - chord.mark()));
+    if (size) {
+      hi = -lo + Math.max(hi - lo, size);
+    }
+    for (var chord of this.chords) {
+      chord.minFret = chord.mark() - lo;
+      chord.maxFret = chord.mark() + hi;
+    }
+    return this;
+  }
+
+  alignFrets() {
+    const lo = Math.min(...this.chords.map((chord) => chord._minFret()));
+    const hi = Math.max(...this.chords.map((chord) => chord._maxFret()));
+    for (var chord of this.chords) {
+      chord.minFret = lo;
+      chord.maxFret = hi;
+    }
+    return this;
   }
 }
