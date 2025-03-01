@@ -212,6 +212,41 @@ test('Stop.decToDegree temporarily invalid', () => {
   expect(new Stop(2, 1, 1).decToDegree(5).incToDegree(1)).toStrictEqual(new Stop(2, 1, 1));
 });
 
+// Symbol.toString
+
+test('Symbol.constructor', () => {
+  const symbol = new Symbol('A', 'mi', '7');
+  expect(symbol.root).toBe('A');
+  expect(symbol.triad).toBe('mi');
+  expect(symbol.extension).toBe('7');
+});
+
+test('Symbol.constructor default extension', () => {
+  const symbol = new Symbol('A', 'mi');
+  expect(symbol.root).toBe('A');
+  expect(symbol.triad).toBe('mi');
+  expect(symbol.extension).toBe('');
+});
+
+test('Symbol.constructor default triad', () => {
+  const symbol = new Symbol('A');
+  expect(symbol.root).toBe('A');
+  expect(symbol.triad).toBe('');
+  expect(symbol.extension).toBe('');
+});
+
+test('Symbol.toString', () => {
+  expect(new Symbol('A', 'mi', '7').toString()).toBe("n:Ami e:7");
+});
+
+test('Symbol.toString default extension', () => {
+  expect(new Symbol('A', 'mi').toString()).toBe("n:Ami");
+});
+
+test('Symbol.toString default triad', () => {
+  expect(new Symbol('A').toString()).toBe("n:A");
+});
+
 // Chord.toString
 
 test('Chord.toString', () => {
@@ -516,6 +551,11 @@ test('Chord.symbol offset underflow', () => {
 test('Chord.symbol offset overflow', () => {
   expect(new Chord('E', 1).add([4, 2, 1], [3, 1, 3], [2, 1, 5]).symbol())
     .toStrictEqual(new Symbol('E', 'aug'));
+});
+
+test('Chord.symbol unknown', () => {
+  expect(new Chord('A', 2).add([6, 7, 1], [6, 9, 2]).symbol())
+    .toStrictEqual(new Symbol('B', '?', '?'));
 });
 
 // Chord.symbol of computed chords
