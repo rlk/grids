@@ -215,8 +215,19 @@ test('Stop.decToDegree temporarily invalid', () => {
 // Chord.toString
 
 test('Chord.toString', () => {
-  expect(CMA7_5.toString()).toMatch(/\+:2:5 \+:3:4 \+:4:5 \+:5:3/);
-  expect(CMA7_5.toString()).toMatch(/n:Cma e:7/);
+  const string = CMA7_5.toString();
+  expect(string).toMatch(/\+:2:5 \+:3:4 \+:4:5 \+:5:3/);
+  expect(string).toMatch(/_:1:3 _:6:5/);
+  expect(string).toMatch(/n:Cma e:7/);
+  expect(string).toMatch(/F:3/);
+})
+
+test('Chord.toString no mark', () => {
+  const string = AMI7_5.toString();
+  expect(string).toMatch(/\+:2:1 \+:3:0 \+:4:2 \+:5:0/);
+  expect(string).toMatch(/_:1:0 _:6:2/);
+  expect(string).toMatch(/n:Ami e:7/);
+  expect(string).not.toMatch(/F:/);
 })
 
 // Chord.isValid
@@ -344,6 +355,23 @@ test('Chord.decInversion invalid', () => {
 
 test('Chord.decInversion temporarily invalid', () => {
   expect(GDOM7_0.decInversion().incInversion()).toStrictEqual(GDOM7_0);
+});
+
+// Chord.mark
+
+test('Chord.mark one root', () => {
+    expect(new Chord('C', 1).add([5, 3, 1], [4, 5, 5], [3, 4, 7], [2, 5, 3]).mark())
+      .toBe(3);
+});
+
+test('Chord.mark two root', () => {
+    expect(new Chord('C', 1).add([5, 3, 1], [4, 5, 5], [3, 5, 1], [2, 5, 3]).mark())
+      .toBe(3);
+});
+
+test('Chord.mark no root', () => {
+    expect(new Chord('C', 1).add([4, 5, 5], [3, 4, 7], [2, 5, 3]).mark())
+      .toBe(4);
 });
 
 // Chord.symbol

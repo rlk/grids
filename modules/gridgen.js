@@ -289,7 +289,10 @@ export class Chord {
   }
 
   mark() {
-    return 3;
+    const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
+    const roots = this.stops.toSorted((a, b) => b.string - a.string)
+                              .filter((stop) => stop.degree == this.degree);
+    return roots.length ? roots[0].fret : frets[0].fret;
   }
 
   spelling() {
