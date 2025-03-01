@@ -191,7 +191,11 @@ export class Symbol {
   }
 
   toString() {
-    return `n:${this.root}${this.triad} e:${extension}`
+    if (this.extension) {
+      return `n:${this.root}${this.triad} e:${this.extension}`
+    } else {
+      return `n:${this.root}${this.triad}`
+    }
   }
 }
 
@@ -205,17 +209,15 @@ export class Chord {
   }
 
   toString() {
-    const { root, triad, extension } = this.symbol()
-
     const frets = this.stops.map((s) => s.fret)
     const stop1 = new Stop(1, this.min_fret ?? Math.min(...frets), 0, '_');
     const stop6 = new Stop(6, this.max_fret ?? Math.max(...frets), 0, '_');
     const stops = this.stops.concat([stop1, stop6]).sort()
 
     if (this.mark()) {
-        return `${stops.join(' ')} n:${root}${triad} e:${extension} F:${this.mark()} `;
+        return `${stops.join(' ')} ${this.symbol().toString()} F:${this.mark()} `;
     } else {
-        return `${stops.join(' ')} n:${root}${triad} e:${extension}`;
+        return `${stops.join(' ')} ${this.symbol().toString()}`;
     }
   }
 

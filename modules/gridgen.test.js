@@ -215,29 +215,30 @@ test('Stop.decToDegree temporarily invalid', () => {
 // Chord.toString
 
 test('Chord.toString', () => {
-  expect(CMA7_5.toString()).toMatch(/\+:2:5 \+:3:4 \+:4:5 \+:5:3/)
+  expect(CMA7_5.toString()).toMatch(/\+:2:5 \+:3:4 \+:4:5 \+:5:3/);
+  expect(CMA7_5.toString()).toMatch(/n:Cma e:7/);
 })
 
 // Chord.isValid
 
 test('Chord.isValid', () => {
-  expect(new Chord('C', 1, [new Stop(1, 1, 1)]).isValid()).toBe(true)
+  expect(new Chord('C', 1, [new Stop(1, 1, 1)]).isValid()).toBe(true);
 })
 
 test('Chord.isValid bad stop', () => {
-  expect(new Chord('C', 1, [new Stop(0, 1, 1)]).isValid()).toBe(false)
+  expect(new Chord('C', 1, [new Stop(0, 1, 1)]).isValid()).toBe(false);
 })
 
 test('Chord.isValid degree low', () => {
-  expect(new Chord('C', 0, [new Stop(1, 1, 1)]).isValid()).toBe(false)
+  expect(new Chord('C', 0, [new Stop(1, 1, 1)]).isValid()).toBe(false);
 })
 
 test('Chord.isValid degree high', () => {
-  expect(new Chord('C', 8, [new Stop(1, 1, 1)]).isValid()).toBe(false)
+  expect(new Chord('C', 8, [new Stop(1, 1, 1)]).isValid()).toBe(false);
 })
 
 test('Chord.isValid bad key', () => {
-  expect(new Chord('X', 1, [new Stop(1, 1, 1)]).isValid()).toBe(false)
+  expect(new Chord('X', 1, [new Stop(1, 1, 1)]).isValid()).toBe(false);
 })
 
 // Builders
