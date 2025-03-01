@@ -18,8 +18,77 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-const pitchIncAtDegree = { 1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1 }
-const pitchDecAtDegree = { 1: 1, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 7: 2 }
+const pitchIncAtDegree = {
+  1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1,
+};
+const pitchDecAtDegree = {
+  1: 1, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 7: 2,
+};
+const pitchOfString = {
+  1: 5, 2: 12, 3: 8, 4: 3, 5: 10, 6: 5,
+};
+const pitchOfName = {
+  'C♭': 12, 'C':  1, 'C♯':  2,
+  'D♭':  2, 'D':  3, 'D♯':  4,
+  'E♭':  4, 'E':  5, 'E♯':  6,
+  'F♭':  5, 'F':  6, 'F♯':  7,
+  'G♭':  7, 'G':  8, 'G♯':  9,
+  'A♭':  9, 'A': 10, 'A♯': 11,
+  'B♭': 11, 'B': 12, 'B♯':  1,
+};
+const offsetOfInterval = {
+  1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
+};
+const nameOfDegreePerKey = {
+    'C'  : { 1: 'C',  2: 'D',  3: 'E',  4: 'F',  5: 'G',  6: 'A',  7: 'B'  },
+    'F'  : { 1: 'F',  2: 'G',  3: 'A',  4: 'B♭', 5: 'C',  6: 'D',  7: 'E'  },
+    'B♭' : { 1: 'B♭', 2: 'C',  3: 'D',  4: 'E♭', 5: 'F',  6: 'G',  7: 'A'  },
+    'E♭' : { 1: 'E♭', 2: 'F',  3: 'G',  4: 'A♭', 5: 'B♭', 6: 'C',  7: 'D'  },
+    'A♭' : { 1: 'A♭', 2: 'B♭', 3: 'C',  4: 'D♭', 5: 'E♭', 6: 'F',  7: 'G'  },
+    'D♭' : { 1: 'D♭', 2: 'E♭', 3: 'F',  4: 'G♭', 5: 'A♭', 6: 'B♭', 7: 'C'  },
+    'G♭' : { 1: 'G♭', 2: 'A♭', 3: 'B♭', 4: 'C♭', 5: 'D♭', 6: 'E♭', 7: 'F'  },
+    'C♭' : { 1: 'C♭', 2: 'D♭', 3: 'E♭', 4: 'F♭', 5: 'G♭', 6: 'A♭', 7: 'B♭' },
+    'G'  : { 1: 'G',  2: 'A',  3: 'B',  4: 'C',  5: 'D',  6: 'E',  7: 'F♯' },
+    'D'  : { 1: 'D',  2: 'E',  3: 'F♯', 4: 'G',  5: 'A',  6: 'B',  7: 'C♯' },
+    'A'  : { 1: 'A',  2: 'B',  3: 'C♯', 4: 'D',  5: 'E',  6: 'F♯', 7: 'G♯' },
+    'E'  : { 1: 'E',  2: 'F♯', 3: 'G♯', 4: 'A',  5: 'B',  6: 'C♯', 7: 'D♯' },
+    'B'  : { 1: 'B',  2: 'C♯', 3: 'D♯', 4: 'E',  5: 'F♯', 6: 'G♯', 7: 'A♯' },
+    'F♯' : { 1: 'F♯', 2: 'G♯', 3: 'A♯', 4: 'B',  5: 'C♯', 6: 'D♯', 7: 'E♯' },
+    'C♯' : { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
+};
+const symbolOfSpelling = {
+  ',0,,0,,0':        ['',    ''],
+  ',0,,-1,,0':       ['mi',  ''],
+  ',0,,-1,,-1':      ['dim', ''],
+  ',0,,0,,1':        ['aug', ''],
+  ',0,,,0,0':        ['sus', ''],
+
+  ',0,,0,,0,0':      ['',   '6'],
+  ',0,,-1,,0,0':     ['mi', '6'],
+
+  ',0,,0,,0,,0':     ['ma', '7'],
+  ',0,0,0,,0,,0':    ['ma', '9'],
+  ',0,0,0,,0,0,0':   ['ma', '13'],
+
+  ',0,,0,,0,,-1':    ['', '7'],
+  ',0,0,0,,0,,-1':   ['', '9'],
+  ',0,0,0,,0,0,-1':  ['', '13'],
+
+  ',0,,,0,0,,-1':    ['sus', '7'],
+  ',0,0,,0,0,,-1':   ['sus', '9'],
+  ',0,0,,0,0,0,-1':  ['sus', '13'],
+
+  ',0,,-1,,0,,-1':   ['mi', '7'],
+  ',0,0,-1,,0,,-1':  ['mi', '9'],
+  ',0,0,-1,,0,0,-1': ['mi', '13'],
+
+  ',0,,0,,-1,,0':    ['ma', '7♭5'],
+  ',0,,-1,,-1,,-1':  ['mi', '7♭5'],
+  ',0,,0,,1,,0':     ['ma', '7♯5'],
+  ',0,,-1,,1,,-1':   ['mi', '7♯5'],
+
+  ',0,,-1,,-1,,-2':  ['dim', '7'],
+};
 
 export function flatten(name) {
   return (name + '♭').replace('♯♭', '').replace('♭♭', '𝄫');
@@ -49,6 +118,17 @@ function _pitch(pitch) {
   return pitch;
 }
 
+function _offset(root, pitch, interval) {
+  var offset = pitch - _pitch(root + offsetOfInterval[interval])
+  if (offset < -2) {
+    return offset + 12
+  }
+  if (offset > 2) {
+    return offset - 12
+  }
+  return offset
+}
+
 export class Stop {
   constructor(string, fret, degree, label = '+') {
     this.string = string;
@@ -63,9 +143,19 @@ export class Stop {
 
   isValid() {
     return "+xsdo_".includes(this.label)
-      && 1 <= this.string && this.string <= 6
-      && 0 <= this.fret
-      && 1 <= this.degree && this.degree <= 7;
+      && this.string >= 1
+      && this.string <= 6
+      && this.fret >= 0
+      && this.degree >= 1
+      && this.degree <= 7;
+  }
+
+  pitch() {
+    return _pitch(pitchOfString[this.string] + this.fret);
+  }
+
+  interval(root) {
+    return _degree(this.degree - root + 1);
   }
 
   incString() {
@@ -90,5 +180,131 @@ export class Stop {
 
   decToDegree(degree) {
     return this.degree == degree ? this : this.decDegree().decToDegree(degree);
+  }
+}
+
+export class Chord {
+  constructor(key, degree, stops=[]) {
+    this.key = key
+    this.degree = degree
+    this.stops = stops
+    this.min_fret = null
+    this.max_fret = null
+  }
+
+  toString() {
+    const { root, triad, extension } = this.symbol()
+
+    const frets = this.stops.map((s) => s.fret)
+    const stop1 = new Stop(1, this.min_fret ?? Math.min(...frets), 0, '_');
+    const stop6 = new Stop(6, this.max_fret ?? Math.max(...frets), 0, '_');
+    const stops = this.stops.concat([stop1, stop6]).sort()
+
+    if (this.mark()) {
+        return `${stops.join(' ')} n:${root}${triad} e:${extension} F:${this.mark()} `;
+    } else {
+        return `${stops.join(' ')} n:${root}${triad} e:${extension}`;
+    }
+  }
+
+  isValid() {
+    return this.stops.every((stop) => stop.isValid())
+      && this.degree >= 1
+      && this.degree <= 7
+      && this.key in nameOfDegreePerKey;
+  }
+
+  _add(label, ...notes) {
+    return new Chord(this.key, this.degree,
+      this.stops.concat(notes.map(([string, fret, degree]) =>
+        new Stop(string, fret, _degree(this.degree + degree - 1), label))));
+  }
+
+  add(...notes) {
+    return this._add('+', ...notes)
+  }
+
+  addx(...notes) {
+    return this._add('x', ...notes)
+  }
+
+  adds(...notes) {
+    return this._add('s', ...notes)
+  }
+
+  addd(...notes) {
+    return this._add('d', ...notes)
+  }
+
+  addo(...notes) {
+    return this._add('o', ...notes)
+  }
+
+  add_(...notes) {
+    return this._add('_', ...notes)
+  }
+
+  incString() {
+    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.incString()));
+  }
+
+  decString() {
+    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.decString()));
+  }
+
+  incDegree() {
+    return new Chord(this.key, _degree(this.degree + 1), this.stops.map((stop) => stop.incDegree()));
+  }
+
+  decDegree() {
+    return new Chord(this.key, _degree(this.degree - 1), this.stops.map((stop) => stop.decDegree()));
+  }
+
+  incInversion() {
+    const sorted = this.stops.map((stop) => stop.degree).sort()
+    const looped = sorted.concat(sorted)
+    return new Chord(this.key, this.degree,
+      this.stops.map((stop) => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])))
+}
+
+  decInversion() {
+    const sorted = this.stops.map((stop) => stop.degree).sort().reverse()
+    const looped = sorted.concat(sorted)
+    return new Chord(this.key, this.degree,
+      this.stops.map((stop) => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])))
+  }
+
+  mark() {
+    return 3;
+  }
+
+  spelling() {
+    const name = nameOfDegreePerKey[this.key][this.degree]
+    const root = pitchOfName[name];
+
+    var spelling = []
+    this.stops.forEach(
+      (stop) => spelling[stop.interval(this.degree)] =
+          _offset(root, stop.pitch(), stop.interval(this.degree)));
+
+    if (spelling[1] == -1) {
+      return [flatten(name), spelling.map((pitch) => pitch + 1).toString()];
+    }
+    if (spelling[1] == +1) {
+      return [sharpen(name), spelling.map((pitch) => pitch - 1).toString()];
+    }
+    return [name, spelling.toString()];
+  }
+
+  symbol() {
+    const [name, spelling] = this.spelling()
+
+    if (spelling in symbolOfSpelling) {
+      const [triad, extension] = symbolOfSpelling[spelling];
+      return { root: name, triad: triad, extension: extension};
+    } else {
+      console.log(spelling);
+      return { root: name, triad: '?', extension: '?'};
+    }
   }
 }
