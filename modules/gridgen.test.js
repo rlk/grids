@@ -587,19 +587,19 @@ test('Chord.symbol dec_inversion', () => {
 // Sequence
 
 test('Sequence.constructor', () => {
-  expect(new Sequence(CMA7_5).top()).toStrictEqual(CMA7_5);
+  expect(new Sequence().add(CMA7_5).top()).toStrictEqual(CMA7_5);
 });
 
 test('Sequence.addNextUp', () => {
-  expect(new Sequence(CMA7_5).addNextUp().top()).toStrictEqual(DMI7_5);
+  expect(new Sequence().add(CMA7_5).addNextUp().top()).toStrictEqual(DMI7_5);
 });
 
 test('Sequence.addNextDown', () => {
-  expect(new Sequence(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
+  expect(new Sequence().add(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
 });
 
 test('Sequence.alignMarks', () => {
-  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignMarks();
+  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks();
 
   expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
     .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
@@ -612,7 +612,7 @@ test('Sequence.alignMarks', () => {
 });
 
 test('Sequence.alignMarks with size', () => {
-  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignMarks(5);
+  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks(5);
 
   expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
     .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
@@ -625,7 +625,7 @@ test('Sequence.alignMarks with size', () => {
 });
 
 test('Sequence.alignFrets', () => {
-  const sequence = new Sequence(CMA7_5).addNextUp().addNextUp().alignFrets();
+  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignFrets();
   expect(sequence.chords[0].minFret).toBe(sequence.chords[1].minFret);
   expect(sequence.chords[1].minFret).toBe(sequence.chords[2].minFret);
   expect(sequence.chords[0].maxFret).toBe(sequence.chords[1].maxFret);

@@ -328,7 +328,8 @@ export class Chord {
   mark() {
     const roots = this.stops.filter((stop) => stop.degree == this.degree)
                           .toSorted((a, b) => b.string - a.string);
-    return roots.length ? roots[0].fret : 0;
+    const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
+    return roots.length ? roots[0].fret : frets[0].fret;
   }
 
   spelling() {
