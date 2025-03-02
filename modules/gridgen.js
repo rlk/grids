@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { createGrid } from './grid.js'
+import { createGrid, createSVG } from './grid.js'
 
 const pitchIncAtDegree = {
   1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1,
@@ -199,6 +199,24 @@ export class Symbol {
       return `n:${this.root}${this.triad}`
     }
   }
+
+  toElement() {
+    var symbol = document.createElement('span')
+    symbol.setAttribute('class', 'symbol');
+
+    var root = document.createElement('span')
+    root.setAttribute('class', 'root');
+    root.innerHTML = this.root + this.triad
+    symbol.appendChild(root);
+
+    if (this.extension) {
+      var extension = document.createElement('span')
+      extension.setAttribute('class', 'extension');
+      extension.innerHTML = this.extension;
+      symbol.appendChild(extension);
+    }
+    return symbol;
+  }
 }
 
 export class Chord {
@@ -235,11 +253,11 @@ export class Chord {
   }
 
   _minFret() {
-    return Math.min(...this.stops.map((stop) => stop.fret));
+    return this.minFret ?? Math.min(...this.stops.map((stop) => stop.fret));
   }
 
   _maxFret() {
-    return Math.max(...this.stops.map((stop) => stop.fret));
+    return this.maxFret ?? Math.max(...this.stops.map((stop) => stop.fret));
   }
 
   _add(label, ...notes) {
@@ -310,7 +328,7 @@ export class Chord {
   mark() {
     const roots = this.stops.filter((stop) => stop.degree == this.degree)
                           .toSorted((a, b) => b.string - a.string);
-    return roots.length ? roots[0].fret : this._minFret();
+    return roots.length ? roots[0].fret : 0;
   }
 
   spelling() {
@@ -345,7 +363,7 @@ export class Chord {
   element(tag) {
     var element = document.createElement(tag);
     element.setAttribute('class', 'grid');
-    element.appendChild(createGrid(this.toString()));
+    element.appendChild(createSVG(this));
     return element;
   }
 }

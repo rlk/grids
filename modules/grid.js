@@ -218,3 +218,86 @@ export function createGrid(text) {
   }
   return grid;
 }
+
+
+export function createSVG(chord) {
+  var grid = elem('svg', []);
+  var fmin = chord._minFret() - 1;
+  var smin = 1;
+  var fmax = chord._maxFret();
+  var smax = 6;
+  var fgap = 0;
+
+  const symbol = chord.symbol();
+  const mark = chord.mark();
+  const note = undefined;
+
+  function x(s) {
+    return (1 + smax - s) * stringDistance;
+  }
+  function y(f) {
+    return 1 + stopSize + (f - fmin) * fretDistance;
+  }
+  function t(f) {
+    return Math.max(y(0), (y(f) + y(f - 1)) * 0.5);
+  }
+
+  function label(x, y, t) {
+    return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
+  }
+  function dot(x, y, k) {
+    return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  }
+  function circle(x, y, k) {
+    return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  }
+  function cross(x, y, k) {
+    return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
+  }
+  function diamond(x, y, k) {
+    return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
+  }
+  function square(x, y, k) {
+    return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
+  }
+  function board() {
+    return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
+  }
+
+  grid.appendChild(board())
+
+  for (const stop of chord.stops) {
+    const s = stop.string;
+    const f = stop.fret;
+    const l = stop.label;
+
+    switch (stop.label) {
+      case '_': break;
+      case "+": grid.appendChild(    dot(x(s), t(f), 0.5)); break;
+      case "o": grid.appendChild( circle(x(s), t(f), 1.0)); break;
+      case "s": grid.appendChild( square(x(s), t(f), 1.0)); break;
+      case "S": grid.appendChild( square(x(s), t(f), 1.2)); break;
+      case "x": grid.appendChild(  cross(x(s), t(f), 1.0)); break;
+      case "d": grid.appendChild(diamond(x(s), t(f), 1.2)); break;
+      case "D": grid.appendChild(diamond(x(s), t(f), 1.6)); break;
+      default:  grid.appendChild(  label(x(s), t(f),   l)); break;
+    }
+  }
+
+  if (mark) {
+    grid.appendChild(label(x(smax) - labelDistance, y(mark), mark.toString()));
+  }
+
+  var width  = (smax - smin + 2) * stringDistance;
+  var height = (fmax - fmin + fgap * 0.5) * fretDistance + 2 * stopSize;
+
+  grid.setAttribute('width',  width);
+  grid.setAttribute('height', height);
+
+  var column = document.createElement('span');
+  column.setAttribute('class', 'column');
+  column.appendChild(chord.symbol().toElement());
+  column.appendChild(grid);
+
+  return column;
+}

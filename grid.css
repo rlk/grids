@@ -4,14 +4,6 @@
     vertical-align: middle;
 }
 
-.grid span.name {
-    font-family: "Noto Music", "Helvetica Neue", Arial, sans;
-}
-
-.grid span.note {
-    font-family: "Noto Music", "Helvetica Neue", Arial, sans;
-}
-
 .grid text.label {
     font-family: "Noto Music", "Helvetica Neue", Arial, sans;
     font-size:   7px;
@@ -28,18 +20,22 @@
 .grid path.board    { stroke: dimgray; fill: none; stroke-linecap: round;}
 
 .grid .column {
+    font-family: "Noto Music", "Helvetica Neue", Arial, sans;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
 }
 
-.grid .column .name {
+.grid .column .root {
     font-variant: small-caps;
 }
-.grid .column .extn {
-    vertical-align: super;
+
+.grid .column .extension {
+    font-variant: small-caps;
     font-size: smaller;
+    vertical-align: super;
 }
+
 .grid .column .note {
     font-size: smaller;
 }
