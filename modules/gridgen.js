@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import { createGrid } from './grid.js'
+
 const pitchIncAtDegree = {
   1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1,
 };
@@ -208,6 +210,10 @@ export class Chord {
     this.maxFret = null
   }
 
+  // toString() {
+  //   return `${this.key}${this.degree}[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
+  // }
+
   toString() {
     const frets = this.stops.map((s) => s.fret)
     const stop1 = new Stop(1, this.minFret ?? Math.min(...frets), 0, '_');
@@ -215,7 +221,7 @@ export class Chord {
     const stops = this.stops.concat([stop1, stop6]).sort()
 
     if (this.mark()) {
-        return `${stops.join(' ')} ${this.symbol().toString()} F:${this.mark()} `;
+        return `${stops.join(' ')} ${this.symbol().toString()} F:${this.mark()}`;
     } else {
         return `${stops.join(' ')} ${this.symbol().toString()}`;
     }
@@ -240,6 +246,11 @@ export class Chord {
     return new Chord(this.key, this.degree,
       this.stops.concat(notes.map(([string, fret, degree]) =>
         new Stop(string, fret, _degree(this.degree + degree - 1), label))));
+  }
+
+  push(string, fret, interval, label) {
+    this.stops.push(new Stop(string, fret, _degree(this.degree + interval - 1), label));
+    return this;
   }
 
   add(...notes) {
@@ -326,14 +337,26 @@ export class Chord {
       const [triad, extension] = symbolOfSpelling[spelling];
       return new Symbol(name, triad, extension);
     } else {
+      console.log(spelling);
       return new Symbol(name, '?', '?');
     }
+  }
+
+  element(tag) {
+    var element = document.createElement(tag);
+    element.setAttribute('class', 'grid');
+    element.appendChild(createGrid(this.toString()));
+    return element;
   }
 }
 
 export class Sequence {
-  constructor(chord) {
-    this.chords = [chord];
+  constructor() {
+    this.chords = [];
+  }
+
+  toString() {
+    return this.chords.map((chord) => `${chord.key}${chord.degree}`).join(' ');
   }
 
   top() {
@@ -361,6 +384,18 @@ export class Sequence {
     return this.add(this.top().decDegree().decDegree().decDegree().decDegree().incString());
   }
 
+  addNextPairUp() {
+    const a = this.chords[this.chords.length - 2];
+    const b = this.chords[this.chords.length - 1];
+    return this.add(a.incDegree()).add(b.incDegree());
+  }
+
+  addNextPairDown() {
+    const a = this.chords[this.chords.length - 2];
+    const b = this.chords[this.chords.length - 1];
+    return this.add(a.decDegree()).add(b.decDegree());
+  }
+
   alignMarks(size = undefined) {
     var lo = Math.max(...this.chords.map((chord) => chord.mark() - chord._minFret()));
     var hi = Math.max(...this.chords.map((chord) => chord._maxFret() - chord.mark()));
@@ -383,4 +418,80 @@ export class Sequence {
     }
     return this;
   }
+
+  element(tag) {
+    return this.chords.map((chord) => chord.element(tag));
+  }
+}
+
+export function generateGrid(text) {
+  var stack = []
+
+  const push = (x) => stack.push(x);
+  const pop  = ( ) => stack.pop();
+
+  const words = text.trim().split(/[ \n]+/);
+
+  for (const word of words) {
+
+    if (word == '+' || word == 'x' || word == 's' ||
+        word == 'd' || word == 'o' || word == '_') {
+      const interval = pop();
+      const fret = pop();
+      const string = pop();
+      const chord = pop();
+      push(chord.push(string, fret, interval, word));
+
+    } else if (word == 'cho') {
+      const degree = pop();
+      const key = pop();
+      push(new Chord(key, degree));
+
+    } else if (word == 'seq') {
+      push(new Sequence());
+
+    } else if (word == ',') {
+      const chord = pop()
+      const sequence = pop()
+      push(sequence.add(chord));
+
+    } else if (word == '1u') {
+      push(pop().addNextUp());
+
+    } else if (word == '1d') {
+      push(pop().addNextDown());
+
+    } else if (word == '4u') {
+      push(pop().addFourthUp());
+
+    } else if (word == '5d') {
+      push(pop().addFifthDown());
+
+    } else if (word == 'uu') {
+      push(pop().addNextPairUp());
+
+    } else if (word == 'dd') {
+      push(pop().addNextPairDown());
+
+    } else if (word == 'afret') {
+      push(pop().alignFrets());
+
+    } else if (word == 'amark') {
+      push(pop().alignMarks());
+
+    } else if (word == 'td') {
+      push(pop().element('td'));
+
+    } else if (word == 'span') {
+      push(pop().element('span'));
+
+    } else if (isNaN(word)) {
+      push(word);
+
+    } else {
+      push(parseInt(word));
+    }
+    // console.log(stack.toString());
+  }
+  return pop();
 }

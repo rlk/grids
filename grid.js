@@ -1,8 +1,13 @@
-import { createGrid } from "./modules/grid.js";
+import { generateGrid } from "./modules/gridgen.js";
 
 function render() {
-  for (var element of document.getElementsByClassName('grid')) {
-    element.replaceChildren(createGrid(element.innerHTML));
+  for (var element of document.querySelectorAll('.gridgen')) {
+    var grid = generateGrid(element.innerHTML);
+    if (Array.isArray(grid)) {
+      element.replaceWith(...grid);
+    } else {
+      element.replaceWith(grid);
+    }
   }
 }
 
