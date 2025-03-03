@@ -78,39 +78,9 @@ export class Chord {
     return this.maxFret ?? Math.max(...this.stops.map((stop) => stop.fret));
   }
 
-  _add(label, ...notes) {
-    return new Chord(this.key, this.degree,
-      this.stops.concat(notes.map(([string, fret, degree]) =>
-        new Stop(string, fret, toDegree(this.degree + degree - 1), label))));
-  }
-
-  push(string, fret, interval, label) {
+  add(string, fret, interval, label='+') {
     this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label));
     return this;
-  }
-
-  add(...notes) {
-    return this._add('+', ...notes)
-  }
-
-  addx(...notes) {
-    return this._add('x', ...notes)
-  }
-
-  adds(...notes) {
-    return this._add('s', ...notes)
-  }
-
-  addd(...notes) {
-    return this._add('d', ...notes)
-  }
-
-  addo(...notes) {
-    return this._add('o', ...notes)
-  }
-
-  add_(...notes) {
-    return this._add('_', ...notes)
   }
 
   incString() {

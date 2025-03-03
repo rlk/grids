@@ -81,7 +81,7 @@ export function generateGrid(text) {
       const fret = pop();
       const string = pop();
       const chord = pop();
-      push(chord.push(string, fret, interval, word));
+      push(chord.add(string, fret, interval, word));
 
     } else if (word == 'cho') {
       const degree = pop();
