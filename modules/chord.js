@@ -18,9 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { toDegree, toPitch } from './utility.js'
+import { flatten, sharpen, toDegree, toOffset } from './utility.js'
 import { Stop } from './stop.js'
-import { Symbol } from './symbol.js'
+import { symbolFromSpelling } from './symbol.js'
 import { createSVG } from './grid.js'
 
 const pitchOfName = {
@@ -31,9 +31,6 @@ const pitchOfName = {
   'G♭':  7, 'G':  8, 'G♯':  9,
   'A♭':  9, 'A': 10, 'A♯': 11,
   'B♭': 11, 'B': 12, 'B♯':  1,
-};
-const offsetOfInterval = {
-  1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
 };
 const nameOfDegreePerKey = {
     'C'  : { 1: 'C',  2: 'D',  3: 'E',  4: 'F',  5: 'G',  6: 'A',  7: 'B'  },
@@ -52,58 +49,6 @@ const nameOfDegreePerKey = {
     'F♯' : { 1: 'F♯', 2: 'G♯', 3: 'A♯', 4: 'B',  5: 'C♯', 6: 'D♯', 7: 'E♯' },
     'C♯' : { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
 };
-const symbolOfSpelling = {
-  ',0,,0,,0':        ['',    ''],
-  ',0,,-1,,0':       ['mi',  ''],
-  ',0,,-1,,-1':      ['dim', ''],
-  ',0,,0,,1':        ['aug', ''],
-  ',0,,,0,0':        ['sus', ''],
-
-  ',0,,0,,0,0':      ['',   '6'],
-  ',0,,-1,,0,0':     ['mi', '6'],
-
-  ',0,,0,,0,,0':     ['ma', '7'],
-  ',0,0,0,,0,,0':    ['ma', '9'],
-  ',0,0,0,,0,0,0':   ['ma', '13'],
-
-  ',0,,0,,0,,-1':    ['',   '7'],
-  ',0,0,0,,0,,-1':   ['',   '9'],
-  ',0,0,0,,0,0,-1':  ['',   '13'],
-
-  ',0,,,0,0,,-1':    ['sus', '7'],
-  ',0,0,,0,0,,-1':   ['sus', '9'],
-  ',0,0,,0,0,0,-1':  ['sus', '13'],
-
-  ',0,,-1,,0,,-1':   ['mi', '7'],
-  ',0,0,-1,,0,,-1':  ['mi', '9'],
-  ',0,0,-1,,0,0,-1': ['mi', '13'],
-
-  ',0,,0,,-1,,0':    ['ma', '7♭5'],
-  ',0,,-1,,-1,,-1':  ['mi', '7♭5'],
-  ',0,,0,,1,,0':     ['ma', '7♯5'],
-  ',0,,-1,,1,,-1':   ['mi', '7♯5'],
-
-  ',0,,-1,,-1,,-2':  ['dim', '7'],
-};
-
-export function flatten(name) {
-  return (name + '♭').replace('♯♭', '').replace('♭♭', '𝄫');
-}
-
-export function sharpen(name) {
-  return (name + '♯').replace('♭♯', '').replace('♯♯', '𝄪');
-}
-
-function toOffset(root, pitch, interval) {
-  var offset = pitch - toPitch(root + offsetOfInterval[interval])
-  if (offset < -2) {
-    return offset + 12
-  }
-  if (offset > 2) {
-    return offset - 12
-  }
-  return offset
-}
 
 export class Chord {
   constructor(key, degree, stops=[]) {
@@ -218,7 +163,7 @@ export class Chord {
     return roots.length ? roots[0].fret : frets[0].fret;
   }
 
-  spelling() {
+  symbol() {
     const name = nameOfDegreePerKey[this.key][this.degree]
     const root = pitchOfName[name];
 
@@ -228,23 +173,12 @@ export class Chord {
           toOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     if (spelling[1] == -1) {
-      return [flatten(name), spelling.map((offset) => offset + 1).toString()];
+      return symbolFromSpelling(flatten(name), spelling.map((offset) => offset + 1).toString());
     }
     if (spelling[1] == +1) {
-      return [sharpen(name), spelling.map((offset) => offset - 1).toString()];
+      return symbolFromSpelling(sharpen(name), spelling.map((offset) => offset - 1).toString());
     }
-    return [name, spelling.toString()];
-  }
-
-  symbol() {
-    const [name, spelling] = this.spelling()
-    if (spelling in symbolOfSpelling) {
-      const [triad, extension] = symbolOfSpelling[spelling];
-      return new Symbol(name, triad, extension);
-    } else {
-      console.log(spelling);
-      return new Symbol(name, '?', '?');
-    }
+    return symbolFromSpelling(name, spelling.toString());
   }
 
   element(tag) {

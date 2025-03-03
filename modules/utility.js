@@ -21,6 +21,10 @@
 import { Chord } from './chord.js';
 import { Sequence } from './sequence.js';
 
+const offsetOfInterval = {
+  1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
+};
+
 export function flatten(name) {
   return (name + '♭').replace('♯♭', '').replace('♭♭', '𝄫');
 }
@@ -47,6 +51,17 @@ export function toPitch(pitch) {
     return toPitch(pitch - 12);
   }
   return pitch;
+}
+
+export function toOffset(root, pitch, interval) {
+  var offset = pitch - toPitch(root + offsetOfInterval[interval])
+  if (offset < -2) {
+    return offset + 12
+  }
+  if (offset > 2) {
+    return offset - 12
+  }
+  return offset
 }
 
 export function generateGrid(text) {

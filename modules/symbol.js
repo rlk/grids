@@ -18,6 +18,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+const symbolOfSpelling = {
+  ',0,,0,,0':        ['',    ''],
+  ',0,,-1,,0':       ['mi',  ''],
+  ',0,,-1,,-1':      ['dim', ''],
+  ',0,,0,,1':        ['aug', ''],
+  ',0,,,0,0':        ['sus', ''],
+
+  ',0,,0,,0,0':      ['',   '6'],
+  ',0,,-1,,0,0':     ['mi', '6'],
+
+  ',0,,0,,0,,0':     ['ma', '7'],
+  ',0,0,0,,0,,0':    ['ma', '9'],
+  ',0,0,0,,0,0,0':   ['ma', '13'],
+
+  ',0,,0,,0,,-1':    ['',   '7'],
+  ',0,0,0,,0,,-1':   ['',   '9'],
+  ',0,0,0,,0,0,-1':  ['',   '13'],
+
+  ',0,,,0,0,,-1':    ['sus', '7'],
+  ',0,0,,0,0,,-1':   ['sus', '9'],
+  ',0,0,,0,0,0,-1':  ['sus', '13'],
+
+  ',0,,-1,,0,,-1':   ['mi', '7'],
+  ',0,0,-1,,0,,-1':  ['mi', '9'],
+  ',0,0,-1,,0,0,-1': ['mi', '13'],
+
+  ',0,,0,,-1,,0':    ['ma', '7♭5'],
+  ',0,,-1,,-1,,-1':  ['mi', '7♭5'],
+  ',0,,0,,1,,0':     ['ma', '7♯5'],
+  ',0,,-1,,1,,-1':   ['mi', '7♯5'],
+
+  ',0,,-1,,-1,,-2':  ['dim', '7'],
+};
+
+export function symbolFromSpelling(root, spelling) {
+  if (spelling in symbolOfSpelling) {
+    const [triad, extension] = symbolOfSpelling[spelling];
+    return new Symbol(root, triad, extension);
+  } else {
+    return new Symbol(root, '?', '?');
+  }
+}
+
 export class Symbol {
   constructor(root, triad = '', extension = '') {
     this.root = root;
