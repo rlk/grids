@@ -69,11 +69,7 @@ export class Symbol {
   }
 
   toString() {
-    if (this.extension) {
-      return `n:${this.root}${this.triad} e:${this.extension}`
-    } else {
-      return `n:${this.root}${this.triad}`
-    }
+    return `<${this.root}${this.triad}${this.extension}>`
   }
 
   toElement() {

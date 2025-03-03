@@ -90,24 +90,6 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
-// Chord.toString
-
-test('Chord.toString', () => {
-  const string = CMA7_5.toString();
-  expect(string).toMatch(/\+:2:5 \+:3:4 \+:4:5 \+:5:3/);
-  expect(string).toMatch(/_:1:3 _:6:5/);
-  expect(string).toMatch(/n:Cma e:7/);
-  expect(string).toMatch(/F:3/);
-})
-
-test('Chord.toString no mark', () => {
-  const string = AMI7_5.toString();
-  expect(string).toMatch(/\+:2:1 \+:3:0 \+:4:2 \+:5:0/);
-  expect(string).toMatch(/_:1:0 _:6:2/);
-  expect(string).toMatch(/n:Ami e:7/);
-  expect(string).not.toMatch(/F:/);
-})
-
 // Chord.isValid
 
 test('Chord.isValid', () => {

@@ -24,7 +24,7 @@ export class Sequence {
   }
 
   toString() {
-    return this.chords.map((chord) => `${chord.key}${chord.degree}`).join(' ');
+    return `[${this.chords.map((chord) => chord.toString()).join(' ')}]`
   }
 
   top() {

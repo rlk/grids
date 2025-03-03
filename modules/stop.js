@@ -57,7 +57,7 @@ export class Stop {
   }
 
   toString() {
-    return `${this.label}:${this.string}:${this.fret}`;
+    return `(${this.string} ${this.fret} ${this.degree} ${this.label})`;
   }
 
   isValid() {

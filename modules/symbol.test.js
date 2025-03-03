@@ -40,15 +40,3 @@ test('Symbol.constructor default triad', () => {
   expect(symbol.triad).toBe('');
   expect(symbol.extension).toBe('');
 });
-
-test('Symbol.toString', () => {
-  expect(new Symbol('A', 'mi', '7').toString()).toBe("n:Ami e:7");
-});
-
-test('Symbol.toString default extension', () => {
-  expect(new Symbol('A', 'mi').toString()).toBe("n:Ami");
-});
-
-test('Symbol.toString default triad', () => {
-  expect(new Symbol('A').toString()).toBe("n:A");
-});

@@ -59,21 +59,8 @@ export class Chord {
     this.maxFret = null
   }
 
-  // toString() {
-  //   return `${this.key}${this.degree}[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
-  // }
-
   toString() {
-    const frets = this.stops.map((s) => s.fret)
-    const stop1 = new Stop(1, this.minFret ?? Math.min(...frets), 0, '_');
-    const stop6 = new Stop(6, this.maxFret ?? Math.max(...frets), 0, '_');
-    const stops = this.stops.concat([stop1, stop6]).sort()
-
-    if (this.mark()) {
-        return `${stops.join(' ')} ${this.symbol().toString()} F:${this.mark()}`;
-    } else {
-        return `${stops.join(' ')} ${this.symbol().toString()}`;
-    }
+    return `${this.key}${this.degree}[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
   }
 
   isValid() {
