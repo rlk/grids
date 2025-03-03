@@ -1,4 +1,26 @@
-import { flatten, sharpen, Stop, Symbol, Chord, Sequence } from './gridgen.js';
+// Copyright (c) 2025 Robert Kooima
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+import { Stop } from './stop.js';
+import { Chord } from './chord.js';
+import { Symbol } from './symbol.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
   new Stop(5, 0, 6),
@@ -68,185 +90,6 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
-// flatten
-
-test('flatten to flat', () => {
-  expect(flatten('A')).toBe('A♭');
-});
-
-test('flatten to double flat', () => {
-  expect(flatten('A♭')).toBe('A𝄫');
-});
-
-test('flatten to natural', () => {
-  expect(flatten('A♯')).toBe('A');
-});
-
-// sharpen
-
-test('sharpen to sharp', () => {
-  expect(sharpen('A')).toBe('A♯');
-});
-
-test('sharpen to double sharp', () => {
-  expect(sharpen('A♯')).toBe('A𝄪');
-});
-
-test('sharpen to natural', () => {
-  expect(sharpen('A♭')).toBe('A');
-});
-
-// Stop.constructor
-
-test('Stop.constructor', () => {
-  const stop = new Stop(1, 2, 3, 'x');
-  expect(stop.string).toBe(1);
-  expect(stop.fret).toBe(2);
-  expect(stop.degree).toBe(3);
-  expect(stop.label).toBe('x');
-});
-
-test('Stop.constructor label default', () => {
-  const stop = new Stop(1, 2, 3);
-  expect(stop.string).toBe(1);
-  expect(stop.fret).toBe(2);
-  expect(stop.degree).toBe(3);
-  expect(stop.label).toBe('+');
-});
-
-// Stop.toString
-
-test('Stop.toString', () => {
-  expect(new Stop(1, 2, 3, 'x').toString()).toBe('x:1:2')
-});
-
-// Stop.isValid
-
-test('Stop.isValid', () => {
-  expect(new Stop(1, 1, 1, '+').isValid()).toBe(true);
-});
-
-test('Stop.isValid string low', () => {
-  expect(new Stop(0, 1, 1, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid string high', () => {
-  expect(new Stop(7, 1, 1, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid fret low', () => {
-  expect(new Stop(1, -1, 1, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid degree low', () => {
-  expect(new Stop(1, 1, 0, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid degree high', () => {
-  expect(new Stop(1, 1, 8, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid label unknown', () => {
-  expect(new Stop(1, 1, 8, '@').isValid()).toBe(false);
-});
-
-// Stop.incString / Stop.decString
-
-test('Stop.incString', () => {
-  expect(new Stop(2, 1, 1).incString()).toStrictEqual(new Stop(3, 5, 1));
-});
-
-test('Stop.decString', () => {
-  expect(new Stop(3, 5, 1).decString()).toStrictEqual(new Stop(2, 1, 1));
-});
-
-test('Stop.incString invalid', () => {
-  expect(new Stop(6, 1, 4).incString().isValid()).toBe(false);
-});
-
-test('Stop.decString invalid', () => {
-  expect(new Stop(1, 1, 4).decString().isValid()).toBe(false);
-});
-
-test('Stop.incString temporarily invalid', () => {
-  expect(new Stop(6, 1, 4).incString().decString()).toStrictEqual(new Stop(6, 1, 4));
-});
-
-test('Stop.decString temporarily invalid', () => {
-  expect(new Stop(1, 1, 4).decString().incString()).toStrictEqual(new Stop(1, 1, 4));
-});
-
-// Stop.incDegree / Stop.decDegree
-
-test('Stop.incDegree', () => {
-  expect(new Stop(2, 1, 1).incDegree()).toStrictEqual(new Stop(2, 3, 2));
-});
-
-test('Stop.decDegree', () => {
-  expect(new Stop(2, 3, 2).decDegree()).toStrictEqual(new Stop(2, 1, 1));
-});
-
-test('Stop.decDegree invalid', () => {
-  expect(new Stop(2, 0, 7).decDegree().isValid()).toBe(false);
-});
-
-test('Stop.decDegree temporarily invalid', () => {
-  expect(new Stop(2, 0, 7).decDegree().incDegree()).toStrictEqual(new Stop(2, 0, 7));
-});
-
-// Stop.incToDegree / Stop.decToDegree
-
-test('Stop.incToDegree', () => {
-  expect(new Stop(2, 1, 1).incToDegree(3)).toStrictEqual(new Stop(2, 5, 3));
-});
-
-test('Stop.decToDegree', () => {
-  expect(new Stop(2, 5, 3).decToDegree(1)).toStrictEqual(new Stop(2, 1, 1));
-});
-
-test('Stop.decToDegree invalid', () => {
-  expect(new Stop(2, 1, 1).decToDegree(5).isValid()).toBe(false);
-});
-
-test('Stop.decToDegree temporarily invalid', () => {
-  expect(new Stop(2, 1, 1).decToDegree(5).incToDegree(1)).toStrictEqual(new Stop(2, 1, 1));
-});
-
-// Symbol.toString
-
-test('Symbol.constructor', () => {
-  const symbol = new Symbol('A', 'mi', '7');
-  expect(symbol.root).toBe('A');
-  expect(symbol.triad).toBe('mi');
-  expect(symbol.extension).toBe('7');
-});
-
-test('Symbol.constructor default extension', () => {
-  const symbol = new Symbol('A', 'mi');
-  expect(symbol.root).toBe('A');
-  expect(symbol.triad).toBe('mi');
-  expect(symbol.extension).toBe('');
-});
-
-test('Symbol.constructor default triad', () => {
-  const symbol = new Symbol('A');
-  expect(symbol.root).toBe('A');
-  expect(symbol.triad).toBe('');
-  expect(symbol.extension).toBe('');
-});
-
-test('Symbol.toString', () => {
-  expect(new Symbol('A', 'mi', '7').toString()).toBe("n:Ami e:7");
-});
-
-test('Symbol.toString default extension', () => {
-  expect(new Symbol('A', 'mi').toString()).toBe("n:Ami");
-});
-
-test('Symbol.toString default triad', () => {
-  expect(new Symbol('A').toString()).toBe("n:A");
-});
-
 // Chord.toString
 
 test('Chord.toString', () => {
@@ -287,7 +130,7 @@ test('Chord.isValid bad key', () => {
   expect(new Chord('X', 1, [new Stop(1, 1, 1)]).isValid()).toBe(false);
 })
 
-// Builders
+// Chord builders
 
 test('Chord.add', () => {
   expect(new Chord('C', 5).add([4, 5, 1], [3, 7, 5], [2, 6, 7], [1, 7, 3]))
@@ -582,52 +425,4 @@ test('Chord.symbol inc_inversion', () => {
 
 test('Chord.symbol dec_inversion', () => {
   expect(GDOM7_3.symbol()).toStrictEqual(GDOM7_3.decInversion().symbol());
-});
-
-// Sequence
-
-test('Sequence.constructor', () => {
-  expect(new Sequence().add(CMA7_5).top()).toStrictEqual(CMA7_5);
-});
-
-test('Sequence.addNextUp', () => {
-  expect(new Sequence().add(CMA7_5).addNextUp().top()).toStrictEqual(DMI7_5);
-});
-
-test('Sequence.addNextDown', () => {
-  expect(new Sequence().add(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
-});
-
-test('Sequence.alignMarks', () => {
-  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks();
-
-  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
-    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
-
-  expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
-    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
-
-  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(2);
-  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(2);
-});
-
-test('Sequence.alignMarks with size', () => {
-  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks(5);
-
-  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
-    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
-
-    expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
-    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
-
-  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(5);
-  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(5);
-});
-
-test('Sequence.alignFrets', () => {
-  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignFrets();
-  expect(sequence.chords[0].minFret).toBe(sequence.chords[1].minFret);
-  expect(sequence.chords[1].minFret).toBe(sequence.chords[2].minFret);
-  expect(sequence.chords[0].maxFret).toBe(sequence.chords[1].maxFret);
-  expect(sequence.chords[1].maxFret).toBe(sequence.chords[2].maxFret);
 });

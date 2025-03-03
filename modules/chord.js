@@ -18,17 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { createGrid, createSVG } from './grid.js'
+import { toDegree, toPitch } from './utility.js'
+import { Stop } from './stop.js'
+import { Symbol } from './symbol.js'
+import { createSVG } from './grid.js'
 
-const pitchIncAtDegree = {
-  1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1,
-};
-const pitchDecAtDegree = {
-  1: 1, 2: 2, 3: 2, 4: 1, 5: 2, 6: 2, 7: 2,
-};
-const pitchOfString = {
-  1: 5, 2: 12, 3: 8, 4: 3, 5: 10, 6: 5,
-};
 const pitchOfName = {
   'C♭': 12, 'C':  1, 'C♯':  2,
   'D♭':  2, 'D':  3, 'D♯':  4,
@@ -100,28 +94,8 @@ export function sharpen(name) {
   return (name + '♯').replace('♭♯', '').replace('♯♯', '𝄪');
 }
 
-function _degree(degree) {
-  if (degree < 1) {
-    return _degree(degree + 7);
-  }
-  if (degree > 7) {
-    return _degree(degree - 7);
-  }
-  return degree;
-}
-
-function _pitch(pitch) {
-  if (pitch < 1) {
-    return _pitch(pitch + 12);
-  }
-  if (pitch > 12) {
-    return _pitch(pitch - 12);
-  }
-  return pitch;
-}
-
-function _offset(root, pitch, interval) {
-  var offset = pitch - _pitch(root + offsetOfInterval[interval])
+function toOffset(root, pitch, interval) {
+  var offset = pitch - toPitch(root + offsetOfInterval[interval])
   if (offset < -2) {
     return offset + 12
   }
@@ -129,94 +103,6 @@ function _offset(root, pitch, interval) {
     return offset - 12
   }
   return offset
-}
-
-export class Stop {
-  constructor(string, fret, degree, label = '+') {
-    this.string = string;
-    this.fret = fret;
-    this.degree = degree;
-    this.label = label;
-  }
-
-  toString() {
-    return `${this.label}:${this.string}:${this.fret}`;
-  }
-
-  isValid() {
-    return "+xsdo_".includes(this.label)
-      && this.string >= 1
-      && this.string <= 6
-      && this.fret >= 0
-      && this.degree >= 1
-      && this.degree <= 7;
-  }
-
-  pitch() {
-    return _pitch(pitchOfString[this.string] + this.fret);
-  }
-
-  interval(root) {
-    return _degree(this.degree - root + 1);
-  }
-
-  incString() {
-    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
-  }
-
-  decString() {
-    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label)
-  }
-
-  incDegree() {
-    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], _degree(this.degree + 1), this.label)
-  }
-
-  decDegree() {
-    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], _degree(this.degree - 1), this.label)
-  }
-
-  incToDegree(degree) {
-    return this.degree == degree ? this : this.incDegree().incToDegree(degree);
-  }
-
-  decToDegree(degree) {
-    return this.degree == degree ? this : this.decDegree().decToDegree(degree);
-  }
-}
-
-export class Symbol {
-  constructor(root, triad = '', extension = '') {
-    this.root = root;
-    this.triad = triad;
-    this.extension = extension;
-  }
-
-  toString() {
-    if (this.extension) {
-      return `n:${this.root}${this.triad} e:${this.extension}`
-    } else {
-      return `n:${this.root}${this.triad}`
-    }
-  }
-
-  toElement() {
-    var symbol = document.createElement('span')
-    symbol.setAttribute('class', 'symbol');
-
-    var root = document.createElement('span')
-    root.setAttribute('class', 'root');
-    root.innerHTML = this.root + this.triad
-    symbol.appendChild(root);
-
-    if (this.extension) {
-      var extension = document.createElement('span')
-      extension.setAttribute('class', 'extension');
-      extension.innerHTML = this.extension;
-      symbol.appendChild(extension);
-    }
-    return symbol;
-  }
 }
 
 export class Chord {
@@ -263,11 +149,11 @@ export class Chord {
   _add(label, ...notes) {
     return new Chord(this.key, this.degree,
       this.stops.concat(notes.map(([string, fret, degree]) =>
-        new Stop(string, fret, _degree(this.degree + degree - 1), label))));
+        new Stop(string, fret, toDegree(this.degree + degree - 1), label))));
   }
 
   push(string, fret, interval, label) {
-    this.stops.push(new Stop(string, fret, _degree(this.degree + interval - 1), label));
+    this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label));
     return this;
   }
 
@@ -304,11 +190,11 @@ export class Chord {
   }
 
   incDegree() {
-    return new Chord(this.key, _degree(this.degree + 1), this.stops.map((stop) => stop.incDegree()));
+    return new Chord(this.key, toDegree(this.degree + 1), this.stops.map((stop) => stop.incDegree()));
   }
 
   decDegree() {
-    return new Chord(this.key, _degree(this.degree - 1), this.stops.map((stop) => stop.decDegree()));
+    return new Chord(this.key, toDegree(this.degree - 1), this.stops.map((stop) => stop.decDegree()));
   }
 
   incInversion() {
@@ -316,7 +202,7 @@ export class Chord {
     const looped = sorted.concat(sorted)
     return new Chord(this.key, this.degree,
       this.stops.map((stop) => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])))
-}
+  }
 
   decInversion() {
     const sorted = this.stops.map((stop) => stop.degree).sort().reverse()
@@ -339,7 +225,7 @@ export class Chord {
     var spelling = []
     this.stops.forEach(
       (stop) => spelling[stop.interval(this.degree)] =
-          _offset(root, stop.pitch(), stop.interval(this.degree)));
+          toOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     if (spelling[1] == -1) {
       return [flatten(name), spelling.map((offset) => offset + 1).toString()];
@@ -367,150 +253,4 @@ export class Chord {
     element.appendChild(createSVG(this));
     return element;
   }
-}
-
-export class Sequence {
-  constructor() {
-    this.chords = [];
-  }
-
-  toString() {
-    return this.chords.map((chord) => `${chord.key}${chord.degree}`).join(' ');
-  }
-
-  top() {
-    return this.chords[this.chords.length - 1];
-  }
-
-  add(chord) {
-    this.chords.push(chord)
-    return this
-  }
-
-  addNextUp() {
-    return this.add(this.top().incDegree());
-  }
-
-  addNextDown() {
-    return this.add(this.top().decDegree());
-  }
-
-  addFourthUp() {
-    return this.add(this.top().incDegree().incDegree().incDegree().decString());
-  }
-
-  addFifthDown() {
-    return this.add(this.top().decDegree().decDegree().decDegree().decDegree().incString());
-  }
-
-  addNextPairUp() {
-    const a = this.chords[this.chords.length - 2];
-    const b = this.chords[this.chords.length - 1];
-    return this.add(a.incDegree()).add(b.incDegree());
-  }
-
-  addNextPairDown() {
-    const a = this.chords[this.chords.length - 2];
-    const b = this.chords[this.chords.length - 1];
-    return this.add(a.decDegree()).add(b.decDegree());
-  }
-
-  alignMarks(size = undefined) {
-    var lo = Math.max(...this.chords.map((chord) => chord.mark() - chord._minFret()));
-    var hi = Math.max(...this.chords.map((chord) => chord._maxFret() - chord.mark()));
-    if (size) {
-      hi = -lo + Math.max(hi - lo, size);
-    }
-    for (var chord of this.chords) {
-      chord.minFret = chord.mark() - lo;
-      chord.maxFret = chord.mark() + hi;
-    }
-    return this;
-  }
-
-  alignFrets() {
-    const lo = Math.min(...this.chords.map((chord) => chord._minFret()));
-    const hi = Math.max(...this.chords.map((chord) => chord._maxFret()));
-    for (var chord of this.chords) {
-      chord.minFret = lo;
-      chord.maxFret = hi;
-    }
-    return this;
-  }
-
-  element(tag) {
-    return this.chords.map((chord) => chord.element(tag));
-  }
-}
-
-export function generateGrid(text) {
-  var stack = []
-
-  const push = (x) => stack.push(x);
-  const pop  = ( ) => stack.pop();
-
-  const words = text.trim().split(/[ \n]+/);
-
-  for (const word of words) {
-
-    if (word == '+' || word == 'x' || word == 's' ||
-        word == 'd' || word == 'o' || word == '_') {
-      const interval = pop();
-      const fret = pop();
-      const string = pop();
-      const chord = pop();
-      push(chord.push(string, fret, interval, word));
-
-    } else if (word == 'cho') {
-      const degree = pop();
-      const key = pop();
-      push(new Chord(key, degree));
-
-    } else if (word == 'seq') {
-      push(new Sequence());
-
-    } else if (word == ',') {
-      const chord = pop()
-      const sequence = pop()
-      push(sequence.add(chord));
-
-    } else if (word == '1u') {
-      push(pop().addNextUp());
-
-    } else if (word == '1d') {
-      push(pop().addNextDown());
-
-    } else if (word == '4u') {
-      push(pop().addFourthUp());
-
-    } else if (word == '5d') {
-      push(pop().addFifthDown());
-
-    } else if (word == 'uu') {
-      push(pop().addNextPairUp());
-
-    } else if (word == 'dd') {
-      push(pop().addNextPairDown());
-
-    } else if (word == 'afret') {
-      push(pop().alignFrets());
-
-    } else if (word == 'amark') {
-      push(pop().alignMarks());
-
-    } else if (word == 'td') {
-      push(pop().element('td'));
-
-    } else if (word == 'span') {
-      push(pop().element('span'));
-
-    } else if (isNaN(word)) {
-      push(word);
-
-    } else {
-      push(parseInt(word));
-    }
-    // console.log(stack.toString());
-  }
-  return pop();
 }

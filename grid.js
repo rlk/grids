@@ -1,4 +1,4 @@
-import { generateGrid } from "./modules/gridgen.js";
+import { generateGrid } from "./modules/utility.js";
 
 function render() {
   for (var element of document.querySelectorAll('.gridgen')) {
