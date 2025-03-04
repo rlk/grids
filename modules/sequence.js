@@ -87,7 +87,7 @@ export class Sequence {
     return this;
   }
 
-  element(tag) {
-    return this.chords.map((chord) => chord.element(tag));
+  toElement(tag) {
+    return this.chords.map((chord) => chord.toElement(tag));
   }
 }

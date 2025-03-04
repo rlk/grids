@@ -83,6 +83,11 @@ export function generateGrid(text) {
       const chord = pop();
       push(chord.add(string, fret, interval, word));
 
+    } else if (word == '!') {
+      const note = pop();
+      const chord = pop();
+      push(chord.setNote(note));
+
     } else if (word == 'cho') {
       const degree = pop();
       const key = pop();
@@ -121,10 +126,10 @@ export function generateGrid(text) {
       push(pop().alignMarks());
 
     } else if (word == 'td') {
-      push(pop().element('td'));
+      push(pop().toElement('td'));
 
     } else if (word == 'span') {
-      push(pop().element('span'));
+      push(pop().toElement('span'));
 
     } else if (isNaN(word)) {
       push(word);
@@ -132,7 +137,7 @@ export function generateGrid(text) {
     } else {
       push(parseInt(word));
     }
-    // console.log(stack.toString());
+    console.log(stack.toString());
   }
   return pop();
 }

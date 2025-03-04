@@ -79,148 +79,7 @@ function boardPath(smin, smax, fmin, fmax, x, y) {
   return path.join(' ')
 }
 
-export function createGrid(text) {
-  var grid = elem('svg', []);
-  var fmin = Number.MAX_VALUE;
-  var smin = Number.MAX_VALUE;
-  var fmax = 0;
-  var smax = 0;
-  var fgap = 0;
-  var name = undefined;
-  var extn = undefined;
-  var note = undefined;
-  var marks = [];
-
-  function x(s) {
-    return (1 + smax - s) * stringDistance;
-  }
-  function y(f) {
-    return 1 + stopSize + (f - fmin) * fretDistance;
-  }
-  function t(f) {
-    return Math.max(y(0), (y(f) + y(f - 1)) * 0.5);
-  }
-  function n(a) {
-    if (isNaN(a)) {
-      if ("A" <= a && a <= "Z") {
-        return a.charCodeAt() - 55;
-      }
-      return NaN;
-    }
-    return a;
-  }
-
-  for (const t of text.split(/\s+/)) {
-    if (t.length > 0) {
-      var a = t.split(':');
-      var d = a[0]
-      var s = a[1]
-      var f = a[2]
-      var c = a[3]
-
-      if (d != "n" && d != "e" && d != "N") {
-        s = n(s);
-        f = n(f);
-        if (d != "f" && d != "F") {
-          if (!isNaN(s)) {
-            smin = Math.min(smin, s);
-            smax = Math.max(smax, s);
-          }
-          if (!isNaN(f)) {
-            fmin = Math.min(fmin, f);
-            fmax = Math.max(fmax, f);
-          }
-        }
-      }
-      marks.push([d, s, f, c]);
-    }
-  }
-  fmin = fmin - 1;
-
-  function label(x, y, t) {
-    return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
-  }
-  function dot(x, y, k) {
-    return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
-  }
-  function circle(x, y, k) {
-    return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
-  }
-  function cross(x, y, k) {
-    return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
-  }
-  function diamond(x, y, k) {
-    return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
-  }
-  function square(x, y, k) {
-    return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
-  }
-  function board() {
-    return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
-  }
-
-  grid.appendChild(board())
-
-  for (const [d, s, f, c] of marks) {
-    switch (d) {
-      case "_": break;
-      case "n": name = s; break;
-      case "e": extn = s; break;
-      case "N": note = s; break;
-      case "+": grid.appendChild(color(    dot(x(s), t(f), 0.5), c, c)); break;
-      case "o": grid.appendChild(color( circle(x(s), t(f), 1.0), c)); break;
-      case "s": grid.appendChild(color( square(x(s), t(f), 1.0), c)); break;
-      case "S": grid.appendChild(color( square(x(s), t(f), 1.2), c)); break;
-      case "x": grid.appendChild(color(  cross(x(s), t(f), 1.0), c)); break;
-      case "d": grid.appendChild(color(diamond(x(s), t(f), 1.2), c)); break;
-      case "D": grid.appendChild(color(diamond(x(s), t(f), 1.6), c)); break;
-      case "f": grid.appendChild(color(  label(x(s),  labelDistance + y(fmax), f.toString()), undefined, c)); fgap = 1; break;
-      case "F": grid.appendChild(color(  label(x(smax) - labelDistance,  y(s), s.toString()), undefined, c));           break;
-      default:  grid.appendChild(color(  label(x(s), t(f), d), undefined, c)); break;
-    }
-  }
-
-  var width  = (smax - smin + 2) * stringDistance;
-  var height = (fmax - fmin + fgap * 0.5) * fretDistance + 2 * stopSize;
-
-  grid.setAttribute('width',  width);
-  grid.setAttribute('height', height);
-
-  if (name || extn || note) {
-    var column = document.createElement('span');
-    column.setAttribute('class', 'column');
-
-    if (name || extn) {
-      var head = document.createElement('span')
-      head.setAttribute('class', 'head');
-      if (name) {
-        var e = document.createElement('span')
-        e.setAttribute('class', 'name');
-        e.innerHTML = name;
-        head.appendChild(e);
-      }
-      if (extn) {
-        var e = document.createElement('span')
-        e.setAttribute('class', 'extn');
-        e.innerHTML = extn;
-        head.appendChild(e);
-      }
-      column.appendChild(head)
-    }
-    column.appendChild(grid);
-    if (note) {
-      var e = document.createElement('span')
-      e.setAttribute('class', 'note');
-      e.innerHTML = note;
-      column.appendChild(e);
-    }
-    return column
-  }
-  return grid;
-}
-
-
-export function createSVG(chord) {
+export function createGrid(chord) {
   var grid = elem('svg', []);
   var fmin = (chord.gridMin ?? chord.minFret()) - 1;
   var fmax = (chord.gridMax ?? chord.maxFret());
@@ -230,7 +89,6 @@ export function createSVG(chord) {
 
   const symbol = chord.symbol();
   const mark = chord.mark();
-  const note = undefined;
 
   function x(s) {
     return (1 + smax - s) * stringDistance;
@@ -299,5 +157,11 @@ export function createSVG(chord) {
   column.appendChild(chord.symbol().toElement());
   column.appendChild(grid);
 
+  if (chord.note) {
+    var note = document.createElement('span');
+    note.setAttribute('class', 'note');
+    note.innerHTML = chord.note;
+    column.appendChild(note);
+  }
   return column;
 }

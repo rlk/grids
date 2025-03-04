@@ -21,7 +21,7 @@
 import { flatten, sharpen, toDegree, toOffset } from './utility.js'
 import { Stop } from './stop.js'
 import { symbolFromSpelling } from './symbol.js'
-import { createSVG } from './grid.js'
+import { createGrid } from './grid.js'
 
 const pitchOfName = {
   'C♭': 12, 'C':  1, 'C♯':  2,
@@ -57,6 +57,7 @@ export class Chord {
     this.stops = stops
     this.gridMin = null
     this.gridMax = null
+    this.note = null
   }
 
   toString() {
@@ -81,6 +82,11 @@ export class Chord {
   add(string, fret, interval, label='+') {
     this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label));
     return this;
+  }
+
+  setNote(note) {
+    this.note = note;
+    return this
   }
 
   incString() {
@@ -138,10 +144,10 @@ export class Chord {
     return symbolFromSpelling(name, spelling.toString());
   }
 
-  element(tag) {
+  toElement(tag) {
     var element = document.createElement(tag);
     element.setAttribute('class', 'grid');
-    element.appendChild(createSVG(this));
+    element.appendChild(createGrid(this));
     return element;
   }
 }
