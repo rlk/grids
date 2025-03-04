@@ -55,8 +55,8 @@ export class Chord {
     this.key = key
     this.degree = degree
     this.stops = stops
-    this.minFret = null
-    this.maxFret = null
+    this.gridMin = null
+    this.gridMax = null
   }
 
   toString() {
@@ -70,12 +70,12 @@ export class Chord {
       && this.key in nameOfDegreePerKey;
   }
 
-  _minFret() {
-    return this.minFret ?? Math.min(...this.stops.map((stop) => stop.fret));
+  minFret() {
+    return Math.min(...this.stops.map((stop) => stop.fret));
   }
 
-  _maxFret() {
-    return this.maxFret ?? Math.max(...this.stops.map((stop) => stop.fret));
+  maxFret() {
+    return Math.max(...this.stops.map((stop) => stop.fret));
   }
 
   add(string, fret, interval, label='+') {

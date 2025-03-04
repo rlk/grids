@@ -105,33 +105,33 @@ test('Sequence.addNextDown', () => {
 test('Sequence.alignMarks', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks();
 
-  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
-    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
+  expect(sequence.chords[0].mark() - sequence.chords[0].gridMin)
+    .toBe(sequence.chords[1].mark() - sequence.chords[1].gridMin);
 
-  expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
-    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
+  expect(sequence.chords[0].gridMax - sequence.chords[0].mark())
+    .toBe(sequence.chords[1].gridMax - sequence.chords[1].mark());
 
-  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(2);
-  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(2);
+  expect(sequence.chords[0].gridMax - sequence.chords[0].gridMin).toBe(2);
+  expect(sequence.chords[1].gridMax - sequence.chords[1].gridMin).toBe(2);
 });
 
 test('Sequence.alignMarks with size', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks(5);
 
-  expect(sequence.chords[0].mark() - sequence.chords[0].minFret)
-    .toBe(sequence.chords[1].mark() - sequence.chords[1].minFret);
+  expect(sequence.chords[0].mark() - sequence.chords[0].gridMin)
+    .toBe(sequence.chords[1].mark() - sequence.chords[1].gridMin);
 
-    expect(sequence.chords[0].maxFret - sequence.chords[0].mark())
-    .toBe(sequence.chords[1].maxFret - sequence.chords[1].mark());
+    expect(sequence.chords[0].gridMax - sequence.chords[0].mark())
+    .toBe(sequence.chords[1].gridMax - sequence.chords[1].mark());
 
-  expect(sequence.chords[0].maxFret - sequence.chords[0].minFret).toBe(5);
-  expect(sequence.chords[1].maxFret - sequence.chords[1].minFret).toBe(5);
+  expect(sequence.chords[0].gridMax - sequence.chords[0].gridMin).toBe(5);
+  expect(sequence.chords[1].gridMax - sequence.chords[1].gridMin).toBe(5);
 });
 
-test('Sequence.alignFrets', () => {
+test('Sequence.aligns', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignFrets();
-  expect(sequence.chords[0].minFret).toBe(sequence.chords[1].minFret);
-  expect(sequence.chords[1].minFret).toBe(sequence.chords[2].minFret);
-  expect(sequence.chords[0].maxFret).toBe(sequence.chords[1].maxFret);
-  expect(sequence.chords[1].maxFret).toBe(sequence.chords[2].maxFret);
+  expect(sequence.chords[0].gridMin).toBe(sequence.chords[1].gridMin);
+  expect(sequence.chords[1].gridMin).toBe(sequence.chords[2].gridMin);
+  expect(sequence.chords[0].gridMax).toBe(sequence.chords[1].gridMax);
+  expect(sequence.chords[1].gridMax).toBe(sequence.chords[2].gridMax);
 });

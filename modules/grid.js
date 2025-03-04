@@ -222,9 +222,9 @@ export function createGrid(text) {
 
 export function createSVG(chord) {
   var grid = elem('svg', []);
-  var fmin = chord._minFret() - 1;
+  var fmin = (chord.gridMin ?? chord.minFret()) - 1;
+  var fmax = (chord.gridMax ?? chord.maxFret());
   var smin = 1;
-  var fmax = chord._maxFret();
   var smax = 6;
   var fgap = 0;
 

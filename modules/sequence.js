@@ -65,24 +65,24 @@ export class Sequence {
   }
 
   alignMarks(size = undefined) {
-    var lo = Math.max(...this.chords.map((chord) => chord.mark() - chord._minFret()));
-    var hi = Math.max(...this.chords.map((chord) => chord._maxFret() - chord.mark()));
+    var min = Math.max(...this.chords.map((chord) => chord.mark() - chord.minFret()));
+    var max = Math.max(...this.chords.map((chord) => chord.maxFret() - chord.mark()));
     if (size) {
-      hi = -lo + Math.max(hi - lo, size);
+      max = -min + Math.max(max - min, size);
     }
     for (var chord of this.chords) {
-      chord.minFret = chord.mark() - lo;
-      chord.maxFret = chord.mark() + hi;
+      chord.gridMin = chord.mark() - min;
+      chord.gridMax = chord.mark() + max;
     }
     return this;
   }
 
   alignFrets() {
-    const lo = Math.min(...this.chords.map((chord) => chord._minFret()));
-    const hi = Math.max(...this.chords.map((chord) => chord._maxFret()));
+    const min = Math.min(...this.chords.map((chord) => chord.minFret()));
+    const max = Math.max(...this.chords.map((chord) => chord.maxFret()));
     for (var chord of this.chords) {
-      chord.minFret = lo;
-      chord.maxFret = hi;
+      chord.gridMin = min;
+      chord.gridMax = max;
     }
     return this;
   }
