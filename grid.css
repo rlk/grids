@@ -10,6 +10,11 @@
     font-weight: bold;
     text-anchor: middle;
     dominant-baseline: central;
+    paint-order: stroke;
+    stroke: white;
+    stroke-width: 2px;
+    stroke-linecap: butt;
+    stroke-linejoin: round;
 }
 
 .grid circle.circle { stroke: black; fill: white; }

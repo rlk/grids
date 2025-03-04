@@ -125,17 +125,15 @@ export function createGrid(chord) {
   for (const stop of chord.stops) {
     const s = stop.string;
     const f = stop.fret;
-    const l = stop.label;
+    const l = stop.label.toString();
 
     switch (l) {
       case '_': break;
       case '+': grid.appendChild(    dot(x(s), t(f), 0.5)); break;
-      case 'o': grid.appendChild( circle(x(s), t(f), 1.0)); break;
-      case 's': grid.appendChild( square(x(s), t(f), 1.0)); break;
-      case 'S': grid.appendChild( square(x(s), t(f), 1.2)); break;
       case 'x': grid.appendChild(  cross(x(s), t(f), 1.0)); break;
-      case 'd': grid.appendChild(diamond(x(s), t(f), 1.2)); break;
-      case 'D': grid.appendChild(diamond(x(s), t(f), 1.6)); break;
+      case '=': grid.appendChild( square(x(s), t(f), 1.0)); break;
+      case '^': grid.appendChild(diamond(x(s), t(f), 1.2)); break;
+      case 'o': grid.appendChild( circle(x(s), t(f), 1.0)); break;
       default:  grid.appendChild(  label(x(s), t(f),   l)); break;
     }
   }

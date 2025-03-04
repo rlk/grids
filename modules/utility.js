@@ -75,20 +75,28 @@ export function generateGrid(text) {
 
   for (const word of words) {
 
-    if (word == '+' || word == 'x' || word == 's' ||
-        word == 'd' || word == 'o' || word == '_') {
+    if (word == '+' || word == 'x' || word == '=' ||
+        word == '^' || word == 'o' || word == '_') {
       const interval = pop();
       const fret = pop();
       const string = pop();
       const chord = pop();
       push(chord.add(string, fret, interval, word));
 
+    } else if (word == '.') {
+      const label = pop();
+      const interval = pop();
+      const fret = pop();
+      const string = pop();
+      const chord = pop();
+      push(chord.add(string, fret, interval, label));
+
     } else if (word == '!') {
       const note = pop();
       const chord = pop();
       push(chord.setNote(note));
 
-    } else if (word == 'f') {
+    } else if (word == '#') {
       const finger = pop();
       const string = pop();
       const chord = pop();
