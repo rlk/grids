@@ -57,6 +57,7 @@ export class Chord {
     this.stops = stops
     this.gridMin = null
     this.gridMax = null
+    this.finger = {}
     this.note = null
   }
 
@@ -84,9 +85,14 @@ export class Chord {
     return this;
   }
 
+  setFinger(string, finger) {
+    this.finger[string] = finger;
+    return this;
+  }
+
   setNote(note) {
     this.note = note;
-    return this
+    return this;
   }
 
   incString() {

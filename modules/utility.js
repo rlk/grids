@@ -88,6 +88,12 @@ export function generateGrid(text) {
       const chord = pop();
       push(chord.setNote(note));
 
+    } else if (word == 'f') {
+      const finger = pop();
+      const string = pop();
+      const chord = pop();
+      push(chord.setFinger(string, finger));
+
     } else if (word == 'cho') {
       const degree = pop();
       const key = pop();

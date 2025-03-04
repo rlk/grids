@@ -81,14 +81,12 @@ function boardPath(smin, smax, fmin, fmax, x, y) {
 
 export function createGrid(chord) {
   var grid = elem('svg', []);
-  var fmin = (chord.gridMin ?? chord.minFret()) - 1;
-  var fmax = (chord.gridMax ?? chord.maxFret());
   var smin = 1;
   var smax = 6;
   var fgap = 0;
 
-  const symbol = chord.symbol();
-  const mark = chord.mark();
+  const fmin = (chord.gridMin ?? chord.minFret()) - 1;
+  const fmax = (chord.gridMax ?? chord.maxFret());
 
   function x(s) {
     return (1 + smax - s) * stringDistance;
@@ -129,21 +127,27 @@ export function createGrid(chord) {
     const f = stop.fret;
     const l = stop.label;
 
-    switch (stop.label) {
+    switch (l) {
       case '_': break;
-      case "+": grid.appendChild(    dot(x(s), t(f), 0.5)); break;
-      case "o": grid.appendChild( circle(x(s), t(f), 1.0)); break;
-      case "s": grid.appendChild( square(x(s), t(f), 1.0)); break;
-      case "S": grid.appendChild( square(x(s), t(f), 1.2)); break;
-      case "x": grid.appendChild(  cross(x(s), t(f), 1.0)); break;
-      case "d": grid.appendChild(diamond(x(s), t(f), 1.2)); break;
-      case "D": grid.appendChild(diamond(x(s), t(f), 1.6)); break;
+      case '+': grid.appendChild(    dot(x(s), t(f), 0.5)); break;
+      case 'o': grid.appendChild( circle(x(s), t(f), 1.0)); break;
+      case 's': grid.appendChild( square(x(s), t(f), 1.0)); break;
+      case 'S': grid.appendChild( square(x(s), t(f), 1.2)); break;
+      case 'x': grid.appendChild(  cross(x(s), t(f), 1.0)); break;
+      case 'd': grid.appendChild(diamond(x(s), t(f), 1.2)); break;
+      case 'D': grid.appendChild(diamond(x(s), t(f), 1.6)); break;
       default:  grid.appendChild(  label(x(s), t(f),   l)); break;
     }
   }
 
-  if (mark) {
-    grid.appendChild(label(x(smax) - labelDistance, y(mark), mark.toString()));
+  if (chord.mark()) {
+    grid.appendChild(label(x(smax) - labelDistance, y(chord.mark()), chord.mark().toString()));
+  }
+  if (chord.finger) {
+    for (const s in chord.finger) {
+      grid.appendChild(label(x(s), labelDistance + y(fmax), chord.finger[s].toString()));
+    }
+    fgap = 1;
   }
 
   var width  = (smax - smin + 2) * stringDistance;
