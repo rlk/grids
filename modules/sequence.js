@@ -65,7 +65,7 @@ export class Sequence {
   }
 
   alignMarks(size = undefined) {
-    var min = Math.max(...this.chords.map((chord) => chord.mark() - chord.minFret()));
+    var min = Math.max(...this.chords.map((chord) => chord.mark() - chord.minFret() + 1));
     var max = Math.max(...this.chords.map((chord) => chord.maxFret() - chord.mark()));
     if (size) {
       max = -min + Math.max(max - min, size);
@@ -77,9 +77,12 @@ export class Sequence {
     return this;
   }
 
-  alignFrets() {
-    const min = Math.min(...this.chords.map((chord) => chord.minFret()));
-    const max = Math.max(...this.chords.map((chord) => chord.maxFret()));
+  alignFrets(size = undefined) {
+    var min = Math.max(0, Math.min(...this.chords.map((chord) => chord.minFret() - 1)));
+    var max = Math.max(0, Math.max(...this.chords.map((chord) => chord.maxFret())));
+    if (size) {
+      max = min + Math.max(max - min, size);
+    }
     for (var chord of this.chords) {
       chord.gridMin = min;
       chord.gridMax = max;

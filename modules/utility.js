@@ -133,11 +133,21 @@ export function generateGrid(text) {
     } else if (word == 'dd') {
       push(pop().addNextPairDown());
 
-    } else if (word == 'afret') {
+    } else if (word == 'align-frets') {
       push(pop().alignFrets());
 
-    } else if (word == 'amark') {
+    } else if (word == 'align-marks') {
       push(pop().alignMarks());
+
+    } else if (word == 'align-frets-sized') {
+      const size = pop()
+      const sequence = pop()
+      push(sequence.alignFrets(size));
+
+    } else if (word == 'align-marks-sized') {
+      const size = pop()
+      const sequence = pop()
+      push(sequence.alignMarks(size));
 
     } else if (word == 'td') {
       push(pop().toElement('td'));

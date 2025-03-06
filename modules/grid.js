@@ -36,21 +36,6 @@ function elem(tag, attributes, text) {
   return e
 }
 
-function color(elem, stroke, fill) {
-  var style = []
-
-  if (stroke) {
-    style.push(`stroke: ${stroke}`)
-  }
-  if (fill) {
-    style.push(`fill: ${fill}`)
-  }
-  if (style.length > 0) {
-    elem.setAttribute('style', style.join('; '))
-  }
-  return elem
-}
-
 function crossPath(x, y, d) {
   return `M ${x - d} ${y - d} L ${x + d} ${y + d} M ${x - d} ${y + d} L ${x + d} ${y - d}`
 }
@@ -85,8 +70,8 @@ export function createGrid(chord) {
   var smax = 6;
   var fgap = 0;
 
-  const fmin = (chord.gridMin ?? chord.minFret()) - 1;
-  const fmax = (chord.gridMax ?? chord.maxFret());
+  const fmin = chord.gridMin ?? Math.max(0, chord.minFret() - 1);
+  const fmax = chord.gridMax ?? Math.max(0, chord.maxFret());
 
   function x(s) {
     return (1 + smax - s) * stringDistance;
