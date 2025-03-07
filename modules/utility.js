@@ -134,10 +134,10 @@ export function generateGrid(text) {
     } else if (word == 'dd') {
       push(pop().addNextPairDown());
 
-    } else if (word == 'align-frets') {
+    } else if (word == 'af') {
       push(pop().alignFrets());
 
-    } else if (word == 'align-marks') {
+    } else if (word == 'am') {
       push(pop().alignMarks());
 
     } else if (word == 'td') {
