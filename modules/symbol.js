@@ -74,14 +74,11 @@ function add3(spelling) {
 }
 
 function findSpelling(root, spelling) {
-
   const key = spelling.toString();
   if (key in symbolOfSpelling) {
     const [triad, extension] = symbolOfSpelling[key];
     return new Symbol(root, triad, extension);
   }
-
-  console.log(`${root} missing ${spelling}`)
 
   var symbol;
   if (!(5 in spelling)) {
