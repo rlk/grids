@@ -136,18 +136,18 @@ export class Chord {
     const name = nameOfDegreePerKey[this.key][this.degree]
     const root = pitchOfName[name];
 
-    var spelling = []
+    var spelling = new Array(8);
     this.stops.forEach(
       (stop) => spelling[stop.interval(this.degree)] =
           toOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     if (spelling[1] == -1) {
-      return symbolFromSpelling(flatten(name), spelling.map((offset) => offset + 1).toString());
+      return symbolFromSpelling(flatten(name), spelling.map((offset) => offset + 1));
     }
     if (spelling[1] == +1) {
-      return symbolFromSpelling(sharpen(name), spelling.map((offset) => offset - 1).toString());
+      return symbolFromSpelling(sharpen(name), spelling.map((offset) => offset - 1));
     }
-    return symbolFromSpelling(name, spelling.toString());
+    return symbolFromSpelling(name, spelling);
   }
 
   toElement(tag) {

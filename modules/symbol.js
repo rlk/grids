@@ -19,14 +19,14 @@
 // SOFTWARE.
 
 const symbolOfSpelling = {
-  ',0,,0,,0':        ['',    ''],
-  ',0,,-1,,0':       ['mi',  ''],
-  ',0,,-1,,-1':      ['dim', ''],
-  ',0,,0,,1':        ['aug', ''],
-  ',0,,,0,0':        ['sus', ''],
+  ',0,,0,,0,,':      ['',    ''],
+  ',0,,-1,,0,,':     ['mi',  ''],
+  ',0,,-1,,-1,,':    ['dim', ''],
+  ',0,,0,,1,,':      ['aug', ''],
+  ',0,,,0,0,,':      ['sus', ''],
 
-  ',0,,0,,0,0':      ['',   '6'],
-  ',0,,-1,,0,0':     ['mi', '6'],
+  ',0,,0,,0,0,':     ['',   '6'],
+  ',0,,-1,,0,0,':    ['mi', '6'],
 
   ',0,,0,,0,,0':     ['ma', '7'],
   ',0,0,0,,0,,0':    ['ma', '9'],
@@ -50,14 +50,60 @@ const symbolOfSpelling = {
   ',0,,-1,,1,,-1':   ['mi', '7♯5'],
 
   ',0,,-1,,-1,,-2':  ['dim', '7'],
+
+  ',0,-1,0,,0,,-1':  ['', '7♭9'],
+  ',0,0,0,1,0,,-1':  ['', '9♯11'],
 };
 
-export function symbolFromSpelling(root, spelling) {
-  if (spelling in symbolOfSpelling) {
-    const [triad, extension] = symbolOfSpelling[spelling];
+function copySpelling(spelling) {
+  var copy = new Array(8);
+  spelling.forEach((element, index) => copy[index] = element);
+  return copy;
+}
+
+function add5(spelling) {
+  var copy = copySpelling(spelling);
+  copy[5] = 0;
+  return copy
+}
+
+function add3(spelling) {
+  var copy = copySpelling(spelling);
+  copy[3] = 0;
+  return copy;
+}
+
+function findSpelling(root, spelling) {
+
+  const key = spelling.toString();
+  if (key in symbolOfSpelling) {
+    const [triad, extension] = symbolOfSpelling[key];
     return new Symbol(root, triad, extension);
+  }
+
+  console.log(`${root} missing ${spelling}`)
+
+  var symbol;
+  if (!(5 in spelling)) {
+    if ((symbol = findSpelling(root, add5(spelling)))) {
+      return symbol;
+    }
+  }
+  if (!(3 in spelling)) {
+    if ((symbol = findSpelling(root, add3(spelling)))) {
+      return symbol;
+    }
+  }
+  return null;
+}
+
+export function symbolFromSpelling(root, spelling) {
+  var symbol;
+
+  if ((symbol = findSpelling(root, spelling))) {
+    return symbol;
   } else {
-    return new Symbol(root, '?', '?');
+    return new Symbol(root, '?', '');
   }
 }
 

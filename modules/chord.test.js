@@ -378,9 +378,24 @@ test('Chord.symbol offset overflow', () => {
     .toStrictEqual(new Symbol('E', 'aug'));
 });
 
+test('Chord.symbol omit 5', () => {
+  expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(3, 2, 7).add(2, 2, 2).symbol())
+    .toStrictEqual(new Symbol('B', '', '9'));
+});
+
+test('Chord.symbol omit 3', () => {
+  expect(new Chord('A', 2).add(6, 7, 1).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
+    .toStrictEqual(new Symbol('B', '', '9'));
+});
+
+test('Chord.symbol omit 3 omit 5', () => {
+  expect(new Chord('A', 2).add(6, 7, 1).add(3, 2, 7).add(2, 2, 2).symbol())
+    .toStrictEqual(new Symbol('B', '', '9'));
+});
+
 test('Chord.symbol unknown', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(6, 9, 2).symbol())
-    .toStrictEqual(new Symbol('B', '?', '?'));
+    .toStrictEqual(new Symbol('B', '?', ''));
 });
 
 // Chord.symbol of computed chords
