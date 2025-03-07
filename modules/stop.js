@@ -49,15 +49,16 @@ function _pitch(pitch) {
 }
 
 export class Stop {
-  constructor(string, fret, degree, label = '+') {
+  constructor(string, fret, degree, label='+', decor=false) {
     this.string = string;
     this.fret = fret;
     this.degree = degree;
     this.label = label;
+    this.decor = decor;
   }
 
   toString() {
-    return `(${this.string} ${this.fret} ${this.degree} ${this.label})`;
+    return `(${this.string} ${this.fret} ${this.degree} ${this.label} ${this.decor})`;
   }
 
   isValid() {

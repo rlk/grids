@@ -80,8 +80,8 @@ export class Chord {
     return Math.max(...this.stops.map((stop) => stop.fret));
   }
 
-  add(string, fret, interval, label='+') {
-    this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label));
+  add(string, fret, interval, label='+', decor=false) {
+    this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label, decor));
     return this;
   }
 
@@ -137,9 +137,9 @@ export class Chord {
     const root = pitchOfName[name];
 
     var spelling = new Array(8);
-    this.stops.forEach(
-      (stop) => spelling[stop.interval(this.degree)] =
-          toOffset(root, stop.pitch(), stop.interval(this.degree)));
+    this.stops.filter((stop) => !stop.decor)
+             .forEach((stop) => spelling[stop.interval(this.degree)] =
+                toOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     if (spelling[1] == -1) {
       return symbolFromSpelling(flatten(name), spelling.map((offset) => offset + 1));

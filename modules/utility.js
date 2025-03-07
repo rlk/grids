@@ -81,7 +81,15 @@ export function generateGrid(text) {
       const fret = pop();
       const string = pop();
       const chord = pop();
-      push(chord.add(string, fret, interval, word));
+      push(chord.add(string, fret, interval, word, false));
+
+    } else if (word == '(+)' || word == '(x)' || word == '(=)' ||
+               word == '(^)' || word == '(o)' || word == '(_)') {
+      const interval = pop();
+      const fret = pop();
+      const string = pop();
+      const chord = pop();
+      push(chord.add(string, fret, interval, word.at(1), true));
 
     } else if (word == '.') {
       const label = pop();
