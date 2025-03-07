@@ -102,7 +102,7 @@ test('Sequence.addNextDown', () => {
   expect(new Sequence().add(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
 });
 
-test('Sequence.alignMarks', () => {
+test('Sequence.alignMarks default size', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks();
 
   expect(sequence.chords[0].mark() - sequence.chords[0].gridMin)
@@ -111,12 +111,12 @@ test('Sequence.alignMarks', () => {
   expect(sequence.chords[0].gridMax - sequence.chords[0].mark())
     .toBe(sequence.chords[1].gridMax - sequence.chords[1].mark());
 
-  expect(sequence.chords[0].gridMax - sequence.chords[0].gridMin).toBe(2);
-  expect(sequence.chords[1].gridMax - sequence.chords[1].gridMin).toBe(2);
+  expect(sequence.chords[0].gridMax - sequence.chords[0].gridMin).toBe(3);
+  expect(sequence.chords[1].gridMax - sequence.chords[1].gridMin).toBe(3);
 });
 
-test('Sequence.alignMarks with size', () => {
-  const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks(5);
+test('Sequence.alignMarks', () => {
+  const sequence = new Sequence(5).add(CMA7_5).addNextUp().addNextUp().alignMarks();
 
   expect(sequence.chords[0].mark() - sequence.chords[0].gridMin)
     .toBe(sequence.chords[1].mark() - sequence.chords[1].gridMin);
@@ -128,8 +128,16 @@ test('Sequence.alignMarks with size', () => {
   expect(sequence.chords[1].gridMax - sequence.chords[1].gridMin).toBe(5);
 });
 
-test('Sequence.aligns', () => {
+test('Sequence.alignFrets default size', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignFrets();
+  expect(sequence.chords[0].gridMin).toBe(sequence.chords[1].gridMin);
+  expect(sequence.chords[1].gridMin).toBe(sequence.chords[2].gridMin);
+  expect(sequence.chords[0].gridMax).toBe(sequence.chords[1].gridMax);
+  expect(sequence.chords[1].gridMax).toBe(sequence.chords[2].gridMax);
+});
+
+test('Sequence.alignFrets', () => {
+  const sequence = new Sequence(5).add(CMA7_5).addNextUp().addNextUp().alignFrets();
   expect(sequence.chords[0].gridMin).toBe(sequence.chords[1].gridMin);
   expect(sequence.chords[1].gridMin).toBe(sequence.chords[2].gridMin);
   expect(sequence.chords[0].gridMax).toBe(sequence.chords[1].gridMax);

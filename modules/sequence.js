@@ -19,7 +19,7 @@
 // SOFTWARE.
 
 export class Sequence {
-  constructor(frets) {
+  constructor(frets = 0) {
     this.chords = [];
     this.frets = frets;
   }
