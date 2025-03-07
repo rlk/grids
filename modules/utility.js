@@ -108,7 +108,8 @@ export function generateGrid(text) {
       push(new Chord(key, degree));
 
     } else if (word == 'seq') {
-      push(new Sequence());
+      const frets = pop()
+      push(new Sequence(frets));
 
     } else if (word == ',') {
       const chord = pop()
@@ -138,16 +139,6 @@ export function generateGrid(text) {
 
     } else if (word == 'align-marks') {
       push(pop().alignMarks());
-
-    } else if (word == 'align-frets-sized') {
-      const size = pop()
-      const sequence = pop()
-      push(sequence.alignFrets(size));
-
-    } else if (word == 'align-marks-sized') {
-      const size = pop()
-      const sequence = pop()
-      push(sequence.alignMarks(size));
 
     } else if (word == 'td') {
       push(pop().toElement('td'));

@@ -19,8 +19,9 @@
 // SOFTWARE.
 
 export class Sequence {
-  constructor() {
+  constructor(frets) {
     this.chords = [];
+    this.frets = frets;
   }
 
   toString() {
@@ -64,11 +65,12 @@ export class Sequence {
     return this.add(a.decDegree()).add(b.decDegree());
   }
 
-  alignMarks(size = undefined) {
+  alignMarks() {
     var min = Math.max(...this.chords.map((chord) => chord.mark() - chord.minFret() + 1));
     var max = Math.max(...this.chords.map((chord) => chord.maxFret() - chord.mark()));
-    if (size) {
-      max = -min + Math.max(max - min, size);
+
+    if (this.frets) {
+      max = -min + Math.max(max - min, this.frets);
     }
     for (var chord of this.chords) {
       chord.gridMin = chord.mark() - min;
@@ -77,11 +79,12 @@ export class Sequence {
     return this;
   }
 
-  alignFrets(size = undefined) {
+  alignFrets() {
     var min = Math.max(0, Math.min(...this.chords.map((chord) => chord.minFret() - 1)));
     var max = Math.max(0, Math.max(...this.chords.map((chord) => chord.maxFret())));
-    if (size) {
-      max = min + Math.max(max - min, size);
+
+    if (this.frets) {
+      max = min + Math.max(max - min, this.frets);
     }
     for (var chord of this.chords) {
       chord.gridMin = min;
