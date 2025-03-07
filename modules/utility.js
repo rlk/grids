@@ -91,6 +91,9 @@ export function generateGrid(text) {
       const chord = pop();
       push(chord.add(string, fret, interval, label));
 
+    } else if (word == '?') {
+      pop();
+
     } else if (word == '!') {
       const note = pop();
       const chord = pop();
