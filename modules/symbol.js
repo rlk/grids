@@ -77,43 +77,44 @@ function add(spelling, interval, offset) {
   return Object.assign(new Array(8), {...spelling, [interval]: offset})
 }
 
-function findSpelling(root, spelling) {
+function findSpelling(root, spelling, bass) {
   const key = spelling.toString();
   if (key in symbolOfSpelling) {
     const [triad, extension] = symbolOfSpelling[key];
-    return new Symbol(root, triad, extension);
+    return new Symbol(root, triad, extension, bass);
   }
 
   var symbol;
   if (!(5 in spelling)) {
-    if ((symbol = findSpelling(root, add(spelling, 5, 0)))) {
+    if ((symbol = findSpelling(root, add(spelling, 5, 0), bass))) {
       return symbol;
     }
   }
   if (!(3 in spelling)) {
-    if ((symbol = findSpelling(root, add(spelling, 3, 0)))) {
+    if ((symbol = findSpelling(root, add(spelling, 3, 0), bass))) {
       return symbol;
     }
   }
   return null;
 }
 
-export function symbolFromSpelling(root, spelling) {
+export function symbolFromSpelling(root, spelling, bass = '') {
   var symbol;
 
-  if ((symbol = findSpelling(root, spelling))) {
+  if ((symbol = findSpelling(root, spelling, bass))) {
     return symbol;
   } else {
-    console.log(`Failed to interpret ${root} ${spelling}`);
-    return new Symbol(root, '?', '');
+    console.log(`Failed to interpret ${root} ${spelling} ${bass}`);
+    return new Symbol(root, '?', '', bass);
   }
 }
 
 export class Symbol {
-  constructor(root, triad = '', extension = '') {
+  constructor(root, triad = '', extension = '', bass = '') {
     this.root = root;
     this.triad = triad;
     this.extension = extension;
+    this.bass = bass;
   }
 
   toString() {
@@ -134,6 +135,13 @@ export class Symbol {
       extension.setAttribute('class', 'extension');
       extension.innerHTML = this.extension;
       symbol.appendChild(extension);
+    }
+
+    if (this.bass) {
+      var bass = document.createElement('span')
+      bass.setAttribute('class', 'bass');
+      bass.innerHTML = `/${this.bass}`;
+      symbol.appendChild(bass);
     }
     return symbol;
   }

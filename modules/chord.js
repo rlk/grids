@@ -132,8 +132,24 @@ export class Chord {
     return roots.length ? roots[0].fret : frets[0].fret;
   }
 
+  bass() {
+    const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
+
+    if (stop.interval(this.degree) != 1) {
+      const root = pitchOfName[nameOfDegreePerKey[this.key][this.degree]];
+      const name = nameOfDegreePerKey[this.key][stop.degree];
+
+      switch (toOffset(root, stop.pitch(), stop.interval(this.degree))) {
+        case -1: return flatten(name);
+        case +1: return sharpen(name);
+        default: return name;
+      }
+    }
+    return null;
+  }
+
   symbol() {
-    const name = nameOfDegreePerKey[this.key][this.degree]
+    const name = nameOfDegreePerKey[this.key][this.degree];
     const root = pitchOfName[name];
 
     var spelling = new Array(8);
@@ -141,13 +157,11 @@ export class Chord {
              .forEach((stop) => spelling[stop.interval(this.degree)] =
                 toOffset(root, stop.pitch(), stop.interval(this.degree)));
 
-    if (spelling[1] == -1) {
-      return symbolFromSpelling(flatten(name), spelling.map((offset) => offset + 1));
+    switch (spelling[0]) {
+      case -1: return symbolFromSpelling(flatten(name), spelling.map((o) => o + 1), this.bass());
+      case +1: return symbolFromSpelling(sharpen(name), spelling.map((o) => o - 1), this.bass());
+      default: return symbolFromSpelling(name, spelling, this.bass());
     }
-    if (spelling[1] == +1) {
-      return symbolFromSpelling(sharpen(name), spelling.map((offset) => offset - 1));
-    }
-    return symbolFromSpelling(name, spelling);
   }
 
   toElement(tag) {
