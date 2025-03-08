@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Stop } from './stop.js';
+import { Bar } from './bar.js';
 import { Chord } from './chord.js';
 import { Sequence } from './sequence.js';
 
@@ -129,6 +129,15 @@ export function generateGrid(text) {
       const chord = pop()
       const sequence = pop()
       push(sequence.add(chord));
+
+    } else if (word == '|:') {
+      push(pop().add(new Bar('&#x1D106;')));
+
+    } else if (word == '|') {
+      push(pop().add(new Bar('&#x1D100;')));
+
+    } else if (word == ':|') {
+      push(pop().add(new Bar('&#x1D107;')));
 
     } else if (word == '1u') {
       push(pop().addNextUp());

@@ -24,6 +24,10 @@ export class Sequence {
     this.frets = frets;
   }
 
+  _chords() {
+    return this.chords.filter((chord) => chord.hasOwnProperty('stops'));
+  }
+
   toString() {
     return `[${this.chords.map((chord) => chord.toString()).join(' ')}]`
   }
@@ -66,13 +70,13 @@ export class Sequence {
   }
 
   alignMarks() {
-    var min = Math.max(...this.chords.map((chord) => chord.mark() - chord.minFret() + 1));
-    var max = Math.max(...this.chords.map((chord) => chord.maxFret() - chord.mark()));
+    var min = Math.max(...this._chords().map((chord) => chord.mark() - chord.minFret() + 1));
+    var max = Math.max(...this._chords().map((chord) => chord.maxFret() - chord.mark()));
 
     if (this.frets) {
       max = -min + Math.max(max - min, this.frets);
     }
-    for (var chord of this.chords) {
+    for (var chord of this._chords()) {
       chord.gridMin = chord.mark() - min;
       chord.gridMax = chord.mark() + max;
     }
@@ -80,13 +84,13 @@ export class Sequence {
   }
 
   alignFrets() {
-    var min = Math.max(0, Math.min(...this.chords.map((chord) => chord.minFret() - 1)));
-    var max = Math.max(0, Math.max(...this.chords.map((chord) => chord.maxFret())));
+    var min = Math.max(0, Math.min(...this._chords().map((chord) => chord.minFret() - 1)));
+    var max = Math.max(0, Math.max(...this._chords().map((chord) => chord.maxFret())));
 
     if (this.frets) {
       max = min + Math.max(max - min, this.frets);
     }
-    for (var chord of this.chords) {
+    for (var chord of this._chords()) {
       chord.gridMin = min;
       chord.gridMax = max;
     }
