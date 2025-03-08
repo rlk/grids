@@ -59,6 +59,8 @@ const symbolOfSpelling = {
   ',0,1,0,,0,,-1':   ['', '7♯9'],
   ',0,-1,0,,0,,-1':  ['', '7♭9'],
   ',0,0,0,1,0,,-1':  ['', '9♯11'],
+
+  ',0,-1,-1,,,,-1': ['mi', '7♭9'],
 };
 
 function copySpelling(spelling) {
@@ -106,6 +108,7 @@ export function symbolFromSpelling(root, spelling) {
   if ((symbol = findSpelling(root, spelling))) {
     return symbol;
   } else {
+    console.log(`Failed to interpret ${root} ${spelling}`);
     return new Symbol(root, '?', '');
   }
 }

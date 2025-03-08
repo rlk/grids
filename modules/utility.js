@@ -163,7 +163,7 @@ export function generateGrid(text) {
     } else {
       push(parseInt(word));
     }
-    console.log(stack.toString());
+    // console.log(stack.toString());
   }
   return pop();
 }
