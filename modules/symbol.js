@@ -63,22 +63,8 @@ const symbolOfSpelling = {
   ',0,-1,-1,,,,-1': ['mi', '7♭9'],
 };
 
-function copySpelling(spelling) {
-  var copy = new Array(8);
-  spelling.forEach((element, index) => copy[index] = element);
-  return copy;
-}
-
-function add5(spelling) {
-  var copy = copySpelling(spelling);
-  copy[5] = 0;
-  return copy
-}
-
-function add3(spelling) {
-  var copy = copySpelling(spelling);
-  copy[3] = 0;
-  return copy;
+function add(spelling, interval, offset) {
+  return Object.assign(new Array(8), {...spelling, [interval]: offset})
 }
 
 function findSpelling(root, spelling) {
@@ -90,12 +76,12 @@ function findSpelling(root, spelling) {
 
   var symbol;
   if (!(5 in spelling)) {
-    if ((symbol = findSpelling(root, add5(spelling)))) {
+    if ((symbol = findSpelling(root, add(spelling, 5, 0)))) {
       return symbol;
     }
   }
   if (!(3 in spelling)) {
-    if ((symbol = findSpelling(root, add3(spelling)))) {
+    if ((symbol = findSpelling(root, add(spelling, 3, 0)))) {
       return symbol;
     }
   }
