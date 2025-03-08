@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { flatten, sharpen, toDegree, toOffset } from './utility.js'
+import { flatten, sharpen, toDegree, toOffset, calcOffset } from './utility.js'
 import { Stop } from './stop.js'
 import { symbolFromSpelling } from './symbol.js'
 import { createGrid } from './grid.js'
@@ -136,10 +136,9 @@ export class Chord {
     const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
 
     if (stop.interval(this.degree) != 1) {
-      const root = pitchOfName[nameOfDegreePerKey[this.key][this.degree]];
       const name = nameOfDegreePerKey[this.key][stop.degree];
 
-      switch (toOffset(root, stop.pitch(), stop.interval(this.degree))) {
+      switch (toOffset(stop.pitch() - pitchOfName[name])) {
         case -1: return flatten(name);
         case +1: return sharpen(name);
         default: return name;
@@ -155,7 +154,7 @@ export class Chord {
     var spelling = new Array(8);
     this.stops.filter((stop) => !stop.decor)
              .forEach((stop) => spelling[stop.interval(this.degree)] =
-                toOffset(root, stop.pitch(), stop.interval(this.degree)));
+                calcOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     switch (spelling[0]) {
       case -1: return symbolFromSpelling(flatten(name), spelling.map((o) => o + 1), this.bass());

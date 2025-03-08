@@ -54,8 +54,7 @@ export function toPitch(pitch) {
   return pitch;
 }
 
-export function toOffset(root, pitch, interval) {
-  var offset = pitch - toPitch(root + offsetOfInterval[interval])
+export function toOffset(offset) {
   if (offset < -2) {
     return offset + 12
   }
@@ -63,6 +62,10 @@ export function toOffset(root, pitch, interval) {
     return offset - 12
   }
   return offset
+}
+
+export function calcOffset(root, pitch, interval) {
+  return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
 export function generateGrid(text) {
