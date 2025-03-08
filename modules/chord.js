@@ -156,7 +156,7 @@ export class Chord {
              .forEach((stop) => spelling[stop.interval(this.degree)] =
                 calcOffset(root, stop.pitch(), stop.interval(this.degree)));
 
-    switch (spelling[0]) {
+    switch (spelling[1]) {
       case -1: return symbolFromSpelling(flatten(name), spelling.map((o) => o + 1), this.bass());
       case +1: return symbolFromSpelling(sharpen(name), spelling.map((o) => o - 1), this.bass());
       default: return symbolFromSpelling(name, spelling, this.bass());
