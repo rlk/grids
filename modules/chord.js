@@ -62,7 +62,7 @@ export class Chord {
   }
 
   toString() {
-    return `${this.key}${this.degree}[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
+    return `${this.key}(${this.degree})[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
   }
 
   isValid() {
@@ -132,21 +132,6 @@ export class Chord {
     return roots.length ? roots[0].fret : frets[0].fret;
   }
 
-  bass() {
-    const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
-
-    if (stop.interval(this.degree) != 1) {
-      const name = nameOfDegreePerKey[this.key][stop.degree];
-
-      switch (toOffset(stop.pitch() - pitchOfName[name])) {
-        case -1: return flatten(name);
-        case +1: return sharpen(name);
-        default: return name;
-      }
-    }
-    return null;
-  }
-
   symbol() {
     const name = nameOfDegreePerKey[this.key][this.degree];
     const root = pitchOfName[name];
@@ -161,6 +146,21 @@ export class Chord {
       case +1: return symbolFromSpelling(sharpen(name), spelling.map((o) => o - 1), this.bass());
       default: return symbolFromSpelling(name, spelling, this.bass());
     }
+  }
+
+  bass() {
+    const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
+
+    if (stop.interval(this.degree) != 1) {
+      const name = nameOfDegreePerKey[this.key][stop.degree];
+
+      switch (toOffset(stop.pitch() - pitchOfName[name])) {
+        case -1: return flatten(name);
+        case +1: return sharpen(name);
+        default: return name;
+      }
+    }
+    return null;
   }
 
   toElement(tag) {

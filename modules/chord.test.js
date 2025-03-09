@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 // Copyright (c) 2025 Robert Kooima
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -90,6 +92,14 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
+// Chord.toString
+
+test('Chord.toString', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).toString();
+  expect(string).toContain('C');
+  expect(string).toContain('1 1 1 +');
+});
+
 // Chord.isValid
 
 test('Chord.isValid', () => {
@@ -115,6 +125,21 @@ test('Chord.isValid bad key', () => {
 // Chord builders
 
 test('Chord.add', () => {
+  expect(new Chord('C', 5).add(4, 5, 1, 'x', true))
+    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', true)]));
+})
+
+test('Chord.add default decor', () => {
+  expect(new Chord('C', 5).add(4, 5, 1, 'x'))
+    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', false)]));
+})
+
+test('Chord.add default label', () => {
+  expect(new Chord('C', 5).add(4, 5, 1))
+    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, '+', false)]));
+})
+
+test('Chord.add multiple', () => {
   expect(new Chord('C', 5).add(4, 5, 1).add(3, 7, 5).add(2, 6, 7).add(1, 7, 3))
     .toStrictEqual(
       new Chord('C', 5, [
@@ -124,29 +149,17 @@ test('Chord.add', () => {
         new Stop(1, 7, 7, '+')]));
 })
 
-test('Chord.addx', () => {
-  expect(new Chord('C', 5).add(4, 5, 1, 'x'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x')]));
+// Chord.setFinger
+
+test('Chord.setFinger', () => {
+  expect(new Chord('C', 5).setFinger(1, 2).finger)
+    .toEqual(expect.objectContaining({1: 2}));
 })
 
-test('Chord.adds', () => {
-  expect(new Chord('C', 5).add(4, 5, 1, 's'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 's')]));
-})
+// Chord.setNote
 
-test('Chord.addd', () => {
-  expect(new Chord('C', 5).add(4, 5, 1, 'd'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'd')]));
-})
-
-test('Chord.addo', () => {
-  expect(new Chord('C', 5).add(4, 5, 1, 'o'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'o')]));
-})
-
-test('Chord.add_', () => {
-  expect(new Chord('C', 5).add(4, 5, 1, '_'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, '_')]));
+test('Chord.setNote', () => {
+  expect(new Chord('C', 5).setNote('abc').note).toBe('abc');
 })
 
 // Chord.incString / Chord.decString
@@ -448,3 +461,45 @@ test('Chord.symbol decInversion bass', () => {
   expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.decInversion().symbol().bass);
 });
 
+
+// Chord.bass
+
+test('Chord.bass', () => {
+  expect(new Chord('C', 1).add(3, 5, 1).add(2, 5, 3).add(1, 3, 5).add(4, 5, 5, '+', true).bass())
+    .toBe('G');
+});
+
+test('Chord.bass sharpened', () => {
+  expect(new Chord('C', 1).add(3, 5, 1).add(2, 5, 3).add(1, 3, 5).add(4, 6, 5, '+', true).bass())
+    .toBe('G♯');
+});
+
+test('Chord.bass flattened', () => {
+  expect(new Chord('C', 1).add(3, 5, 1).add(2, 5, 3).add(1, 3, 5).add(4, 4, 5, '+', true).bass())
+    .toBe('G♭');
+});
+
+test('Chord.bass root position', () => {
+  expect(GDOM7_2.bass()).toBeNull();
+});
+
+test('Chord.bass 1st inversion', () => {
+  expect(GDOM7_3.bass()).toBe('B');
+});
+
+test('Chord.bass 2st inversion', () => {
+  expect(GDOM7_4.bass()).toBe('D');
+});
+
+test('Chord.bass 3st inversion', () => {
+  expect(GDOM7_5.bass()).toBe('F');
+});
+
+// Chord.toElement
+
+test('Chord.toElement', () => {
+  const element = CMA7_5.toElement('span');
+  expect(element.tagName.toLowerCase()).toBe('span');
+  expect(element.classList).toContain('grid');
+  expect(element.childElementCount).toBe(1);
+});
