@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import { toPitch, toDegree } from './utility.js'
+
 const pitchIncAtDegree = {
   1: 2, 2: 2, 3: 1, 4: 2, 5: 2, 6: 2, 7: 1,
 };
@@ -27,26 +29,6 @@ const pitchDecAtDegree = {
 const pitchOfString = {
   1: 5, 2: 12, 3: 8, 4: 3, 5: 10, 6: 5,
 };
-
-function _degree(degree) {
-  if (degree < 1) {
-    return _degree(degree + 7);
-  }
-  if (degree > 7) {
-    return _degree(degree - 7);
-  }
-  return degree;
-}
-
-function _pitch(pitch) {
-  if (pitch < 1) {
-    return _pitch(pitch + 12);
-  }
-  if (pitch > 12) {
-    return _pitch(pitch - 12);
-  }
-  return pitch;
-}
 
 export class Stop {
   constructor(string, fret, degree, label='+', decor=false) {
@@ -71,11 +53,11 @@ export class Stop {
   }
 
   pitch() {
-    return _pitch(pitchOfString[this.string] + this.fret);
+    return toPitch(pitchOfString[this.string] + this.fret);
   }
 
   interval(root) {
-    return _degree(this.degree - root + 1);
+    return toDegree(this.degree - root + 1);
   }
 
   incString() {
@@ -87,11 +69,11 @@ export class Stop {
   }
 
   incDegree() {
-    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], _degree(this.degree + 1), this.label)
+    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], toDegree(this.degree + 1), this.label)
   }
 
   decDegree() {
-    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], _degree(this.degree - 1), this.label)
+    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], toDegree(this.degree - 1), this.label)
   }
 
   incToDegree(degree) {

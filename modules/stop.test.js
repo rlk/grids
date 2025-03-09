@@ -38,6 +38,12 @@ test('Stop.constructor label default', () => {
   expect(stop.label).toBe('+');
 });
 
+// Stop.toString
+
+test('Stop.toString', () => {
+  expect(new Stop(1, 1, 1, '+').toString()).toContain('1 1 1 +');
+});
+
 // Stop.isValid
 
 test('Stop.isValid', () => {
