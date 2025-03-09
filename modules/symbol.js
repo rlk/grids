@@ -119,7 +119,7 @@ export class Symbol {
   }
 
   toString() {
-    return `<${this.root}${this.triad}${this.extension}>`
+    return `<${this.root}${this.triad}${this.extension}/${this.bass}>`
   }
 
   toElement() {

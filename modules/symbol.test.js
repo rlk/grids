@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 // Copyright (c) 2025 Robert Kooima
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,4 +52,65 @@ test('Symbol.constructor default triad', () => {
   expect(symbol.triad).toBeNull();
   expect(symbol.extension).toBeNull();
   expect(symbol.bass).toBeNull();
+});
+
+
+test('Symbol.toString', () => {
+  const string = new Symbol('A', 'mi', '7', 'E').toString();
+  expect(string).toContain('A');
+  expect(string).toContain('mi');
+  expect(string).toContain('7');
+  expect(string).toContain('E');
+});
+
+test('Symbol.toElement', () => {
+  const element = new Symbol('A', 'mi', '7', 'E').toElement();
+
+  expect(element.classList).toContain('symbol');
+  expect(element.childElementCount).toBe(3);
+
+  expect(element.children[0].classList).toContain('root');
+  expect(element.children[0].innerHTML).toContain('A');
+  expect(element.children[0].innerHTML).toContain('mi');
+
+  expect(element.children[1].classList).toContain('extension');
+  expect(element.children[1].innerHTML).toContain('7');
+
+  expect(element.children[2].classList).toContain('bass');
+  expect(element.children[2].innerHTML).toContain('E');
+});
+
+test('Symbol.toElement default bass', () => {
+  const element = new Symbol('A', 'mi', '7').toElement();
+
+  expect(element.classList).toContain('symbol');
+  expect(element.childElementCount).toBe(2);
+
+  expect(element.children[0].classList).toContain('root');
+  expect(element.children[0].innerHTML).toContain('A');
+  expect(element.children[0].innerHTML).toContain('mi');
+
+  expect(element.children[1].classList).toContain('extension');
+  expect(element.children[1].innerHTML).toContain('7');
+});
+
+test('Symbol.toElement default extension', () => {
+  const element = new Symbol('A', 'mi').toElement();
+
+  expect(element.classList).toContain('symbol');
+  expect(element.childElementCount).toBe(1);
+
+  expect(element.children[0].classList).toContain('root');
+  expect(element.children[0].innerHTML).toContain('A');
+  expect(element.children[0].innerHTML).toContain('mi');
+});
+
+test('Symbol.toElement default triad', () => {
+  const element = new Symbol('A').toElement();
+
+  expect(element.classList).toContain('symbol');
+  expect(element.childElementCount).toBe(1);
+
+  expect(element.children[0].classList).toContain('root');
+  expect(element.children[0].innerHTML).toContain('A');
 });
