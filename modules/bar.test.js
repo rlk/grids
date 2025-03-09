@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 // Copyright (c) 2025 Robert Kooima
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,24 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-export class Bar {
-  constructor(text) {
-    this.text = text
-  }
+import { Bar } from './bar.js';
 
-  toString() {
-    return `${this.text}`;
-  }
+test('Bar.constructor', () => {
+  const bar = new Bar('|');
+  expect(bar.text).toBe('|');
+});
 
-  toElement(tag) {
-    var element = document.createElement(tag);
-    element.setAttribute('class', 'grid');
+test('Bar.toString', () => {
+  const bar = new Bar('|');
+  expect(bar.toString()).toBe('|');
+});
 
-    var span = document.createElement('span');
-    span.setAttribute('class', 'bar');
-    span.innerHTML = this.text;
-
-    element.appendChild(span);
-    return element;
-  }
-}
+test('Bar.toElement', () => {
+  const element = new Bar('|').toElement('span');
+  expect(element.classList).toContain('grid');
+  expect(element.firstElementChild.classList).toContain('bar');
+  expect(element.firstElementChild.innerHTML).toBe('|');
+});
