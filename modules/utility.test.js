@@ -127,12 +127,12 @@ test('toOffset double sharp wraps', () => {
 
 // generateGrid
 
-test('generateGrid cho creates Chord', () => {
+test('generateGrid creates Chord', () => {
   expect(generateGrid('C 1 cho'))
     .toEqual(expect.objectContaining({ key: 'C', degree: 1 }));
 });
 
-test('generateGrid stop creates Stop', () => {
+test('generateGrid creates Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 +'))
     .toEqual(expect.objectContaining({
       stops: expect.arrayContaining([
@@ -141,7 +141,7 @@ test('generateGrid stop creates Stop', () => {
     }));
 });
 
-test('generateGrid stop creates Stop with decor', () => {
+test('generateGrid creates decor Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 (+)'))
   .toEqual(expect.objectContaining({
     stops: expect.arrayContaining([

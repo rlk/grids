@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 // Copyright (c) 2025 Robert Kooima
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,12 +24,6 @@ import { Stop } from './stop.js';
 import { Chord } from './chord.js';
 import { Sequence } from './sequence.js';
 
-const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
-  new Stop(5, 0, 6),
-  new Stop(4, 2, 3),
-  new Stop(3, 0, 5),
-  new Stop(2, 1, 1),
-]);
 const CMA7_5 = new Chord('C', 1, [  // Cma7 with the root on string 5
   new Stop(5, 3, 1),
   new Stop(4, 5, 5),
@@ -40,59 +36,30 @@ const DMI7_5 = new Chord('C', 2, [  // Dmi7 with the root on string 5
   new Stop(3, 5, 1),
   new Stop(2, 6, 4),
 ]);
-const EMI7_5 = new Chord('C', 3, [  // Emi7 with the root on string 5
-  new Stop(5, 7, 3),
-  new Stop(4, 9, 7),
-  new Stop(3, 7, 2),
-  new Stop(2, 8, 5),
-]);
-const CMA7_6 = new Chord('C', 1, [  // Cma7 with the root on string 6
-  new Stop(6, 8, 1),
-  new Stop(5, 10, 5),
-  new Stop(4, 9, 7),
-  new Stop(3, 9, 3),
-]);
-
-const GDOM7_0 = new Chord('C', 5, [  // G7 inversion 0
-  new Stop(4, 0, 2),
-  new Stop(3, 0, 5),
-  new Stop(2, 0, 7),
-  new Stop(1, 1, 4),
-]);
-const GDOM7_1 = new Chord('C', 5, [  // G7 inversion 1
+const FMA7_4 = new Chord('C', 4, [  // Fma7 with the root on string 4
   new Stop(4, 3, 4),
-  new Stop(3, 4, 7),
-  new Stop(2, 3, 2),
-  new Stop(1, 3, 5),
+  new Stop(3, 5, 1),
+  new Stop(2, 5, 3),
+  new Stop(1, 5, 6),
 ]);
-const GDOM7_2 = new Chord('C', 5, [  // G7 inversion 2
+const G7_4 = new Chord('C', 5, [  // G7 with the root on string 4
   new Stop(4, 5, 5),
   new Stop(3, 7, 2),
   new Stop(2, 6, 4),
   new Stop(1, 7, 7),
 ]);
-const GDOM7_3 = new Chord('C', 5, [  // G7 inversion 3
-  new Stop(4, 9, 7),
-  new Stop(3, 10, 4),
-  new Stop(2, 8, 5),
-  new Stop(1, 10, 2),
-]);
-const GDOM7_4 = new Chord('C', 5, [  // G7 inversion 4
-  new Stop(4, 12, 2),
-  new Stop(3, 12, 5),
-  new Stop(2, 12, 7),
-  new Stop(1, 13, 4),
-]);
-const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
-  new Stop(4, 15, 4),
-  new Stop(3, 16, 7),
-  new Stop(2, 15, 2),
-  new Stop(1, 15, 5),
-]);
 
 test('Sequence.constructor', () => {
   expect(new Sequence().add(CMA7_5).top()).toStrictEqual(CMA7_5);
 });
+
+test('Sequence.toString', () => {
+  const string = new Sequence().add(CMA7_5).add(DMI7_5).toString();
+  expect(string).toContain(CMA7_5.toString());
+  expect(string).toContain(DMI7_5.toString());
+});
+
+// Sequence.add
 
 test('Sequence.addNextUp', () => {
   expect(new Sequence().add(CMA7_5).addNextUp().top()).toStrictEqual(DMI7_5);
@@ -101,6 +68,28 @@ test('Sequence.addNextUp', () => {
 test('Sequence.addNextDown', () => {
   expect(new Sequence().add(DMI7_5).addNextDown().top()).toStrictEqual(CMA7_5);
 });
+
+test('Sequence.addFourthUp', () => {
+  expect(new Sequence().add(CMA7_5).addFourthUp().top()).toStrictEqual(FMA7_4);
+});
+
+test('Sequence.addFifthDown', () => {
+  expect(new Sequence().add(G7_4).addFifthDown().top()).toStrictEqual(CMA7_5);
+});
+
+test('Sequence.addNextPairUp', () => {
+  const sequence = new Sequence().add(CMA7_5).add(FMA7_4).addNextPairUp();
+  expect(sequence.top(2)).toStrictEqual(DMI7_5);
+  expect(sequence.top(1)).toStrictEqual(G7_4);
+});
+
+test('Sequence.addNextPairDown', () => {
+  const sequence = new Sequence().add(DMI7_5).add(G7_4).addNextPairDown();
+  expect(sequence.top(2)).toStrictEqual(CMA7_5);
+  expect(sequence.top(1)).toStrictEqual(FMA7_4);
+});
+
+// Sequence.align
 
 test('Sequence.alignMarks default size', () => {
   const sequence = new Sequence().add(CMA7_5).addNextUp().addNextUp().alignMarks();
@@ -142,4 +131,10 @@ test('Sequence.alignFrets', () => {
   expect(sequence.chords[1].gridMin).toBe(sequence.chords[2].gridMin);
   expect(sequence.chords[0].gridMax).toBe(sequence.chords[1].gridMax);
   expect(sequence.chords[1].gridMax).toBe(sequence.chords[2].gridMax);
+});
+
+test('Sequence.toElement', () => {
+  const elements = new Sequence().add(CMA7_5).add(DMI7_5).toElement('span');
+  expect(elements[0]).toStrictEqual(CMA7_5.toElement('span'));
+  expect(elements[1]).toStrictEqual(DMI7_5.toElement('span'));
 });

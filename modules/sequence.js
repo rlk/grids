@@ -32,8 +32,8 @@ export class Sequence {
     return `[${this.chords.map((chord) => chord.toString()).join(' ')}]`
   }
 
-  top() {
-    return this.chords[this.chords.length - 1];
+  top(n = 1) {
+    return this.chords[this.chords.length - n];
   }
 
   add(chord) {
@@ -58,14 +58,14 @@ export class Sequence {
   }
 
   addNextPairUp() {
-    const a = this.chords[this.chords.length - 2];
-    const b = this.chords[this.chords.length - 1];
+    const a = this.top(2);
+    const b = this.top(1);
     return this.add(a.incDegree()).add(b.incDegree());
   }
 
   addNextPairDown() {
-    const a = this.chords[this.chords.length - 2];
-    const b = this.chords[this.chords.length - 1];
+    const a = this.top(2);
+    const b = this.top(1);
     return this.add(a.decDegree()).add(b.decDegree());
   }
 
