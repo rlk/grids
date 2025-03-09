@@ -21,22 +21,33 @@
 import { Symbol } from './symbol.js';
 
 test('Symbol.constructor', () => {
+  const symbol = new Symbol('A', 'mi', '7', 'E');
+  expect(symbol.root).toBe('A');
+  expect(symbol.triad).toBe('mi');
+  expect(symbol.extension).toBe('7');
+  expect(symbol.bass).toBe('E');
+});
+
+test('Symbol.constructor default bass', () => {
   const symbol = new Symbol('A', 'mi', '7');
   expect(symbol.root).toBe('A');
   expect(symbol.triad).toBe('mi');
   expect(symbol.extension).toBe('7');
+  expect(symbol.bass).toBeNull();
 });
 
 test('Symbol.constructor default extension', () => {
   const symbol = new Symbol('A', 'mi');
   expect(symbol.root).toBe('A');
   expect(symbol.triad).toBe('mi');
-  expect(symbol.extension).toBe('');
+  expect(symbol.extension).toBeNull();
+  expect(symbol.bass).toBeNull();
 });
 
 test('Symbol.constructor default triad', () => {
   const symbol = new Symbol('A');
   expect(symbol.root).toBe('A');
-  expect(symbol.triad).toBe('');
-  expect(symbol.extension).toBe('');
+  expect(symbol.triad).toBeNull();
+  expect(symbol.extension).toBeNull();
+  expect(symbol.bass).toBeNull();
 });

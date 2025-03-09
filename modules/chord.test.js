@@ -263,7 +263,7 @@ test('Chord.symbol sus', () => {
 
 test('Chord.symbol ma6', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 1, 6).symbol())
-    .toStrictEqual(new Symbol('B', '', '6'));
+    .toStrictEqual(new Symbol('B', null, '6'));
 });
 
 test('Chord.symbol mi6', () => {
@@ -288,17 +288,17 @@ test('Chord.symbol ma13', () => {
 
 test('Chord.symbol 7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', '', '7'));
+    .toStrictEqual(new Symbol('B', null, '7'));
 });
 
 test('Chord.symbol 9', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', '', '9'));
+    .toStrictEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol 13', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).add(1, 4, 6).symbol())
-    .toStrictEqual(new Symbol('B', '', '13'));
+    .toStrictEqual(new Symbol('B', null, '13'));
 });
 
 test('Chord.symbol sus7', () => {
@@ -360,12 +360,12 @@ test('Chord.symbol dim7', () => {
 
 test('Chord.symbol 7 flat root', () => {
   expect(new Chord('A', 2).add(6, 6, 1).add(5, 5, 3).add(4, 3, 5).add(3, 1, 7).symbol())
-    .toStrictEqual(new Symbol('B♭', '', '7'));
+    .toStrictEqual(new Symbol('B♭', null, '7'));
 });
 
 test('Chord.symbol 7 sharp root', () => {
   expect(new Chord('A', 2).add(6, 8, 1).add(5, 7, 3).add(4, 5, 5).add(3, 3, 7).symbol())
-    .toStrictEqual(new Symbol('B♯', '', '7'));
+    .toStrictEqual(new Symbol('B♯', null, '7'));
 });
 
 test('Chord.symbol offset underflow', () => {
@@ -380,22 +380,22 @@ test('Chord.symbol offset overflow', () => {
 
 test('Chord.symbol omit 5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', '', '9'));
+    .toStrictEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol omit 3', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', '', '9'));
+    .toStrictEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol omit 3 omit 5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', '', '9'));
+    .toStrictEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol unknown', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(6, 9, 2).symbol())
-    .toStrictEqual(new Symbol('B', '?', ''));
+    .toStrictEqual(new Symbol('B', '?'));
 });
 
 // Chord.symbol of computed chords
@@ -416,10 +416,35 @@ test('Chord.symbol dec_string', () => {
   expect(CMA7_6.symbol()).toStrictEqual(CMA7_6.decString().symbol());
 });
 
-test('Chord.symbol inc_inversion', () => {
-  expect(GDOM7_1.symbol()).toStrictEqual(GDOM7_1.incInversion().symbol());
+test('Chord.symbol incInversion root', () => {
+  expect(GDOM7_3.symbol().root).toBe(GDOM7_3.incInversion().symbol().root);
 });
 
-test('Chord.symbol dec_inversion', () => {
-  expect(GDOM7_3.symbol()).toStrictEqual(GDOM7_3.decInversion().symbol());
+test('Chord.symbol incInversion triad', () => {
+  expect(GDOM7_3.symbol().triad).toBe(GDOM7_3.incInversion().symbol().triad);
 });
+
+test('Chord.symbol incInversion extension', () => {
+  expect(GDOM7_3.symbol().extension).toBe(GDOM7_3.incInversion().symbol().extension);
+});
+
+test('Chord.symbol incInversion bass', () => {
+  expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.incInversion().symbol().bass);
+});
+
+test('Chord.symbol decInversion root', () => {
+  expect(GDOM7_3.symbol().root).toBe(GDOM7_3.decInversion().symbol().root);
+});
+
+test('Chord.symbol decInversion triad', () => {
+  expect(GDOM7_3.symbol().triad).toBe(GDOM7_3.decInversion().symbol().triad);
+});
+
+test('Chord.symbol decInversion extension', () => {
+  expect(GDOM7_3.symbol().extension).toBe(GDOM7_3.decInversion().symbol().extension);
+});
+
+test('Chord.symbol decInversion bass', () => {
+  expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.decInversion().symbol().bass);
+});
+
