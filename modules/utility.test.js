@@ -18,7 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { flatten, sharpen, toDegree, toPitch, toOffset } from './utility.js'
+import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
+import { Stop } from './stop.js';
 
 // flatten
 
@@ -122,4 +123,29 @@ test('toOffset double flat wraps', () => {
 test('toOffset double sharp wraps', () => {
   expect(toOffset(2 - 12)).toBe(+2);
   expect(toOffset(1 - 11)).toBe(+2);
+});
+
+// generateGrid
+
+test('generateGrid cho creates Chord', () => {
+  expect(generateGrid('C 1 cho'))
+    .toEqual(expect.objectContaining({ key: 'C', degree: 1 }));
+});
+
+test('generateGrid stop creates Stop', () => {
+  expect(generateGrid('C 1 cho 5 3 1 +'))
+    .toEqual(expect.objectContaining({
+      stops: expect.arrayContaining([
+        expect.objectContaining(new Stop(5, 3, 1, '+', false))
+      ])
+    }));
+});
+
+test('generateGrid stop creates Stop with decor', () => {
+  expect(generateGrid('C 1 cho 5 3 1 (+)'))
+  .toEqual(expect.objectContaining({
+    stops: expect.arrayContaining([
+      expect.objectContaining(new Stop(5, 3, 1, '+', true))
+    ])
+  }));
 });
