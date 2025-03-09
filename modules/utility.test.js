@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { flatten, sharpen } from './utility.js'
+import { flatten, sharpen, toDegree, toPitch, toOffset } from './utility.js'
 
 // flatten
 
@@ -46,4 +46,80 @@ test('sharpen to double sharp', () => {
 
 test('sharpen to natural', () => {
   expect(sharpen('A♭')).toBe('A');
+});
+
+// toDegree
+
+test('toDegree underflow wraps', () => {
+  expect(toDegree(0)).toBe(7);
+});
+
+test('toDegree low equals', () => {
+  expect(toDegree(1)).toBe(1);
+});
+
+test('toDegree high equals', () => {
+  expect(toDegree(7)).toBe(7);
+});
+
+test('toDegree overflow wraps', () => {
+  expect(toDegree(8)).toBe(1);
+});
+
+// toPitch
+
+test('toPitch underflow wraps', () => {
+  expect(toPitch(0)).toBe(12);
+});
+
+test('toPitch low equals', () => {
+  expect(toPitch(1)).toBe(1);
+});
+
+test('toPitch high equals', () => {
+  expect(toPitch(12)).toBe(12);
+});
+
+test('toPitch overflow wraps', () => {
+  expect(toPitch(13)).toBe(1);
+});
+
+// toOffset
+
+test('toOffset equal ok', () => {
+  expect(toOffset(6 - 6)).toBe(0);
+});
+
+test('toOffset flat ok', () => {
+  expect(toOffset(5 - 6)).toBe(-1);
+});
+
+test('toOffset sharp ok', () => {
+  expect(toOffset(6 - 5)).toBe(+1);
+});
+
+test('toOffset flat wraps', () => {
+  expect(toOffset(12 - 1)).toBe(-1);
+});
+
+test('toOffset sharp wraps', () => {
+  expect(toOffset(1 - 12)).toBe(+1);
+});
+
+test('toOffset double flat ok', () => {
+  expect(toOffset(5 - 7)).toBe(-2);
+});
+
+test('toOffset double sharp ok', () => {
+  expect(toOffset(7 - 5)).toBe(+2);
+});
+
+test('toOffset double flat wraps', () => {
+  expect(toOffset(12 - 2)).toBe(-2);
+  expect(toOffset(11 - 1)).toBe(-2);
+});
+
+test('toOffset double sharp wraps', () => {
+  expect(toOffset(2 - 12)).toBe(+2);
+  expect(toOffset(1 - 11)).toBe(+2);
 });

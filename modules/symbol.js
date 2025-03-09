@@ -99,7 +99,7 @@ function findSpelling(root, spelling, bass) {
   return null;
 }
 
-export function symbolFromSpelling(root, spelling, bass = null) {
+export function symbolFromSpelling(root, spelling, bass) {
   var symbol;
 
   if ((symbol = findSpelling(root, spelling, bass))) {
