@@ -128,7 +128,7 @@ export class Symbol {
 
     var root = document.createElement('span')
     root.setAttribute('class', 'root');
-    root.innerHTML = this.root + this.triad
+    root.innerHTML = this.root + (this.triad ?? '');
     symbol.appendChild(root);
 
     if (this.extension) {
