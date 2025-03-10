@@ -64,6 +64,28 @@ function boardPath(smin, smax, fmin, fmax, x, y) {
   return path.join(' ')
 }
 
+function label(x, y, t) {
+  return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
+}
+function dot(x, y, k) {
+  return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+}
+function circle(x, y, k) {
+  return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+}
+function cross(x, y, k) {
+  return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
+}
+function diamond(x, y, k) {
+  return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
+}
+function square(x, y, k) {
+  return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
+}
+function board(smin, smax, fmin, fmax, x, y) {
+  return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
+}
+
 export function createGrid(chord) {
   var grid = elem('svg', []);
   var smin = 1;
@@ -83,29 +105,7 @@ export function createGrid(chord) {
     return Math.max(y(0), (y(f) + y(f - 1)) * 0.5);
   }
 
-  function label(x, y, t) {
-    return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
-  }
-  function dot(x, y, k) {
-    return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
-  }
-  function circle(x, y, k) {
-    return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
-  }
-  function cross(x, y, k) {
-    return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])
-  }
-  function diamond(x, y, k) {
-    return elem('path', [['class', 'diamond'], ['d', diamondPath(x, y, stopSize * k)]])
-  }
-  function square(x, y, k) {
-    return elem('path', [['class', 'square'], ['d', squarePath(x, y, stopSize * k)]])
-  }
-  function board() {
-    return elem('path', [['class', 'board'], ['d', boardPath(smin, smax, fmin, fmax, x, y)]])
-  }
-
-  grid.appendChild(board())
+  grid.appendChild(board(smin, smax, fmin, fmax, x, y));
 
   for (const stop of chord.stops) {
     const s = stop.string;
