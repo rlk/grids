@@ -127,9 +127,15 @@ export class Chord {
 
   mark() {
     const roots = this.stops.filter((stop) => stop.degree == this.degree)
-                          .toSorted((a, b) => b.string - a.string);
+      .toSorted((a, b) => b.string - a.string);
     const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
-    return roots.length ? roots[0].fret : frets[0].fret;
+    if (roots.length) {
+      return roots[0].fret;
+    }
+    if (frets.length) {
+      return frets[0].fret;
+    }
+    return 0;
   }
 
   symbol() {
@@ -149,15 +155,17 @@ export class Chord {
   }
 
   bass() {
-    const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
+    if (this.stops.length) {
+      const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
 
-    if (stop.interval(this.degree) != 1) {
-      const name = nameOfDegreePerKey[this.key][stop.degree];
+      if (stop.interval(this.degree) != 1) {
+        const name = nameOfDegreePerKey[this.key][stop.degree];
 
-      switch (toOffset(stop.pitch() - pitchOfName[name])) {
-        case -1: return flatten(name);
-        case +1: return sharpen(name);
-        default: return name;
+        switch (toOffset(stop.pitch() - pitchOfName[name])) {
+          case -1: return flatten(name);
+          case +1: return sharpen(name);
+          default: return name;
+        }
       }
     }
     return null;

@@ -26,9 +26,7 @@ var  labelDistance = 5;
 function elem(tag, attributes, text) {
   var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
   for (const [k, v] of attributes) {
-    if (v) {
-      e.setAttribute(k, v);
-    }
+    e.setAttribute(k, v);
   }
   if (text) {
     e.innerHTML = text;
@@ -90,7 +88,7 @@ export function createGrid(chord) {
   var grid = elem('svg', []);
   var smin = 1;
   var smax = 6;
-  var fgap = 0;
+  var fgap = Object.keys(chord.finger).length ? 1 : 0;
 
   const fmin = chord.gridMin ?? Math.max(0, chord.minFret() - 1);
   const fmax = chord.gridMax ?? Math.max(0, chord.maxFret());
@@ -126,11 +124,8 @@ export function createGrid(chord) {
   if (chord.mark()) {
     grid.appendChild(label(x(smax) - labelDistance, y(chord.mark()), chord.mark().toString()));
   }
-  if (chord.finger) {
-    for (const s in chord.finger) {
-      grid.appendChild(label(x(s), labelDistance + y(fmax), chord.finger[s].toString()));
-    }
-    fgap = 1;
+  for (const s in chord.finger) {
+    grid.appendChild(label(x(s), labelDistance + y(fmax), chord.finger[s].toString()));
   }
 
   var width  = (smax - smin + 2) * stringDistance;
