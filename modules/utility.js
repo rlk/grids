@@ -102,9 +102,6 @@ export function generateGrid(text) {
       const chord = pop();
       push(chord.add(string, fret, interval, label));
 
-    } else if (word == '?') {
-      pop();
-
     } else if (word == '!') {
       const note = pop();
       const chord = pop();
@@ -130,15 +127,6 @@ export function generateGrid(text) {
       const sequence = pop()
       push(sequence.add(chord));
 
-    } else if (word == '|:') {
-      push(pop().add(new Bar('&#x1D106;')));
-
-    } else if (word == '|') {
-      push(pop().add(new Bar('&#x1D100;')));
-
-    } else if (word == ':|') {
-      push(pop().add(new Bar('&#x1D107;')));
-
     } else if (word == '1u') {
       push(pop().addNextUp());
 
@@ -162,6 +150,15 @@ export function generateGrid(text) {
 
     } else if (word == 'am') {
       push(pop().alignMarks());
+
+    } else if (word == '|:') {
+      push(pop().add(new Bar('&#x1D106;')));
+
+    } else if (word == '|') {
+      push(pop().add(new Bar('&#x1D100;')));
+
+    } else if (word == ':|') {
+      push(pop().add(new Bar('&#x1D107;')));
 
     } else if (word == 'td') {
       push(pop().toElement('td'));
