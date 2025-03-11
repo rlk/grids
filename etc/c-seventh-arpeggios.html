@@ -1,72 +1,95 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="../grid.css" />
-<script type="module" src="../grid.js"></script>
-<title>Diatonic Seventh Arpeggios in C in Five Positions</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../grid.css" />
+  <script type="module" src="../grid.js"></script>
+  <title>Diatonic Seventh Arpeggios in 12 in Five Positions</title>
 </head>
+
 <body>
-<h1>Diatonic Seventh Arpeggios in C in Five Positions</h1>
-<p>
-<span class="grid">_:1:0 _:6:4 +:6:0 +:6:3 +:5:2 +:4:0 o:4:2 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:6:1 +:5:0 +:5:3 +:4:2 o:4:3 N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:6:3 +:5:2 +:4:0 +:4:3 o:3:0 N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:5:0 +:5:3 +:4:2 +:3:0 o:3:2 N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:5:2 +:4:0 +:4:3 +:3:2 o:2:0 N:BDFA n:Bmi<sup>7&flat;5</span>
-<span class="grid">_:1:0 _:6:4 +:5:3 +:4:2 +:3:0 +:2:0 o:2:1 N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:4:0 +:4:3 +:3:2 +:2:1 o:2:3 N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:4:2 +:3:0 +:2:0 +:2:3 o:1:0 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:4:3 +:3:2 +:2:1 +:1:0 o:1:1 N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:0 _:6:4 +:3:0 +:2:0 +:2:3 +:1:1 o:1:3 N:GBDF n:G<sup>7</sup></span>
-</p>
-<p>
-<span class="grid">_:1:2 _:6:6 F:3 +:6:3 +:5:2 +:5:5 +:4:3 o:4:5 N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:6:5 +:5:3 +:4:2 +:4:5 o:3:2 N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:5:2 +:5:5 +:4:3 +:3:2 o:3:4 N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:5:3 +:4:2 +:4:5 +:3:4 o:3:5 N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:5:5 +:4:3 +:3:2 +:3:5 o:2:3 N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:4:2 +:4:5 +:3:4 +:2:3 o:2:5 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:4:3 +:3:2 +:3:5 +:2:5 o:2:6 N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:4:5 +:3:4 +:2:3 +:2:6 o:1:3 N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:2 _:6:6 F:3 +:3:2 +:3:5 +:2:5 +:1:3 o:1:5 N:ACEG n:Ami<sup>7</sup></span>
-</p>
-<p>
-<span class="grid">_:1:4 _:6:8 F:5 +:6:5 +:6:8 +:5:7 +:4:5 o:4:7 N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:6:7 +:5:5 +:5:8 +:4:7 o:3:4 N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:6:8 +:5:7 +:4:5 +:3:4 o:3:5 N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:5:5 +:5:8 +:4:7 +:3:5 o:3:7 N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:5:7 +:4:5 +:3:4 +:3:7 o:2:5 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:5:8 +:4:7 +:3:5 +:2:5 o:2:6 N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:4:5 +:3:4 +:3:7 +:2:6 o:2:8 N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:4:7 +:3:5 +:2:5 +:2:8 o:1:5 N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:3:4 +:3:7 +:2:6 +:1:5 o:1:7 N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:4 _:6:8 F:5 +:3:5 +:2:5 +:2:8 +:1:7 o:1:8 N:CEGB n:Cma<sup>7</sup></span>
-</p>
-<p>
-<span class="grid">_:1:7 _:6:11 F:8 +:6:7 +:6:A +:5:8 +:4:7 o:4:9 N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:6:8 +:5:7 +:5:A +:4:9 o:4:A N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:6:A +:5:8 +:4:7 +:4:A o:3:7 N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:5:7 +:5:A +:4:9 +:3:7 o:3:9 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:5:8 +:4:7 +:4:A +:3:9 o:3:A N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:5:A +:4:9 +:3:7 +:3:A o:2:8 N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:4:7 +:4:A +:3:9 +:2:8 o:2:A N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:4:9 +:3:7 +:3:A +:2:A o:1:7 N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:4:A +:3:9 +:2:8 +:1:7 o:1:8 N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:7 _:6:11 F:8 +:3:7 +:3:A +:2:A +:1:8 o:1:A N:DFAC n:Dmi<sup>7</sup></span>
-</p>
-<p>
-<span class="grid">_:1:9 _:6:D F:A +:6:A +:6:D +:5:C +:4:A o:4:C N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:6:C +:5:A +:4:9 +:4:C o:3:9 N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:6:D +:5:C +:4:A +:3:9 o:3:A N:FACE n:Fma<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:5:A +:4:9 +:4:C +:3:A o:3:C N:GBDF n:G<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:5:C +:4:A +:3:9 +:3:C o:2:A N:ACEG n:Ami<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:4:9 +:4:C +:3:A +:2:A o:2:C N:BDFA n:Bmi<sup>7&flat;5</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:4:A +:3:9 +:3:C +:2:C o:2:D N:CEGB n:Cma<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:4:C +:3:A +:2:A +:2:D o:1:A N:DFAC n:Dmi<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:3:9 +:3:C +:2:C +:1:A o:1:C N:EGBD n:Emi<sup>7</sup></span>
-<span class="grid">_:1:9 _:6:D F:A +:3:A +:2:A +:2:D +:1:C o:1:D N:FACE n:Fma<sup>7</sup></span>
-</p>
-<footer><a href="http://rlk.github.io/grids">grids.js</a></footer>
+  <h1>Diatonic Seventh Arpeggios in 12 in Five Positions</h1>
+  <p>
+    <span class="gridgen">
+      5 seq
+      C 3 cho 6 0 1 + 6 3 3 + 5 2 5 + 4 0 7 + 4 2 1 o EGBD ! ,
+      C 4 cho 6 1 1 + 5 0 3 + 5 3 5 + 4 2 7 + 4 3 1 o FACE ! ,
+      C 5 cho 6 3 1 + 5 2 3 + 4 0 5 + 4 3 7 + 3 0 1 o GBDF ! ,
+      C 6 cho 5 0 1 + 5 3 3 + 4 2 5 + 3 0 7 + 3 2 1 o ACEG ! ,
+      C 7 cho 5 2 1 + 4 0 3 + 4 3 5 + 3 2 7 + 2 0 1 o BDFA ! ,
+      C 1 cho 5 3 1 + 4 2 3 + 3 0 5 + 2 0 7 + 2 1 1 o CEGB ! ,
+      C 2 cho 4 0 1 + 4 3 3 + 3 2 5 + 2 1 7 + 2 3 1 o DFAC ! ,
+      C 3 cho 4 2 1 + 3 0 3 + 2 0 5 + 2 3 7 + 1 0 1 o EGBD ! ,
+      C 4 cho 4 3 1 + 3 2 3 + 2 1 5 + 1 0 7 + 1 1 1 o FACE ! ,
+      C 5 cho 3 0 1 + 2 0 3 + 2 3 5 + 1 1 7 + 1 3 1 o GBDF ! ,
+      af span
+    </span>
+  </p>
+  <p>
+    <span class="gridgen">
+      5 seq
+      C 5 cho 6 3 1 + 5 2 3 + 5 5 5 + 4 3 7 + 4 5 1 o GBDF ! ,
+      C 6 cho 6 5 1 + 5 3 3 + 4 2 5 + 4 5 7 + 3 2 1 o ACEG ! ,
+      C 7 cho 5 2 1 + 5 5 3 + 4 3 5 + 3 2 7 + 3 4 1 o BDFA ! ,
+      C 1 cho 5 3 1 + 4 2 3 + 4 5 5 + 3 4 7 + 3 5 1 o CEGB ! ,
+      C 2 cho 5 5 1 + 4 3 3 + 3 2 5 + 3 5 7 + 2 3 1 o DFAC ! ,
+      C 3 cho 4 2 1 + 4 5 3 + 3 4 5 + 2 3 7 + 2 5 1 o EGBD ! ,
+      C 4 cho 4 3 1 + 3 2 3 + 3 5 5 + 2 5 7 + 2 6 1 o FACE ! ,
+      C 5 cho 4 5 1 + 3 4 3 + 2 3 5 + 2 6 7 + 1 3 1 o GBDF ! ,
+      C 6 cho 3 2 1 + 3 5 3 + 2 5 5 + 1 3 7 + 1 5 1 o ACEG ! ,
+      af span
+    </span>
+  </p>
+  <p>
+    <span class="gridgen">
+      5 seq
+      C 6 cho 6 5 1 + 6 8 3 + 5 7 5 + 4 5 7 + 4 7 1 o ACEG ! ,
+      C 7 cho 6 7 1 + 5 5 3 + 5 8 5 + 4 7 7 + 3 4 1 o BDFA ! ,
+      C 1 cho 6 8 1 + 5 7 3 + 4 5 5 + 3 4 7 + 3 5 1 o CEGB ! ,
+      C 2 cho 5 5 1 + 5 8 3 + 4 7 5 + 3 5 7 + 3 7 1 o DFAC ! ,
+      C 3 cho 5 7 1 + 4 5 3 + 3 4 5 + 3 7 7 + 2 5 1 o EGBD ! ,
+      C 4 cho 5 8 1 + 4 7 3 + 3 5 5 + 2 5 7 + 2 6 1 o FACE ! ,
+      C 5 cho 4 5 1 + 3 4 3 + 3 7 5 + 2 6 7 + 2 8 1 o GBDF ! ,
+      C 6 cho 4 7 1 + 3 5 3 + 2 5 5 + 2 8 7 + 1 5 1 o ACEG ! ,
+      C 7 cho 3 4 1 + 3 7 3 + 2 6 5 + 1 5 7 + 1 7 1 o BDFA ! ,
+      C 1 cho 3 5 1 + 2 5 3 + 2 8 5 + 1 7 7 + 1 8 1 o CEGB ! ,
+      af span
+    </span>
+  </p>
+  <p>
+    <span class="gridgen">
+      5 seq
+      C 7 cho 6 7 1 + 6 10 3 + 5 8 5 + 4 7 7 + 4 9 1 o BDFA ! ,
+      C 1 cho 6 8 1 + 5 7 3 + 5 10 5 + 4 9 7 + 4 10 1 o CEGB ! ,
+      C 2 cho 6 10 1 + 5 8 3 + 4 7 5 + 4 10 7 + 3 7 1 o DFAC ! ,
+      C 3 cho 5 7 1 + 5 10 3 + 4 9 5 + 3 7 7 + 3 9 1 o EGBD ! ,
+      C 4 cho 5 8 1 + 4 7 3 + 4 10 5 + 3 9 7 + 3 10 1 o FACE ! ,
+      C 5 cho 5 10 1 + 4 9 3 + 3 7 5 + 3 10 7 + 2 8 1 o GBDF ! ,
+      C 6 cho 4 7 1 + 4 10 3 + 3 9 5 + 2 8 7 + 2 10 1 o ACEG ! ,
+      C 7 cho 4 9 1 + 3 7 3 + 3 10 5 + 2 10 7 + 1 7 1 o BDFA ! ,
+      C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + 1 7 7 + 1 8 1 o CEGB ! ,
+      C 2 cho 3 7 1 + 3 10 3 + 2 10 5 + 1 8 7 + 1 10 1 o DFAC ! ,
+      af span
+    </span>
+  </p>
+  <p>
+    <span class="gridgen">
+      5 seq
+      C 2 cho 6 10 1 + 6 13 3 + 5 12 5 + 4 10 7 + 4 12 1 o DFAC ! ,
+      C 3 cho 6 12 1 + 5 10 3 + 4 9 5 + 4 12 7 + 3 9 1 o EGBD ! ,
+      C 4 cho 6 13 1 + 5 12 3 + 4 10 5 + 3 9 7 + 3 10 1 o FACE ! ,
+      C 5 cho 5 10 1 + 4 9 3 + 4 12 5 + 3 10 7 + 3 12 1 o GBDF ! ,
+      C 6 cho 5 12 1 + 4 10 3 + 3 9 5 + 3 12 7 + 2 10 1 o ACEG ! ,
+      C 7 cho 4 9 1 + 4 12 3 + 3 10 5 + 2 10 7 + 2 12 1 o BDFA ! ,
+      C 1 cho 4 10 1 + 3 9 3 + 3 12 5 + 2 12 7 + 2 13 1 o CEGB ! ,
+      C 2 cho 4 12 1 + 3 10 3 + 2 10 5 + 2 13 7 + 1 10 1 o DFAC ! ,
+      C 3 cho 3 9 1 + 3 12 3 + 2 12 5 + 1 10 7 + 1 12 1 o EGBD ! ,
+      C 4 cho 3 10 1 + 2 10 3 + 2 13 5 + 1 12 7 + 1 13 1 o FACE ! ,
+      af span
+    </span>
+  </p>
+  <footer><a href="http://rlk.github.io/grids">grids.js</a></footer>
 </body>
+
 </html>
