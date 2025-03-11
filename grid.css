@@ -1,6 +1,11 @@
 
-.grid {
+span.grid {
     display: inline;
+    vertical-align: middle;
+}
+
+td.grid {
+    display: table-cell;
     vertical-align: middle;
 }
 

@@ -160,6 +160,9 @@ export function generateGrid(text) {
     } else if (word == ':|') {
       push(pop().add(new Bar('&#x1D107;')));
 
+    } else if (word == 'spc') {
+      push(pop().add(new Bar('&nbsp;')));
+
     } else if (word == 'td') {
       push(pop().toElement('td'));
 

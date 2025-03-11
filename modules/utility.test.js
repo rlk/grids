@@ -339,6 +339,13 @@ test('generateGrid adds end repeat Bar ', () => {
     }));
 });
 
+test('generateGrid adds space Bar', () => {
+  expect(generateGrid('5 seq spc'))
+    .toEqual(expect.objectContaining({
+      chords: expect.arrayContaining([new Bar('&nbsp;')])
+    }));
+});
+
 // generateGrid toElement
 
 test('generateGrid creates Chord span', () => {
