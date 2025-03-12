@@ -112,7 +112,7 @@ export function createGrid(chord) {
   grid.appendChild(board(smin, smax, fmin, fmax, x, y));
 
   for (const stop of chord.stops) {
-    const set = (e) => classify(e, stop.degree, stop.pitch, stop.interval(chord.degree));
+    const set = (e) => classify(e, stop.degree, stop.pitch(), stop.interval(chord.degree));
     const s = stop.string;
     const f = stop.fret;
     const l = stop.label.toString();
