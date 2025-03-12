@@ -24,14 +24,20 @@ var   fretDistance = 14;
 var  labelDistance = 5;
 
 function elem(tag, attributes, text) {
-  var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  var element = document.createElementNS('http://www.w3.org/2000/svg', tag);
   for (const [k, v] of attributes) {
-    e.setAttribute(k, v);
+    element.setAttribute(k, v);
   }
   if (text) {
-    e.innerHTML = text;
+    element.innerHTML = text;
   }
-  return e
+  return element
+}
+
+function classify(element, degree, pitch, interval) {
+  var value = element.getAttribute('class');
+  element.setAttribute('class', `${value} degree${degree} pitch${pitch} interval${interval}`);
+  return element;
 }
 
 function crossPath(x, y, d) {
@@ -106,18 +112,19 @@ export function createGrid(chord) {
   grid.appendChild(board(smin, smax, fmin, fmax, x, y));
 
   for (const stop of chord.stops) {
+    const set = (e) => classify(e, stop.degree, stop.pitch, stop.interval(chord.degree));
     const s = stop.string;
     const f = stop.fret;
     const l = stop.label.toString();
 
     switch (l) {
       case '_': break;
-      case '+': grid.appendChild(    dot(x(s), t(f), 0.5)); break;
-      case 'x': grid.appendChild(  cross(x(s), t(f), 1.0)); break;
-      case '=': grid.appendChild( square(x(s), t(f), 1.0)); break;
-      case '^': grid.appendChild(diamond(x(s), t(f), 1.2)); break;
-      case 'o': grid.appendChild( circle(x(s), t(f), 1.0)); break;
-      default:  grid.appendChild(  label(x(s), t(f),   l)); break;
+      case '+': grid.appendChild(set(    dot(x(s), t(f), 0.7))); break;
+      case 'x': grid.appendChild(set(  cross(x(s), t(f), 1.0))); break;
+      case '=': grid.appendChild(set( square(x(s), t(f), 1.0))); break;
+      case '^': grid.appendChild(set(diamond(x(s), t(f), 1.2))); break;
+      case 'o': grid.appendChild(set( circle(x(s), t(f), 1.0))); break;
+      default:  grid.appendChild(set(  label(x(s), t(f),   l))); break;
     }
   }
 

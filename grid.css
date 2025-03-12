@@ -23,7 +23,7 @@ td.grid {
 }
 
 .grid circle.circle { stroke: black; fill: white; }
-.grid circle.dot    { stroke: black; fill: black; }
+.grid circle.dot    { stroke: none; fill: black; }
 .grid path.square   { stroke: black; fill: white; }
 .grid path.diamond  { stroke: black; fill: white; }
 .grid path.cross    { stroke: black; }
