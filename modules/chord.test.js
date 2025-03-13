@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { Stop } from './stop.js';
-import { Chord } from './chord.js';
+import { Chord, Optional } from './chord.js';
 import { Symbol } from './symbol.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
@@ -461,7 +461,6 @@ test('Chord.symbol decInversion bass', () => {
   expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.decInversion().symbol().bass);
 });
 
-
 // Chord.bass
 
 test('Chord.bass', () => {
@@ -495,11 +494,55 @@ test('Chord.bass 3st inversion', () => {
   expect(GDOM7_5.bass()).toBe('F');
 });
 
+test('Chord.bass no stops', () => {
+  expect(new Chord('C', 1).bass()).toBe(null);
+});
+
 // Chord.toElement
 
-test('Chord.toElement', () => {
+test('Chord.toElement has grid span', () => {
   const element = CMA7_5.toElement('span');
-  expect(element.tagName.toLowerCase()).toBe('span');
-  expect(element.classList).toContain('grid');
+  expect(element.localName).toBe('span');
+  expect(element.className).toBe('grid');
+  expect(element.childElementCount).toBe(1);
+});
+
+test('Chord.toElement grid has column span', () => {
+  const column = CMA7_5.toElement('span').children[0];
+  expect(column.localName).toBe('span');
+  expect(column.className).toBe('column');
+  expect(column.childElementCount).toBe(2);
+});
+
+test('Chord.toElement column has symbol span', () => {
+  const symbol = CMA7_5.toElement('span').children[0].children[0];
+  expect(symbol.localName).toBe('span');
+  expect(symbol.className).toBe('symbol');
+});
+
+test('Chord.toElement column has svg', () => {
+  const svg = CMA7_5.toElement('span').children[0].children[1];
+  expect(svg.localName).toBe('svg');
+});
+
+test('Chord.toElement (with note) has column span', () => {
+  const column = CMA7_5.setNote('hello').toElement('span').children[0];
+  expect(column.localName).toBe('span');
+  expect(column.className).toBe('column');
+  expect(column.childElementCount).toBe(3);
+});
+
+test('Chord.toElement (with note) column has note span', () => {
+  const note = CMA7_5.setNote('hello').toElement('span').children[0].children[2];
+  expect(note.localName).toBe('span');
+  expect(note.className).toBe('note');
+});
+
+// Optional.toElement
+
+test('Optional.toElement has grid span', () => {
+  const element = new Optional('C', 1).add(5, 3, 1).toElement('span');
+  expect(element.localName).toBe('span');
+  expect(element.className).toBe('grid');
   expect(element.childElementCount).toBe(1);
 });

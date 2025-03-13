@@ -171,10 +171,33 @@ export class Chord {
     return null;
   }
 
+  toElement(tag, optional = false) {
+    var chord = document.createElement(tag);
+    chord.setAttribute('class', 'grid');
+    var column = document.createElement('span');
+    column.setAttribute('class', 'column');
+
+    column.appendChild(this.symbol().toElement(optional));
+    column.appendChild(createGrid(this));
+
+    if (this.note) {
+      var note = document.createElement('span');
+      note.setAttribute('class', 'note');
+      note.innerHTML = this.note;
+      column.appendChild(note);
+    }
+
+    chord.appendChild(column);
+    return chord;
+  }
+}
+
+export class Optional extends Chord {
+  constructor(key, degree, stops=[]) {
+    super(key, degree, stops);
+  }
+
   toElement(tag) {
-    var element = document.createElement(tag);
-    element.setAttribute('class', 'grid');
-    element.appendChild(createGrid(this));
-    return element;
+    return super.toElement(tag, true);
   }
 }

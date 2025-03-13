@@ -19,8 +19,8 @@
 // SOFTWARE.
 
 import { Bar } from './bar.js';
-import { Chord } from './chord.js';
 import { Sequence } from './sequence.js';
+import { Chord, Optional } from './chord.js';
 
 const offsetOfInterval = {
   1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
@@ -117,6 +117,11 @@ export function generateGrid(text) {
       const degree = pop();
       const key = pop();
       push(new Chord(key, degree));
+
+    } else if (word == 'opt') {
+      const degree = pop();
+      const key = pop();
+      push(new Optional(key, degree));
 
     } else if (word == 'seq') {
       const frets = pop()

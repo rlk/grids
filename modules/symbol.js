@@ -122,27 +122,34 @@ export class Symbol {
     return `<${this.root}${this.triad}${this.extension}/${this.bass}>`
   }
 
-  toElement() {
+  toElement(optional = false) {
     var symbol = document.createElement('span')
     symbol.setAttribute('class', 'symbol');
 
-    var root = document.createElement('span')
-    root.setAttribute('class', 'root');
-    root.innerHTML = this.root + (this.triad ?? '');
-    symbol.appendChild(root);
-
-    if (this.extension) {
-      var extension = document.createElement('span')
-      extension.setAttribute('class', 'extension');
-      extension.innerHTML = this.extension;
-      symbol.appendChild(extension);
+    function add(className, innerHTML) {
+      var element = document.createElement('span');
+      element.setAttribute('class', className);
+      element.innerHTML = innerHTML;
+      symbol.appendChild(element);
     }
 
+    if (optional) {
+      add('root', '(');
+    }
+    if (this.root) {
+      add('root', this.root);
+    }
+    if (this.triad) {
+      add('root', this.triad);
+    }
+    if (this.extension) {
+      add('extension', this.extension);
+    }
     if (this.bass) {
-      var bass = document.createElement('span')
-      bass.setAttribute('class', 'bass');
-      bass.innerHTML = `/${this.bass}`;
-      symbol.appendChild(bass);
+      add('bass', this.bass);
+    }
+    if (optional) {
+      add('root', ')');
     }
     return symbol;
   }

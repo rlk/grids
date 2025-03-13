@@ -141,16 +141,5 @@ export function createGrid(chord) {
   grid.setAttribute('width',  width);
   grid.setAttribute('height', height);
 
-  var column = document.createElement('span');
-  column.setAttribute('class', 'column');
-  column.appendChild(chord.symbol().toElement());
-  column.appendChild(grid);
-
-  if (chord.note) {
-    var note = document.createElement('span');
-    note.setAttribute('class', 'note');
-    note.innerHTML = chord.note;
-    column.appendChild(note);
-  }
-  return column;
+  return grid;
 }

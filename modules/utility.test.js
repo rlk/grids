@@ -22,7 +22,7 @@
 
 import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
 import { Stop } from './stop.js';
-import { Chord } from './chord.js';
+import { Chord, Optional } from './chord.js';
 import { Bar } from './bar.js';
 
 // flatten
@@ -194,6 +194,11 @@ test('generateGrid adds Chord fingers', () => {
 test('generateGrid adds Chord node', () => {
   expect(generateGrid('C 1 cho hello !'))
     .toEqual(expect.objectContaining({note: 'hello'}));
+});
+
+test('generateGrid pushes Optional', () => {
+  expect(generateGrid('C 1 opt'))
+    .toEqual(expect.objectContaining(new Optional('C', 1)));
 });
 
 // generateGrid Sequence
