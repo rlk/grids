@@ -126,17 +126,29 @@ export function generateGrid(text, debug) {
 
     // Chord functions
 
-    } else if (word == '1u') {
+    } else if (word == 's+') {
+      stack.push(stack.pop().incString());
+
+    } else if (word == 's-') {
+      stack.push(stack.pop().decString());
+
+    } else if (word == 'd+') {
       stack.push(stack.pop().incDegree());
 
-    } else if (word == '1d') {
+    } else if (word == 'd-') {
       stack.push(stack.pop().decDegree());
 
-    } else if (word == '4u') {
+    } else if (word == '4+') {
       stack.push(stack.pop().incDegree().incDegree().incDegree().decString());
 
-    } else if (word == '5d') {
+    } else if (word == '5-') {
       stack.push(stack.pop().decDegree().decDegree().decDegree().decDegree().incString());
+
+    } else if (word == 'i+') {
+      stack.push(stack.pop().incInversion());
+
+    } else if (word == 'i-') {
+      stack.push(stack.pop().decInversion());
 
     // Bar constructors
 

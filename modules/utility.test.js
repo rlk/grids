@@ -225,45 +225,45 @@ test('generateGrid adds Chord over', () => {
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 1)]);
 });
 
-test('generateGrid applies 1u', () => {
-  expect(generateGrid('C 1 cho dupe 1u'))
-    .toEqual([new Chord('C', 1), new Chord('C', 2)]);
+test('generateGrid applies inc string', () => {
+  expect(generateGrid('C 1 cho 5 5 2 + s+'))
+    .toEqual(new Chord('C', 1).add(6, 10, 2));
 });
 
-test('generateGrid applies 1d', () => {
-  expect(generateGrid('C 2 cho dupe 1d'))
-    .toEqual([new Chord('C', 2), new Chord('C', 1)]);
+test('generateGrid applies dec string-', () => {
+  expect(generateGrid('C 1 cho 5 5 2 + s-', true))
+    .toEqual(new Chord('C', 1).add(4, 0, 2));
 });
 
-test('generateGrid applies 4u', () => {
-  expect(generateGrid('C 1 cho dupe 4u'))
-    .toEqual([new Chord('C', 1), new Chord('C', 4)]);
+test('generateGrid applies inc degree', () => {
+  expect(generateGrid('C 1 cho d+'))
+    .toEqual(new Chord('C', 2));
 });
 
-test('generateGrid applies 5d', () => {
-  expect(generateGrid('C 1 cho dupe 5d'))
-    .toEqual([new Chord('C', 1), new Chord('C', 4)]);
+test('generateGrid applies dec degree-', () => {
+  expect(generateGrid('C 2 cho d-'))
+    .toEqual(new Chord('C', 1));
 });
 
-// test('generateGrid adds Chord uu', () => {
-//   expect(generateGrid('C 1 cho C 4 cho uu'))
-//     .toEqual(expect.arrayContaining([
-//       expect.objectContaining({ degree: 1 }),
-//       expect.objectContaining({ degree: 4 }),
-//       expect.objectContaining({ degree: 2 }),
-//       expect.objectContaining({ degree: 5 }),
-//     ]));
-// });
+test('generateGrid applies 4th up', () => {
+  expect(generateGrid('C 1 cho 4+'))
+    .toEqual(new Chord('C', 4));
+});
 
-// test('generateGrid adds Chord dd', () => {
-//   expect(generateGrid('C 2 cho C 5 cho dd'))
-//     .toEqual(expect.arrayContaining([
-//       expect.objectContaining({ degree: 2 }),
-//       expect.objectContaining({ degree: 5 }),
-//       expect.objectContaining({ degree: 1 }),
-//       expect.objectContaining({ degree: 4 }),
-//     ]));
-// });
+test('generateGrid applies 5th down', () => {
+  expect(generateGrid('C 1 cho 5-'))
+    .toEqual(new Chord('C', 4));
+});
+
+test('generateGrid applies inc inversion', () => {
+  expect(generateGrid('C 1 cho 5 3 1 + 4 2 3 + 3 0 5 + i+', true))
+    .toEqual(new Chord('C', 1).add(5, 7, 3).add(4, 5, 5).add(3, 5, 1));
+});
+
+test('generateGrid applies dec inversion-', () => {
+  expect(generateGrid('C 1 cho 5 7 3 + 4 5 5 + 3 5 1 + i-', true))
+    .toEqual(new Chord('C', 1).add(5, 3, 1).add(4, 2, 3).add(3, 0, 5));
+});
 
 test('generateGrid aligns Chords at fret', () => {
   expect(generateGrid(
