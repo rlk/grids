@@ -19,8 +19,7 @@
 // SOFTWARE.
 
 import { Bar } from './bar.js';
-import { Sequence } from './sequence.js';
-import { Chord, Optional } from './chord.js';
+import { Chord, Optional, alignMarks, alignFrets } from './chord.js';
 
 const offsetOfInterval = {
   1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
@@ -73,6 +72,7 @@ export function generateGrid(text, debug) {
 
   const push = (x) => stack.push(x);
   const pop  = ( ) => stack.pop();
+  const top  = ( ) => stack[stack.length - 1];
 
   const words = text.trim().split(/[ \n]+/);
 
@@ -123,56 +123,41 @@ export function generateGrid(text, debug) {
       const key = pop();
       push(new Optional(key, degree));
 
-    } else if (word == 'seq') {
-      const frets = pop()
-      push(new Sequence(frets));
-
-    } else if (word == ',') {
-      const chord = pop()
-      const sequence = pop()
-      push(sequence.add(chord));
-
     } else if (word == '1u') {
-      push(pop().addNextUp());
+      push(top().incDegree());
 
     } else if (word == '1d') {
-      push(pop().addNextDown());
+      push(top().decDegree());
 
     } else if (word == '4u') {
-      push(pop().addFourthUp());
+      push(top().incDegree().incDegree().incDegree().decString());
 
     } else if (word == '5d') {
-      push(pop().addFifthDown());
-
-    } else if (word == 'uu') {
-      push(pop().addNextPairUp());
-
-    } else if (word == 'dd') {
-      push(pop().addNextPairDown());
-
-    } else if (word == 'af') {
-      push(pop().alignFrets());
-
-    } else if (word == 'am') {
-      push(pop().alignMarks());
+      push(top().decDegree().decDegree().decDegree().decDegree().incString());
 
     } else if (word == '|:') {
-      push(pop().add(new Bar('&#x1D106;')));
+      push(new Bar('&#x1D106;'));
 
     } else if (word == '|') {
-      push(pop().add(new Bar('&#x1D100;')));
+      push(new Bar('&#x1D100;'));
 
     } else if (word == ':|') {
-      push(pop().add(new Bar('&#x1D107;')));
+      push(new Bar('&#x1D107;'));
 
     } else if (word == 'spc') {
-      push(pop().add(new Bar('&nbsp;')));
+      push(new Bar('&nbsp;'));
+
+    } else if (word == 'af') {
+      alignFrets(stack);
+
+    } else if (word == 'am') {
+      alignMarks(stack);
 
     } else if (word == 'td') {
-      push(pop().toElement('td'));
+      stack = stack.map((e) => e.toElement('td'));
 
     } else if (word == 'span') {
-      push(pop().toElement('span'));
+      stack = stack.map((e) => e.toElement('span'));
 
     } else if (isNaN(word)) {
       push(word);
@@ -184,5 +169,5 @@ export function generateGrid(text, debug) {
       console.log(stack.join(' '));
     }
   }
-  return pop();
+  return stack.length == 1 ? stack[0] : stack;
 }

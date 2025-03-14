@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { Stop } from './stop.js';
-import { Chord, Optional } from './chord.js';
+import { Chord, Optional, alignFrets, alignMarks } from './chord.js';
 import { Symbol } from './symbol.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
@@ -552,4 +552,44 @@ test('Optional.toElement has grid span', () => {
   expect(element.localName).toBe('span');
   expect(element.className).toBe('grid');
   expect(element.childElementCount).toBe(1);
+});
+
+// alignMarks / alignFrets
+
+test('alignMarks default size', () => {
+  const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 0);
+
+  expect(chords[0].mark() - chords[0].gridMin).toBe(chords[1].mark() - chords[1].gridMin);
+  expect(chords[0].gridMax - chords[0].mark()).toBe(chords[1].gridMax - chords[1].mark());
+
+  expect(chords[0].gridMax - chords[0].gridMin).toBe(3);
+  expect(chords[1].gridMax - chords[1].gridMin).toBe(3);
+});
+
+test('alignMarks', () => {
+  const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 5);
+
+  expect(chords[0].mark() - chords[0].gridMin).toBe(chords[1].mark() - chords[1].gridMin);
+  expect(chords[0].gridMax - chords[0].mark()).toBe(chords[1].gridMax - chords[1].mark());
+
+  expect(chords[0].gridMax - chords[0].gridMin).toBe(5);
+  expect(chords[1].gridMax - chords[1].gridMin).toBe(5);
+});
+
+test('alignFrets default size', () => {
+  const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 0);
+
+  expect(chords[0].gridMin).toBe(chords[1].gridMin);
+  expect(chords[1].gridMin).toBe(chords[2].gridMin);
+  expect(chords[0].gridMax).toBe(chords[1].gridMax);
+  expect(chords[1].gridMax).toBe(chords[2].gridMax);
+});
+
+test('alignFrets', () => {
+  const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 5);
+
+  expect(chords[0].gridMin).toBe(chords[1].gridMin);
+  expect(chords[1].gridMin).toBe(chords[2].gridMin);
+  expect(chords[0].gridMax).toBe(chords[1].gridMax);
+  expect(chords[1].gridMax).toBe(chords[2].gridMax);
 });

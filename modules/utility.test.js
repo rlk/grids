@@ -141,7 +141,7 @@ test('generateGrid pushes symbol', () => {
 });
 
 test('generateGrid pushes stack', () => {
-  expect(generateGrid('A B')).toBe('B');
+  expect(generateGrid('A B')).toEqual(['A', 'B']);
 });
 
 // generateGrid Chord
@@ -162,11 +162,11 @@ test('generateGrid adds Stop', () => {
 
 test('generateGrid adds decor Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 (+)'))
-  .toEqual(expect.objectContaining({
-    stops: expect.arrayContaining([
-      expect.objectContaining(new Stop(5, 3, 1, '+', true))
-    ])
-  }));
+    .toEqual(expect.objectContaining({
+      stops: expect.arrayContaining([
+        expect.objectContaining(new Stop(5, 3, 1, '+', true))
+      ])
+    }));
 });
 
 test('generateGrid adds labeled Stop', () => {
@@ -181,20 +181,20 @@ test('generateGrid adds labeled Stop', () => {
 test('generateGrid adds Chord finger', () => {
   expect(generateGrid('C 1 cho 5 1 #'))
     .toEqual(expect.objectContaining({
-      finger: expect.objectContaining({5: 1})
+      finger: expect.objectContaining({ 5: 1 })
     }));
 });
 
 test('generateGrid adds Chord fingers', () => {
   expect(generateGrid('C 1 cho 5 1 # 4 3 #'))
     .toEqual(expect.objectContaining({
-      finger: expect.objectContaining({5: 1, 4: 3})
+      finger: expect.objectContaining({ 5: 1, 4: 3 })
     }));
 });
 
 test('generateGrid adds Chord node', () => {
   expect(generateGrid('C 1 cho hello !'))
-    .toEqual(expect.objectContaining({note: 'hello'}));
+    .toEqual(expect.objectContaining({ note: 'hello' }));
 });
 
 test('generateGrid pushes Optional', () => {
@@ -202,176 +202,126 @@ test('generateGrid pushes Optional', () => {
     .toEqual(expect.objectContaining(new Optional('C', 1)));
 });
 
-// generateGrid Sequence
-
-test('generateGrid pushes Sequence', () => {
-  expect(generateGrid('5 seq'))
-    .toEqual(expect.objectContaining({ chords: [], frets: 5}));
-});
-
 test('generateGrid adds Chord', () => {
-  expect(generateGrid('5 seq C 1 cho ,'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Chord('C', 1)])
-    }));
+  expect(generateGrid('C 1 cho'))
+    .toEqual(new Chord('C', 1));
 });
 
 test('generateGrid adds Chords', () => {
-  expect(generateGrid('5 seq C 1 cho , C 2 cho ,'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Chord('C', 1), new Chord('C', 2)])
-    }));
+  expect(generateGrid('C 1 cho C 2 cho'))
+    .toEqual(expect.arrayContaining([new Chord('C', 1), new Chord('C', 2)]));
 });
 
 test('generateGrid adds Chord with stops', () => {
-  expect(generateGrid('5 seq C 1 cho 5 3 1 + 4 2 3 + 3 0 5 + ,'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        new Chord('C', 1, [
-          new Stop(5, 3, 1),
-          new Stop(4, 2, 3),
-          new Stop(3, 0, 5)
-        ])
-      ])
-    }));
+  expect(generateGrid('C 1 cho 5 3 1 + 4 2 3 + 3 0 5 +'))
+    .toEqual(new Chord('C', 1, [
+      new Stop(5, 3, 1),
+      new Stop(4, 2, 3),
+      new Stop(3, 0, 5),
+    ]));
 });
 
 test('generateGrid adds Chord 1u', () => {
-  expect(generateGrid('5 seq C 1 cho , 1u'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 2})
-      ])
-    }));
+  expect(generateGrid('C 1 cho 1u'))
+    .toEqual(expect.arrayContaining([
+      expect.objectContaining({ degree: 1 }),
+      expect.objectContaining({ degree: 2 }),
+    ]));
 });
 
 test('generateGrid adds Chord 1d', () => {
-  expect(generateGrid('5 seq C 2 cho , 1d'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 2})
-      ])
-    }));
+  expect(generateGrid('C 2 cho 1d'))
+    .toEqual(expect.arrayContaining([
+      expect.objectContaining({ degree: 1 }),
+      expect.objectContaining({ degree: 2 }),
+    ]));
 });
 
 test('generateGrid adds Chord 4u', () => {
-  expect(generateGrid('5 seq C 1 cho , 4u'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 4})
-      ])
-    }));
+  expect(generateGrid('C 1 cho 4u'))
+    .toEqual(expect.arrayContaining([
+      expect.objectContaining({ degree: 1 }),
+      expect.objectContaining({ degree: 4 }),
+    ]));
 });
 
 test('generateGrid adds Chord 5d', () => {
-  expect(generateGrid('5 seq C 1 cho , 5d'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 4})
-      ])
-    }));
+  expect(generateGrid('C 1 cho 5d'))
+    .toEqual(expect.arrayContaining([
+      expect.objectContaining({ degree: 1 }),
+      expect.objectContaining({ degree: 4 }),
+    ]));
 });
 
-test('generateGrid adds Chord uu', () => {
-  expect(generateGrid('5 seq C 1 cho , C 4 cho , uu'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 4}),
-        expect.objectContaining({degree: 2}),
-        expect.objectContaining({degree: 5}),
-      ])
-    }));
-});
+// test('generateGrid adds Chord uu', () => {
+//   expect(generateGrid('C 1 cho C 4 cho uu'))
+//     .toEqual(expect.arrayContaining([
+//       expect.objectContaining({ degree: 1 }),
+//       expect.objectContaining({ degree: 4 }),
+//       expect.objectContaining({ degree: 2 }),
+//       expect.objectContaining({ degree: 5 }),
+//     ]));
+// });
 
-test('generateGrid adds Chord dd', () => {
-  expect(generateGrid('5 seq C 2 cho , C 5 cho , dd'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({degree: 2}),
-        expect.objectContaining({degree: 5}),
-        expect.objectContaining({degree: 1}),
-        expect.objectContaining({degree: 4}),
-      ])
-    }));
-});
+// test('generateGrid adds Chord dd', () => {
+//   expect(generateGrid('C 2 cho C 5 cho dd'))
+//     .toEqual(expect.arrayContaining([
+//       expect.objectContaining({ degree: 2 }),
+//       expect.objectContaining({ degree: 5 }),
+//       expect.objectContaining({ degree: 1 }),
+//       expect.objectContaining({ degree: 4 }),
+//     ]));
+// });
 
 test('generateGrid aligns Chords at fret', () => {
-  expect(generateGrid('5 seq C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + , ' +
-                            'C 1 cho 3 5 1 + 2 5 3 + 1 3 4 + , af'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({gridMin: 2, gridMax: 10}),
-        expect.objectContaining({gridMin: 2, gridMax: 10})
-      ])
-    }));
+  expect(generateGrid(
+    'C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + ' +
+    'C 1 cho 3  5 1 + 2 5 3 + 1 3 4 + af'))
+    .toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ gridMin: 2, gridMax: 10 }),
+        expect.objectContaining({ gridMin: 2, gridMax: 10 }),
+      ]));
 });
 
 test('generateGrid aligns Chords at mark', () => {
-  expect(generateGrid('5 seq C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + , ' +
-                            'C 1 cho 3 5 1 + 2 5 3 + 1 3 4 + , am'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([
-        expect.objectContaining({gridMin: 7, gridMax: 12}),
-        expect.objectContaining({gridMin: 2, gridMax:  7})
-      ])
-    }));
+  expect(generateGrid(
+    'C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + ' +
+    'C 1 cho 3 5 1 + 2 5 3 + 1 3 4 + am'))
+    .toEqual(expect.arrayContaining([
+        expect.objectContaining({ gridMin: 7, gridMax: 12 }),
+        expect.objectContaining({ gridMin: 2, gridMax: 7 }),
+      ]));
 });
 
 // generateGrid Bar
 
 test('generateGrid adds start repeat Bar ', () => {
-  expect(generateGrid('5 seq |:'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Bar('&#x1D106;')])
-    }));
+  expect(generateGrid('|:')).toEqual(new Bar('&#x1D106;'));
 });
 
 test('generateGrid adds Bar', () => {
-  expect(generateGrid('5 seq |'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Bar('&#x1D100;')])
-    }));
+  expect(generateGrid('|')).toEqual(new Bar('&#x1D100;'));
 });
 
 test('generateGrid adds end repeat Bar ', () => {
-  expect(generateGrid('5 seq :|'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Bar('&#x1D107;')])
-    }));
+  expect(generateGrid(':|')).toEqual(new Bar('&#x1D107;'));
 });
 
 test('generateGrid adds space Bar', () => {
-  expect(generateGrid('5 seq spc'))
-    .toEqual(expect.objectContaining({
-      chords: expect.arrayContaining([new Bar('&nbsp;')])
-    }));
+  expect(generateGrid('spc')).toEqual(new Bar('&nbsp;'));
 });
 
 // generateGrid toElement
 
 test('generateGrid creates Chord span', () => {
   expect(generateGrid('C 1 cho 5 3 1 + span'))
-    .toStrictEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span'));
-});
-
-test('generateGrid creates Sequence span', () => {
-  expect(generateGrid('5 seq C 1 cho 5 3 1 + , span'))
-    .toStrictEqual([new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span')]);
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span'));
 });
 
 test('generateGrid creates Chord td', () => {
   expect(generateGrid('C 1 cho 5 3 1 + td'))
-    .toStrictEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td'));
-});
-
-test('generateGrid creates Sequence td', () => {
-  expect(generateGrid('5 seq C 1 cho 5 3 1 + , td'))
-    .toStrictEqual([new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td')]);
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td'));
 });
 
 // debug logging
@@ -379,7 +329,7 @@ test('generateGrid creates Sequence td', () => {
 test('debug logging appears', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(generateGrid('A B C', true)).toBe('C');
+  expect(generateGrid('A B C', true)).toEqual(['A', 'B', 'C']);
 
   expect(logSpy).toHaveBeenCalledWith('A');
   expect(logSpy).toHaveBeenCalledWith('A B');

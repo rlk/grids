@@ -206,3 +206,35 @@ export class Optional extends Chord {
     return super.toElement(tag, true);
   }
 }
+
+export function alignMarks(items, frets = 5) {
+  const chords = items.filter((chord) => chord.hasOwnProperty('stops'));
+
+  var min = Math.max(...chords.map((chord) => chord.mark() - chord.minFret() + 1));
+  var max = Math.max(...chords.map((chord) => chord.maxFret() - chord.mark()));
+
+  if (frets) {
+    max = -min + Math.max(max - min, frets);
+  }
+  for (var chord of chords) {
+    chord.gridMin = chord.mark() - min;
+    chord.gridMax = chord.mark() + max;
+  }
+  return chords;
+}
+
+export function alignFrets(items, frets = 5) {
+  const chords = items.filter((chord) => chord.hasOwnProperty('stops'));
+
+  var min = Math.max(0, Math.min(...chords.map((chord) => chord.minFret() - 1)));
+  var max = Math.max(0, Math.max(...chords.map((chord) => chord.maxFret())));
+
+  if (frets) {
+    max = min + Math.max(max - min, frets);
+  }
+  for (var chord of chords) {
+    chord.gridMin = min;
+    chord.gridMax = max;
+  }
+  return chords;
+}
