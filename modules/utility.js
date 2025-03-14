@@ -68,7 +68,7 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-export function generateGrid(text) {
+export function generateGrid(text, debug) {
   var stack = []
 
   const push = (x) => stack.push(x);
@@ -180,7 +180,9 @@ export function generateGrid(text) {
     } else {
       push(parseInt(word));
     }
-    // console.log(stack.toString());
+    if (debug) {
+      console.log(stack.join(' '));
+    }
   }
   return pop();
 }

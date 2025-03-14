@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import { jest } from '@jest/globals'
 import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
 import { Stop } from './stop.js';
 import { Chord, Optional } from './chord.js';
@@ -371,4 +372,16 @@ test('generateGrid creates Chord td', () => {
 test('generateGrid creates Sequence td', () => {
   expect(generateGrid('5 seq C 1 cho 5 3 1 + , td'))
     .toStrictEqual([new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td')]);
+});
+
+// debug logging
+
+test('debug logging appears', () => {
+  const logSpy = jest.spyOn(console, 'log');
+
+  expect(generateGrid('A B C', true)).toBe('C');
+
+  expect(logSpy).toHaveBeenCalledWith('A');
+  expect(logSpy).toHaveBeenCalledWith('A B');
+  expect(logSpy).toHaveBeenCalledWith('A B C');
 });

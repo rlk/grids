@@ -29,7 +29,7 @@ export class Sequence {
   }
 
   toString() {
-    return `[${this.chords.map((chord) => chord.toString()).join(' ')}]`
+    return `Sequence[${this.chords.map((chord) => chord.toString()).join(' ')}]`
   }
 
   top(n = 1) {

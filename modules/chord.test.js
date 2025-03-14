@@ -100,6 +100,13 @@ test('Chord.toString', () => {
   expect(string).toContain('1 1 1 +');
 });
 
+test('Chord.setNote.toString', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).setNote('abc').toString();
+  expect(string).toContain('C');
+  expect(string).toContain('1 1 1 +');
+  expect(string).toContain('abc');
+});
+
 // Chord.isValid
 
 test('Chord.isValid', () => {

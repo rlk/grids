@@ -44,6 +44,10 @@ test('Stop.toString', () => {
   expect(new Stop(1, 1, 1, '+').toString()).toContain('1 1 1 +');
 });
 
+test('Stop.toString decor', () => {
+  expect(new Stop(1, 1, 1, '+', true).toString()).toContain('1 1 1 + decor');
+});
+
 // Stop.isValid
 
 test('Stop.isValid', () => {

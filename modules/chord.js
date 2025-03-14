@@ -62,7 +62,12 @@ export class Chord {
   }
 
   toString() {
-    return `${this.key}(${this.degree})[${this.stops.map((stop) => stop.toString()).join(' ')}]`;
+    const stops = `${this.stops.map((stop) => stop.toString()).join(' ')}`
+    if (this.note) {
+      return `Chord(${this.key} ${this.degree} [${stops}] "${this.note}")`;
+    } else {
+      return `Chord(${this.key} ${this.degree} [${stops}])`;
+    }
   }
 
   isValid() {

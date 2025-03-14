@@ -40,7 +40,11 @@ export class Stop {
   }
 
   toString() {
-    return `(${this.string} ${this.fret} ${this.degree} ${this.label} ${this.decor})`;
+    if (this.decor) {
+      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label} decor)`;
+    } else {
+      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label})`;
+    }
   }
 
   isValid() {
