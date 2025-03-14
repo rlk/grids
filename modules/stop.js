@@ -64,6 +64,10 @@ export class Stop {
     return toDegree(this.degree - root + 1);
   }
 
+  clone() {
+    return new Stop(this.string, this.fret, this.degree, this.label, this.decor);
+  }
+
   incString() {
     return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
   }

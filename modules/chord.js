@@ -51,14 +51,14 @@ const nameOfDegreePerKey = {
 };
 
 export class Chord {
-  constructor(key, degree, stops=[]) {
+  constructor(key, degree, stops=[], finger={}, note=null) {
     this.key = key
     this.degree = degree
     this.stops = stops
     this.gridMin = null
     this.gridMax = null
-    this.finger = {}
-    this.note = null
+    this.finger = finger
+    this.note = note
   }
 
   toString() {
@@ -98,6 +98,10 @@ export class Chord {
   setNote(note) {
     this.note = note;
     return this;
+  }
+
+  clone() {
+    return new Chord(this.key, this.degree, this.stops.map((stop => stop.clone())), this.finger, this.note);
   }
 
   incString() {

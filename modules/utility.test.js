@@ -148,58 +148,42 @@ test('generateGrid pushes stack', () => {
 
 test('generateGrid pushes Chord', () => {
   expect(generateGrid('C 1 cho'))
-    .toEqual(expect.objectContaining(new Chord('C', 1)));
+    .toEqual(new Chord('C', 1));
 });
 
 test('generateGrid adds Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 +'))
-    .toEqual(expect.objectContaining({
-      stops: expect.arrayContaining([
-        expect.objectContaining(new Stop(5, 3, 1, '+', false))
-      ])
-    }));
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', false)]));
 });
 
 test('generateGrid adds decor Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 (+)'))
-    .toEqual(expect.objectContaining({
-      stops: expect.arrayContaining([
-        expect.objectContaining(new Stop(5, 3, 1, '+', true))
-      ])
-    }));
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', true)]));
 });
 
 test('generateGrid adds labeled Stop', () => {
   expect(generateGrid('C 1 cho 5 3 1 foo .'))
-    .toEqual(expect.objectContaining({
-      stops: expect.arrayContaining([
-        expect.objectContaining(new Stop(5, 3, 1, 'foo', false))
-      ])
-    }));
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, 'foo', false)]));
 });
 
 test('generateGrid adds Chord finger', () => {
   expect(generateGrid('C 1 cho 5 1 #'))
-    .toEqual(expect.objectContaining({
-      finger: expect.objectContaining({ 5: 1 })
-    }));
+  .toEqual(new Chord('C', 1, [], { 5: 1 }));
 });
 
 test('generateGrid adds Chord fingers', () => {
   expect(generateGrid('C 1 cho 5 1 # 4 3 #'))
-    .toEqual(expect.objectContaining({
-      finger: expect.objectContaining({ 5: 1, 4: 3 })
-    }));
+  .toEqual(new Chord('C', 1, [], { 5: 1, 4: 3 }));
 });
 
 test('generateGrid adds Chord node', () => {
   expect(generateGrid('C 1 cho hello !'))
-    .toEqual(expect.objectContaining({ note: 'hello' }));
+  .toEqual(new Chord('C', 1, [], {}, 'hello'));
 });
 
 test('generateGrid pushes Optional', () => {
   expect(generateGrid('C 1 opt'))
-    .toEqual(expect.objectContaining(new Optional('C', 1)));
+    .toEqual(new Optional('C', 1));
 });
 
 test('generateGrid adds Chord', () => {
@@ -209,7 +193,7 @@ test('generateGrid adds Chord', () => {
 
 test('generateGrid adds Chords', () => {
   expect(generateGrid('C 1 cho C 2 cho'))
-    .toEqual(expect.arrayContaining([new Chord('C', 1), new Chord('C', 2)]));
+    .toEqual([new Chord('C', 1), new Chord('C', 2)]);
 });
 
 test('generateGrid adds Chord with stops', () => {
@@ -221,36 +205,44 @@ test('generateGrid adds Chord with stops', () => {
     ]));
 });
 
-test('generateGrid adds Chord 1u', () => {
-  expect(generateGrid('C 1 cho 1u'))
-    .toEqual(expect.arrayContaining([
-      expect.objectContaining({ degree: 1 }),
-      expect.objectContaining({ degree: 2 }),
-    ]));
+test('generateGrid adds Chord drop', () => {
+  expect(generateGrid('C 1 cho C 2 cho drop'))
+    .toEqual(new Chord('C', 1));
 });
 
-test('generateGrid adds Chord 1d', () => {
-  expect(generateGrid('C 2 cho 1d'))
-    .toEqual(expect.arrayContaining([
-      expect.objectContaining({ degree: 1 }),
-      expect.objectContaining({ degree: 2 }),
-    ]));
+test('generateGrid adds Chord swap', () => {
+  expect(generateGrid('C 1 cho C 2 cho swap'))
+    .toEqual([new Chord('C', 2), new Chord('C', 1)]);
 });
 
-test('generateGrid adds Chord 4u', () => {
-  expect(generateGrid('C 1 cho 4u'))
-    .toEqual(expect.arrayContaining([
-      expect.objectContaining({ degree: 1 }),
-      expect.objectContaining({ degree: 4 }),
-    ]));
+test('generateGrid adds Chord dupe', () => {
+  expect(generateGrid('C 1 cho C 2 cho dupe'))
+    .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 2)]);
 });
 
-test('generateGrid adds Chord 5d', () => {
-  expect(generateGrid('C 1 cho 5d'))
-    .toEqual(expect.arrayContaining([
-      expect.objectContaining({ degree: 1 }),
-      expect.objectContaining({ degree: 4 }),
-    ]));
+test('generateGrid adds Chord over', () => {
+  expect(generateGrid('C 1 cho C 2 cho over'))
+    .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 1)]);
+});
+
+test('generateGrid applies 1u', () => {
+  expect(generateGrid('C 1 cho dupe 1u'))
+    .toEqual([new Chord('C', 1), new Chord('C', 2)]);
+});
+
+test('generateGrid applies 1d', () => {
+  expect(generateGrid('C 2 cho dupe 1d'))
+    .toEqual([new Chord('C', 2), new Chord('C', 1)]);
+});
+
+test('generateGrid applies 4u', () => {
+  expect(generateGrid('C 1 cho dupe 4u'))
+    .toEqual([new Chord('C', 1), new Chord('C', 4)]);
+});
+
+test('generateGrid applies 5d', () => {
+  expect(generateGrid('C 1 cho dupe 5d'))
+    .toEqual([new Chord('C', 1), new Chord('C', 4)]);
 });
 
 // test('generateGrid adds Chord uu', () => {
@@ -289,9 +281,9 @@ test('generateGrid aligns Chords at mark', () => {
     'C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + ' +
     'C 1 cho 3 5 1 + 2 5 3 + 1 3 4 + am'))
     .toEqual(expect.arrayContaining([
-        expect.objectContaining({ gridMin: 7, gridMax: 12 }),
-        expect.objectContaining({ gridMin: 2, gridMax: 7 }),
-      ]));
+      expect.objectContaining({ gridMin: 7, gridMax: 12 }),
+      expect.objectContaining({ gridMin: 2, gridMax: 7 }),
+    ]));
 });
 
 // generateGrid Bar

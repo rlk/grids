@@ -23,6 +23,10 @@ export class Bar {
     this.text = text
   }
 
+  clone() {
+    return new Bar(this.text);
+  }
+
   toString() {
     return `${this.text}`;
   }

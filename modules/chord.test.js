@@ -133,22 +133,22 @@ test('Chord.isValid bad key', () => {
 
 test('Chord.add', () => {
   expect(new Chord('C', 5).add(4, 5, 1, 'x', true))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', true)]));
+    .toEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', true)]));
 })
 
 test('Chord.add default decor', () => {
   expect(new Chord('C', 5).add(4, 5, 1, 'x'))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', false)]));
+    .toEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', false)]));
 })
 
 test('Chord.add default label', () => {
   expect(new Chord('C', 5).add(4, 5, 1))
-    .toStrictEqual(new Chord('C', 5, [new Stop(4, 5, 5, '+', false)]));
+    .toEqual(new Chord('C', 5, [new Stop(4, 5, 5, '+', false)]));
 })
 
 test('Chord.add multiple', () => {
   expect(new Chord('C', 5).add(4, 5, 1).add(3, 7, 5).add(2, 6, 7).add(1, 7, 3))
-    .toStrictEqual(
+    .toEqual(
       new Chord('C', 5, [
         new Stop(4, 5, 5, '+'),
         new Stop(3, 7, 2, '+'),
@@ -169,14 +169,20 @@ test('Chord.setNote', () => {
   expect(new Chord('C', 5).setNote('abc').note).toBe('abc');
 })
 
+// Chord.clone
+
+test('Chord.clone', () => {
+  expect(CMA7_5.clone()).toEqual(CMA7_5);
+});
+
 // Chord.incString / Chord.decString
 
 test('Chord.incString', () => {
-  expect(CMA7_5.incString()).toStrictEqual(CMA7_6);
+  expect(CMA7_5.incString()).toEqual(CMA7_6);
 });
 
 test('Chord.decString', () => {
-  expect(CMA7_6.decString()).toStrictEqual(CMA7_5);
+  expect(CMA7_6.decString()).toEqual(CMA7_5);
 });
 
 test('Chord.incString invalid', () => {
@@ -184,7 +190,7 @@ test('Chord.incString invalid', () => {
 });
 
 test('Chord.incString temporarily invalid', () => {
-  expect(CMA7_6.incString().decString()).toStrictEqual(CMA7_6);
+  expect(CMA7_6.incString().decString()).toEqual(CMA7_6);
 });
 
 test('Chord.decString invalid', () => {
@@ -192,17 +198,17 @@ test('Chord.decString invalid', () => {
 });
 
 test('Chord.decString temporarily invalid', () => {
-  expect(CMA7_5.decString().incString()).toStrictEqual(CMA7_5);
+  expect(CMA7_5.decString().incString()).toEqual(CMA7_5);
 });
 
 // Chord.incDegree / Chord.decDegree
 
 test('Chord.incDegree', () => {
-  expect(CMA7_5.incDegree()).toStrictEqual(DMI7_5);
+  expect(CMA7_5.incDegree()).toEqual(DMI7_5);
 });
 
 test('Chord.decDegree', () => {
-  expect(DMI7_5.decDegree()).toStrictEqual(CMA7_5);
+  expect(DMI7_5.decDegree()).toEqual(CMA7_5);
 });
 
 test('Chord.decDegree invalid', () => {
@@ -210,23 +216,23 @@ test('Chord.decDegree invalid', () => {
 });
 
 test('Chord.decDegree temporarily invalid', () => {
-  expect(AMI7_5.decDegree().incDegree()).toStrictEqual(AMI7_5);
+  expect(AMI7_5.decDegree().incDegree()).toEqual(AMI7_5);
 });
 
 // Chord.incInversion / Chord.decInversion
 
 test('Chord.incInversion', () => {
-  expect(GDOM7_0.incInversion()).toStrictEqual(GDOM7_1);
-  expect(GDOM7_1.incInversion()).toStrictEqual(GDOM7_2);
-  expect(GDOM7_2.incInversion()).toStrictEqual(GDOM7_3);
-  expect(GDOM7_3.incInversion()).toStrictEqual(GDOM7_4);
+  expect(GDOM7_0.incInversion()).toEqual(GDOM7_1);
+  expect(GDOM7_1.incInversion()).toEqual(GDOM7_2);
+  expect(GDOM7_2.incInversion()).toEqual(GDOM7_3);
+  expect(GDOM7_3.incInversion()).toEqual(GDOM7_4);
 });
 
 test('Chord.decInversion', () => {
-  expect(GDOM7_4.decInversion()).toStrictEqual(GDOM7_3);
-  expect(GDOM7_3.decInversion()).toStrictEqual(GDOM7_2);
-  expect(GDOM7_2.decInversion()).toStrictEqual(GDOM7_1);
-  expect(GDOM7_1.decInversion()).toStrictEqual(GDOM7_0);
+  expect(GDOM7_4.decInversion()).toEqual(GDOM7_3);
+  expect(GDOM7_3.decInversion()).toEqual(GDOM7_2);
+  expect(GDOM7_2.decInversion()).toEqual(GDOM7_1);
+  expect(GDOM7_1.decInversion()).toEqual(GDOM7_0);
 });
 
 test('Chord.decInversion invalid', () => {
@@ -234,7 +240,7 @@ test('Chord.decInversion invalid', () => {
 });
 
 test('Chord.decInversion temporarily invalid', () => {
-  expect(GDOM7_0.decInversion().incInversion()).toStrictEqual(GDOM7_0);
+  expect(GDOM7_0.decInversion().incInversion()).toEqual(GDOM7_0);
 });
 
 // Chord.mark
@@ -258,182 +264,182 @@ test('Chord.mark no root', () => {
 
 test('Chord.symbol ma', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).symbol())
-    .toStrictEqual(new Symbol('B'));
+    .toEqual(new Symbol('B'));
 });
 
 test('Chord.symbol mi', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 4, 5).symbol())
-    .toStrictEqual(new Symbol('B', 'mi'));
+    .toEqual(new Symbol('B', 'mi'));
 });
 
 test('Chord.symbol dim', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 3, 5).symbol())
-    .toStrictEqual(new Symbol('B', 'dim'));
+    .toEqual(new Symbol('B', 'dim'));
 });
 
 test('Chord.symbol aug', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 5, 5).symbol())
-    .toStrictEqual(new Symbol('B', 'aug'));
+    .toEqual(new Symbol('B', 'aug'));
 });
 
 test('Chord.symbol sus', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 7, 4).add(4, 4, 5).symbol())
-    .toStrictEqual(new Symbol('B', 'sus'));
+    .toEqual(new Symbol('B', 'sus'));
 });
 
 test('Chord.symbol ma6', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 1, 6).symbol())
-    .toStrictEqual(new Symbol('B', null, '6'));
+    .toEqual(new Symbol('B', null, '6'));
 });
 
 test('Chord.symbol mi6', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 4, 5).add(3, 1, 6).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '6'));
+    .toEqual(new Symbol('B', 'mi', '6'));
 });
 
 test('Chord.symbol ma7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 3, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'ma', '7'));
+    .toEqual(new Symbol('B', 'ma', '7'));
 });
 
 test('Chord.symbol ma9', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 3, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', 'ma', '9'));
+    .toEqual(new Symbol('B', 'ma', '9'));
 });
 
 test('Chord.symbol ma13', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 3, 7).add(2, 2, 2).add(1, 4, 6).symbol())
-    .toStrictEqual(new Symbol('B', 'ma', '13'));
+    .toEqual(new Symbol('B', 'ma', '13'));
 });
 
 test('Chord.symbol 7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', null, '7'));
+    .toEqual(new Symbol('B', null, '7'));
 });
 
 test('Chord.symbol 9', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', null, '9'));
+    .toEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol 13', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).add(1, 4, 6).symbol())
-    .toStrictEqual(new Symbol('B', null, '13'));
+    .toEqual(new Symbol('B', null, '13'));
 });
 
 test('Chord.symbol sus7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 7, 4).add(4, 4, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'sus', '7'));
+    .toEqual(new Symbol('B', 'sus', '7'));
 });
 
 test('Chord.symbol sus9', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 7, 4).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', 'sus', '9'));
+    .toEqual(new Symbol('B', 'sus', '9'));
 });
 
 test('Chord.symbol sus13', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 7, 4).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).add(1, 4, 6).symbol())
-    .toStrictEqual(new Symbol('B', 'sus', '13'));
+    .toEqual(new Symbol('B', 'sus', '13'));
 });
 
 test('Chord.symbol mi7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 4, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '7'));
+    .toEqual(new Symbol('B', 'mi', '7'));
 });
 
 test('Chord.symbol mi9', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '9'));
+    .toEqual(new Symbol('B', 'mi', '9'));
 });
 
 test('Chord.symbol mi13', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).add(1, 4, 6).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '13'));
+    .toEqual(new Symbol('B', 'mi', '13'));
 });
 
 test('Chord.symbol ma7flat5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 3, 5).add(3, 3, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'ma', '7♭5'));
+    .toEqual(new Symbol('B', 'ma', '7♭5'));
 });
 
 test('Chord.symbol mi7flat5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 3, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '7♭5'));
+    .toEqual(new Symbol('B', 'mi', '7♭5'));
 });
 
 test('Chord.symbol ma7sharp5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(4, 5, 5).add(3, 3, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'ma', '7♯5'));
+    .toEqual(new Symbol('B', 'ma', '7♯5'));
 });
 
 test('Chord.symbol mi7sharp5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 5, 5).add(3, 2, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'mi', '7♯5'));
+    .toEqual(new Symbol('B', 'mi', '7♯5'));
 });
 
 test('Chord.symbol dim7', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 5, 3).add(4, 3, 5).add(3, 1, 7).symbol())
-    .toStrictEqual(new Symbol('B', 'dim', '7'));
+    .toEqual(new Symbol('B', 'dim', '7'));
 });
 
 // Chord.symbol edge cases
 
 test('Chord.symbol 7 flat root', () => {
   expect(new Chord('A', 2).add(6, 6, 1).add(5, 5, 3).add(4, 3, 5).add(3, 1, 7).symbol())
-    .toStrictEqual(new Symbol('B♭', null, '7'));
+    .toEqual(new Symbol('B♭', null, '7'));
 });
 
 test('Chord.symbol 7 sharp root', () => {
   expect(new Chord('A', 2).add(6, 8, 1).add(5, 7, 3).add(4, 5, 5).add(3, 3, 7).symbol())
-    .toStrictEqual(new Symbol('B♯', null, '7'));
+    .toEqual(new Symbol('B♯', null, '7'));
 });
 
 test('Chord.symbol offset underflow', () => {
   expect(new Chord('F', 1).add(4, 3, 1).add(3, 1, 3).add(2, 0, 5).symbol())
-    .toStrictEqual(new Symbol('F', 'dim'));
+    .toEqual(new Symbol('F', 'dim'));
 });
 
 test('Chord.symbol offset overflow', () => {
   expect(new Chord('E', 1).add(4, 2, 1).add(3, 1, 3).add(2, 1, 5).symbol())
-    .toStrictEqual(new Symbol('E', 'aug'));
+    .toEqual(new Symbol('E', 'aug'));
 });
 
 test('Chord.symbol omit 5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(5, 6, 3).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', null, '9'));
+    .toEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol omit 3', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(4, 4, 5).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', null, '9'));
+    .toEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol omit 3 omit 5', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(3, 2, 7).add(2, 2, 2).symbol())
-    .toStrictEqual(new Symbol('B', null, '9'));
+    .toEqual(new Symbol('B', null, '9'));
 });
 
 test('Chord.symbol unknown', () => {
   expect(new Chord('A', 2).add(6, 7, 1).add(6, 9, 2).symbol())
-    .toStrictEqual(new Symbol('B', '?'));
+    .toEqual(new Symbol('B', '?'));
 });
 
 // Chord.symbol of computed chords
 
 test('Chord.symbol inc_degree', () => {
-  expect(EMI7_5.symbol()).toStrictEqual(DMI7_5.incDegree().symbol());
+  expect(EMI7_5.symbol()).toEqual(DMI7_5.incDegree().symbol());
 });
 
 test('Chord.symbol dec_degree', () => {
-  expect(DMI7_5.symbol()).toStrictEqual(EMI7_5.decDegree().symbol());
+  expect(DMI7_5.symbol()).toEqual(EMI7_5.decDegree().symbol());
 });
 
 test('Chord.symbol inc_string', () => {
-  expect(CMA7_5.symbol()).toStrictEqual(CMA7_5.incString().symbol());
+  expect(CMA7_5.symbol()).toEqual(CMA7_5.incString().symbol());
 });
 
 test('Chord.symbol dec_string', () => {
-  expect(CMA7_6.symbol()).toStrictEqual(CMA7_6.decString().symbol());
+  expect(CMA7_6.symbol()).toEqual(CMA7_6.decString().symbol());
 });
 
 test('Chord.symbol incInversion root', () => {

@@ -70,82 +70,89 @@ export function calcOffset(root, pitch, interval) {
 export function generateGrid(text, debug) {
   var stack = []
 
-  const push = (x) => stack.push(x);
-  const pop  = ( ) => stack.pop();
-  const top  = ( ) => stack[stack.length - 1];
-
   const words = text.trim().split(/[ \n]+/);
-
   for (const word of words) {
 
-    if (word == '+' || word == 'x' || word == '=' ||
-        word == '^' || word == 'o' || word == '_') {
-      const interval = pop();
-      const fret = pop();
-      const string = pop();
-      const chord = pop();
-      push(chord.add(string, fret, interval, word, false));
+    // Chord constructors
+
+    if (word == 'cho') {
+      const d = stack.pop();
+      const k = stack.pop();
+      stack.push(new Chord(k, d));
+
+    } else if (word == 'opt') {
+      const d = stack.pop();
+      const k = stack.pop();
+      stack.push(new Optional(k, d));
+
+    // Stop constructors
+
+    } else if (word == '+' || word == 'x' || word == '=' ||
+               word == '^' || word == 'o' || word == '_') {
+      const i = stack.pop();
+      const f = stack.pop();
+      const s = stack.pop();
+      const c = stack.pop();
+      stack.push(c.add(s, f, i, word, false));
 
     } else if (word == '(+)' || word == '(x)' || word == '(=)' ||
                word == '(^)' || word == '(o)' || word == '(_)') {
-      const interval = pop();
-      const fret = pop();
-      const string = pop();
-      const chord = pop();
-      push(chord.add(string, fret, interval, word.at(1), true));
+      const i = stack.pop();
+      const f = stack.pop();
+      const s = stack.pop();
+      const c = stack.pop();
+      stack.push(c.add(s, f, i, word.at(1), true));
 
     } else if (word == '.') {
-      const label = pop();
-      const interval = pop();
-      const fret = pop();
-      const string = pop();
-      const chord = pop();
-      push(chord.add(string, fret, interval, label));
+      const l = stack.pop();
+      const i = stack.pop();
+      const f = stack.pop();
+      const s = stack.pop();
+      const c = stack.pop();
+      stack.push(c.add(s, f, i, l));
+
+    // Chord attributes
 
     } else if (word == '!') {
-      const note = pop();
-      const chord = pop();
-      push(chord.setNote(note));
+      const n = stack.pop();
+      const c = stack.pop();
+      stack.push(c.setNote(n));
 
     } else if (word == '#') {
-      const finger = pop();
-      const string = pop();
-      const chord = pop();
-      push(chord.setFinger(string, finger));
+      const f = stack.pop();
+      const s = stack.pop();
+      const c = stack.pop();
+      stack.push(c.setFinger(s, f));
 
-    } else if (word == 'cho') {
-      const degree = pop();
-      const key = pop();
-      push(new Chord(key, degree));
-
-    } else if (word == 'opt') {
-      const degree = pop();
-      const key = pop();
-      push(new Optional(key, degree));
+    // Chord functions
 
     } else if (word == '1u') {
-      push(top().incDegree());
+      stack.push(stack.pop().incDegree());
 
     } else if (word == '1d') {
-      push(top().decDegree());
+      stack.push(stack.pop().decDegree());
 
     } else if (word == '4u') {
-      push(top().incDegree().incDegree().incDegree().decString());
+      stack.push(stack.pop().incDegree().incDegree().incDegree().decString());
 
     } else if (word == '5d') {
-      push(top().decDegree().decDegree().decDegree().decDegree().incString());
+      stack.push(stack.pop().decDegree().decDegree().decDegree().decDegree().incString());
+
+    // Bar constructors
 
     } else if (word == '|:') {
-      push(new Bar('&#x1D106;'));
+      stack.push(new Bar('&#x1D106;'));
 
     } else if (word == '|') {
-      push(new Bar('&#x1D100;'));
+      stack.push(new Bar('&#x1D100;'));
 
     } else if (word == ':|') {
-      push(new Bar('&#x1D107;'));
+      stack.push(new Bar('&#x1D107;'));
 
     } else if (word == 'spc') {
-      push(new Bar('&nbsp;'));
+      stack.push(new Bar('&nbsp;'));
+
+    // Cross-stack functions
 
     } else if (word == 'af') {
       alignFrets(stack);
@@ -159,11 +166,32 @@ export function generateGrid(text, debug) {
     } else if (word == 'span') {
       stack = stack.map((e) => e.toElement('span'));
 
+    // Stack functions
+
+    } else if (word == 'drop') {
+      stack.pop();
+
+    } else if (word == 'swap') {
+      const a = stack.pop();
+      const b = stack.pop();
+      stack.push(a, b);
+
+    } else if (word == 'dupe') {
+      const a = stack.pop();
+      const b = a.clone();
+      stack.push(a, b);
+
+    } else if (word == 'over') {
+      const a = stack.pop();
+      const b = stack.pop();
+      const c = b.clone();
+      stack.push(b, a, c);
+
     } else if (isNaN(word)) {
-      push(word);
+      stack.push(word);
 
     } else {
-      push(parseInt(word));
+      stack.push(parseInt(word));
     }
     if (debug) {
       console.log(stack.join(' '));

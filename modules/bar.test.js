@@ -27,6 +27,11 @@ test('Bar.constructor', () => {
   expect(bar.text).toBe('|');
 });
 
+test('Bar.clone', () => {
+  const bar = new Bar('|');
+  expect(bar.clone().text).toBe('|');
+});
+
 test('Bar.toString', () => {
   const bar = new Bar('|');
   expect(bar.toString()).toBe('|');
