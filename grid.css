@@ -53,31 +53,27 @@ td.grid {
     vertical-align: middle;
 }
 
-body {
+body.tune {
     font-family: "Noto Music", "Helvetica Neue", Arial, sans;
 }
-code {
-    font-family: "Noto Sans Mono", "Courier New", mono;
-    background: #CCFFCC;
-}
-h1 {
+.tune h1 {
     font-weight: normal;
     font-variant: small-caps;
     text-align: center;
 }
-h2 {
+.tune h2 {
     font-weight: normal;
     font-style: italic;
     text-align: center;
 }
-h3 {
+.tune h3 {
     font-weight: normal;
     text-align: center;
 }
-h4 {
+.tune h4 {
     font-weight: normal;
 }
-footer {
+.tune footer {
     text-align: right;
     font-size: smaller;
 }
