@@ -123,33 +123,40 @@ export class Symbol {
   }
 
   toElement(optional = false) {
-    var symbol = document.createElement('span')
-    symbol.setAttribute('class', 'symbol');
-
-    function add(className, innerHTML) {
-      var element = document.createElement('span');
-      element.setAttribute('class', className);
-      element.innerHTML = innerHTML;
-      symbol.appendChild(element);
+    function span(innerHTML, className = null) {
+      var e = document.createElement('span');
+      if (className) {
+        e.setAttribute('class', className);
+      }
+      if (innerHTML) {
+        e.innerHTML = innerHTML;
+      }
+      return e;
     }
 
+    var symbol = span(null, 'symbol');
+
     if (optional) {
-      add('root', '(');
+      symbol.appendChild(span('('));
     }
     if (this.root) {
-      add('root', this.root);
+      symbol.appendChild(span(this.root));
     }
     if (this.triad) {
-      add('root', this.triad);
+      symbol.appendChild(span(this.triad));
     }
     if (this.extension) {
-      add('extension', this.extension);
+      symbol.appendChild(span(this.extension, 'extension'));
     }
     if (this.bass) {
-      add('bass', this.bass);
+      if (this.extension) {
+        symbol.appendChild(span(`/&#8239;${this.bass}`));
+      } else {
+        symbol.appendChild(span(`&#8239;/&#8239;${this.bass}`));
+      }
     }
     if (optional) {
-      add('root', ')');
+      symbol.appendChild(span(')'));
     }
     return symbol;
   }
