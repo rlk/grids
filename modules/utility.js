@@ -164,13 +164,13 @@ export function generateGrid(text, debug) {
     } else if (word == 'spc') {
       stack.push(new Bar('&nbsp;'));
 
-    // Cross-stack functions
+    // Stack-mapping functions
 
     } else if (word == 'af') {
-      alignFrets(stack);
+      alignFrets(stack.filter((x) => x.hasOwnProperty('stops')));
 
     } else if (word == 'am') {
-      alignMarks(stack);
+      alignMarks(stack.filter((x) => x.hasOwnProperty('stops')));
 
     } else if (word == 'td') {
       stack = stack.map((e) => e.toElement('td'));

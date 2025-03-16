@@ -211,9 +211,7 @@ export class Optional extends Chord {
   }
 }
 
-export function alignMarks(items, frets = 5) {
-  const chords = items.filter((chord) => chord.hasOwnProperty('stops'));
-
+export function alignMarks(chords, frets = 5) {
   var min = Math.max(...chords.map((chord) => chord.mark() - chord.minFret() + 1));
   var max = Math.max(...chords.map((chord) => chord.maxFret() - chord.mark()));
 
@@ -227,9 +225,7 @@ export function alignMarks(items, frets = 5) {
   return chords;
 }
 
-export function alignFrets(items, frets = 5) {
-  const chords = items.filter((chord) => chord.hasOwnProperty('stops'));
-
+export function alignFrets(chords, frets = 5) {
   var min = Math.max(0, Math.min(...chords.map((chord) => chord.minFret() - 1)));
   var max = Math.max(0, Math.max(...chords.map((chord) => chord.maxFret())));
 
