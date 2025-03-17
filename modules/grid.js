@@ -55,7 +55,7 @@ function squarePath(x, y, d) {
 function boardPath(smin, smax, fmin, fmax, x, y) {
   const ftop = Math.max(fmin, 0)
   var path = []
-  if (fmin <= 0 <= fmax) {
+  if (fmin <= 0 && 0 <= fmax) {
     path.push(`M ${x(smin)} ${y(0)} L ${x(smin)} ${y(0) - 2} `
             + `L ${x(smax)} ${y(0) - 2} L ${x(smax)} ${y(0)} z`);
   }
@@ -94,7 +94,7 @@ export function createGrid(chord) {
   var grid = elem('svg', []);
   var smin = 1;
   var smax = 6;
-  var fgap = Object.keys(chord.finger).length ? 1 : 0;
+  var fgap = 1;
 
   const fmin = chord.gridMin ?? Math.max(0, chord.minFret() - 1);
   const fmax = chord.gridMax ?? Math.max(0, chord.maxFret());
