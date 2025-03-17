@@ -36,9 +36,10 @@ td.grid {
 
 .grid .column .symbol {
     font-variant: small-caps;
+    margin-bottom: -0.25em;
 }
 
-.grid .column .extension {
+.grid .column .symbol .extension {
     font-size: smaller;
     vertical-align: super;
 }
