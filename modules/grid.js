@@ -94,7 +94,7 @@ export function createGrid(chord) {
   var grid = elem('svg', []);
   var smin = 1;
   var smax = 6;
-  var fgap = 1;
+  var fgap = Object.keys(chord.finger).length ? 1.0 : 0.25;
 
   const fmin = chord.gridMin ?? Math.max(0, chord.minFret() - 1);
   const fmax = chord.gridMax ?? Math.max(0, chord.maxFret());
