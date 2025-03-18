@@ -6,6 +6,47 @@
   <link rel="stylesheet" type="text/css" href="user-guide.css" />
   <link rel="stylesheet" type="text/css" href="../grid.css" />
   <script type="module" src="../grid.js"></script>
+  <style>
+    .colorInterval .dot {
+      fill: gray !important;
+    }
+
+    .colorInterval .interval1 {
+      fill: black !important;
+    }
+
+    .colorInterval .interval3 {
+      fill: blue !important;
+    }
+
+    .colorInterval .interval5 {
+      fill: red !important;
+    }
+
+    .colorInterval .interval7 {
+      fill: green !important;
+    }
+
+    .colorDegree .dot {
+      fill: gray !important;
+    }
+
+    .colorDegree .degree1 {
+      fill: black !important;
+    }
+
+    .colorDegree .degree3 {
+      fill: blue !important;
+    }
+
+    .colorDegree .degree5 {
+      fill: red !important;
+    }
+
+    .colorDegree .degree7 {
+      fill: green !important;
+    }
+  </style>
   <title>Gridgen User Guide</title>
 </head>
 
@@ -221,6 +262,25 @@
   </p>
 
   <h3>Stop styling</h3>
+  <p>Stops are defined as SVG elements with classes that indicate their musical meaning:</p>
+  <ul>
+    <li>Classes &ldquo;pitch1&rdquo; through &ldquo;pitch12&rdquo; give the pitch.</li>
+    <li>Classes &ldquo;degree1&rdquo; through &ldquo;degree7&rdquo; give the scale degree within the key.</li>
+    <li>Classes &ldquo;interval1&rdquo; through &ldquo;interval7&rdquo; give the interval within the chord.</li>
+  </ul>
+  <p>To use these, define a CSS class to apply to the container of the Gridgen span. Then use <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator">descendant combinators</a> to select pitches, degrees, and intervals among that container's children. Note that the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/important">!important</a> property is needed if local changes are to override the SVG's existing CSS. See the source of this document for examples.</p>
+  <p>Here's a chord scale with stops colored by interval.</p>
+  <p class="center colorInterval">
+    <span class="gridgen">
+      C 1 cho 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
+    </span>
+  </p>
+  <p>Here's a chord scale with stops colored by scale degree.</p>
+  <p class="center colorDegree">
+    <span class="gridgen">
+      C 1 cho 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
+    </span>
+  </p>
 
   <h3>Forms for diatonic chord scales</h3>
   <p>(<a href="#mcp">MCP</a>, p. 23) introduces several forms for diatonic chord scales, and suggests the reader build diatonic chords from each of them. We can easily generate these chords just by specifying the initial form and extending the sequence.</p>
