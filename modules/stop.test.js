@@ -23,6 +23,15 @@ import { Stop  } from './stop.js';
 // Stop.constructor
 
 test('Stop.constructor', () => {
+  const stop = new Stop(1, 2, 3, 'x', true);
+  expect(stop.string).toBe(1);
+  expect(stop.fret).toBe(2);
+  expect(stop.degree).toBe(3);
+  expect(stop.label).toBe('x');
+  expect(stop.decor).toBe(true);
+});
+
+test('Stop.constructor decor default', () => {
   const stop = new Stop(1, 2, 3, 'x');
   expect(stop.string).toBe(1);
   expect(stop.fret).toBe(2);
@@ -41,41 +50,37 @@ test('Stop.constructor label default', () => {
 // Stop.toString
 
 test('Stop.toString', () => {
-  expect(new Stop(1, 1, 1, '+').toString()).toContain('1 1 1 +');
+  expect(new Stop(1, 1, 1, 'x').toString()).toContain('1 1 1 x');
 });
 
 test('Stop.toString decor', () => {
-  expect(new Stop(1, 1, 1, '+', true).toString()).toContain('1 1 1 + decor');
+  expect(new Stop(1, 1, 1, 'x', true).toString()).toContain('1 1 1 x decor');
 });
 
 // Stop.isValid
 
 test('Stop.isValid', () => {
-  expect(new Stop(1, 1, 1, '+').isValid()).toBe(true);
+  expect(new Stop(1, 1, 1).isValid()).toBe(true);
 });
 
 test('Stop.isValid string low', () => {
-  expect(new Stop(0, 1, 1, '+').isValid()).toBe(false);
+  expect(new Stop(0, 1, 1).isValid()).toBe(false);
 });
 
 test('Stop.isValid string high', () => {
-  expect(new Stop(7, 1, 1, '+').isValid()).toBe(false);
+  expect(new Stop(7, 1, 1).isValid()).toBe(false);
 });
 
 test('Stop.isValid fret low', () => {
-  expect(new Stop(1, -1, 1, '+').isValid()).toBe(false);
+  expect(new Stop(1, -1, 1).isValid()).toBe(false);
 });
 
 test('Stop.isValid degree low', () => {
-  expect(new Stop(1, 1, 0, '+').isValid()).toBe(false);
+  expect(new Stop(1, 1, 0).isValid()).toBe(false);
 });
 
 test('Stop.isValid degree high', () => {
-  expect(new Stop(1, 1, 8, '+').isValid()).toBe(false);
-});
-
-test('Stop.isValid label unknown', () => {
-  expect(new Stop(1, 1, 8, '@').isValid()).toBe(false);
+  expect(new Stop(1, 1, 8).isValid()).toBe(false);
 });
 
 // Stop.clone
@@ -87,11 +92,11 @@ test('Stop.incString', () => {
 // Stop.incString / Stop.decString
 
 test('Stop.incString', () => {
-  expect(new Stop(2, 1, 1).incString()).toEqual(new Stop(3, 5, 1));
+  expect(new Stop(2, 1, 1, 'x', true).incString()).toEqual(new Stop(3, 5, 1, 'x', true));
 });
 
 test('Stop.decString', () => {
-  expect(new Stop(3, 5, 1).decString()).toEqual(new Stop(2, 1, 1));
+  expect(new Stop(3, 5, 1, 'x', true).decString()).toEqual(new Stop(2, 1, 1, 'x', true));
 });
 
 test('Stop.incString invalid', () => {
@@ -103,21 +108,21 @@ test('Stop.decString invalid', () => {
 });
 
 test('Stop.incString temporarily invalid', () => {
-  expect(new Stop(6, 1, 4).incString().decString()).toEqual(new Stop(6, 1, 4));
+  expect(new Stop(6, 1, 4, 'x', true).incString().decString()).toEqual(new Stop(6, 1, 4, 'x', true));
 });
 
 test('Stop.decString temporarily invalid', () => {
-  expect(new Stop(1, 1, 4).decString().incString()).toEqual(new Stop(1, 1, 4));
+  expect(new Stop(1, 1, 4, 'x', true).decString().incString()).toEqual(new Stop(1, 1, 4, 'x', true));
 });
 
 // Stop.incDegree / Stop.decDegree
 
 test('Stop.incDegree', () => {
-  expect(new Stop(2, 1, 1).incDegree()).toEqual(new Stop(2, 3, 2));
+  expect(new Stop(2, 1, 1, 'x', true).incDegree()).toEqual(new Stop(2, 3, 2, 'x', true));
 });
 
 test('Stop.decDegree', () => {
-  expect(new Stop(2, 3, 2).decDegree()).toEqual(new Stop(2, 1, 1));
+  expect(new Stop(2, 3, 2, 'x', true).decDegree()).toEqual(new Stop(2, 1, 1, 'x', true));
 });
 
 test('Stop.decDegree invalid', () => {
@@ -125,17 +130,17 @@ test('Stop.decDegree invalid', () => {
 });
 
 test('Stop.decDegree temporarily invalid', () => {
-  expect(new Stop(2, 0, 7).decDegree().incDegree()).toEqual(new Stop(2, 0, 7));
+  expect(new Stop(2, 0, 7, 'x', true).decDegree().incDegree()).toEqual(new Stop(2, 0, 7, 'x', true));
 });
 
 // Stop.incToDegree / Stop.decToDegree
 
 test('Stop.incToDegree', () => {
-  expect(new Stop(2, 1, 1).incToDegree(3)).toEqual(new Stop(2, 5, 3));
+  expect(new Stop(2, 1, 1, 'x', true).incToDegree(3)).toEqual(new Stop(2, 5, 3, 'x', true));
 });
 
 test('Stop.decToDegree', () => {
-  expect(new Stop(2, 5, 3).decToDegree(1)).toEqual(new Stop(2, 1, 1));
+  expect(new Stop(2, 5, 3, 'x', true).decToDegree(1)).toEqual(new Stop(2, 1, 1, 'x', true));
 });
 
 test('Stop.decToDegree invalid', () => {
@@ -143,5 +148,23 @@ test('Stop.decToDegree invalid', () => {
 });
 
 test('Stop.decToDegree temporarily invalid', () => {
-  expect(new Stop(2, 1, 1).decToDegree(5).incToDegree(1)).toEqual(new Stop(2, 1, 1));
+  expect(new Stop(2, 1, 1, 'x', true).decToDegree(5).incToDegree(1)).toEqual(new Stop(2, 1, 1, 'x', true));
+});
+
+// Stop.incOctave / Stop.decOctave
+
+test('Stop.incOctave', () => {
+  expect(new Stop(2, 1, 1, 'x', true).incOctave()).toEqual(new Stop(2, 13, 1, 'x', true));
+});
+
+test('Stop.decOctave', () => {
+  expect(new Stop(2, 13, 1, 'x', true).decOctave()).toEqual(new Stop(2, 1, 1, 'x', true));
+});
+
+test('Stop.decOctave invalid', () => {
+  expect(new Stop(2, 1, 1).decOctave().isValid()).toBe(false);
+});
+
+test('Stop.decOctave temporarily invalid', () => {
+  expect(new Stop(2, 1, 1, 'x', true).decOctave().incOctave()).toEqual(new Stop(2, 1, 1, 'x', true));
 });

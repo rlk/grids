@@ -48,10 +48,9 @@ export class Stop {
   }
 
   isValid() {
-    return "+xsdo_".includes(this.label)
+    return this.fret >= 0
       && this.string >= 1
       && this.string <= 6
-      && this.fret >= 0
       && this.degree >= 1
       && this.degree <= 7;
   }
@@ -69,19 +68,19 @@ export class Stop {
   }
 
   incString() {
-    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label)
+    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label, this.decor)
   }
 
   decString() {
-    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label)
+    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label, this.decor)
   }
 
   incDegree() {
-    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], toDegree(this.degree + 1), this.label)
+    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], toDegree(this.degree + 1), this.label, this.decor)
   }
 
   decDegree() {
-    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], toDegree(this.degree - 1), this.label)
+    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], toDegree(this.degree - 1), this.label, this.decor)
   }
 
   incToDegree(degree) {
@@ -90,5 +89,13 @@ export class Stop {
 
   decToDegree(degree) {
     return this.degree == degree ? this : this.decDegree().decToDegree(degree);
+  }
+
+  incOctave() {
+    return new Stop(this.string, this.fret + 12, this.degree, this.label, this.decor)
+  }
+
+  decOctave() {
+    return new Stop(this.string, this.fret - 12, this.degree, this.label, this.decor)
   }
 }
