@@ -221,7 +221,10 @@ export class Chord {
     var column = document.createElement('span');
     column.setAttribute('class', 'column');
 
-    column.appendChild(this.symbol().toElement(this.optional));
+    if (!this.nosymbol) {
+      column.appendChild(this.symbol().toElement(this.optional));
+    }
+
     column.appendChild(createGrid(this));
 
     if (this.text) {

@@ -111,6 +111,9 @@ export function generateGrid(text, debug) {
     } else if (word == '?') {
       stack.push(stack.pop().setOptional(true));
 
+    } else if (word == '$') {
+      stack.push(stack.pop().setNoSymbol(true));
+
     } else if (word == '!') {
       const n = stack.pop();
       const c = stack.pop();

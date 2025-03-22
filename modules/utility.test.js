@@ -181,6 +181,11 @@ test('generateGrid sets Optional', () => {
     .toEqual(new Chord('C', 1).setOptional(true));
 });
 
+test('generateGrid sets NoSymbol', () => {
+  expect(generateGrid('C 1 cho $'))
+    .toEqual(new Chord('C', 1).setNoSymbol(true));
+});
+
 test('generateGrid sets Text', () => {
   expect(generateGrid('C 1 cho hello !'))
   .toEqual(new Chord('C', 1).setText('hello'));
