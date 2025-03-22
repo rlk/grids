@@ -215,9 +215,9 @@ export class Chord {
     return null;
   }
 
-  toElement(tag) {
-    var chord = document.createElement(tag);
-    chord.setAttribute('class', 'grid');
+  toElement(tagName, classList) {
+    var chord = document.createElement(tagName);
+    chord.setAttribute('class', classList.toString().replace('gridgen', 'grid'));
     var column = document.createElement('span');
     column.setAttribute('class', 'column');
 

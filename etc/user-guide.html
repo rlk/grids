@@ -292,16 +292,16 @@
     <li>Classes &ldquo;degree1&rdquo; through &ldquo;degree7&rdquo; give the scale degree within the key.</li>
     <li>Classes &ldquo;interval1&rdquo; through &ldquo;interval7&rdquo; give the interval within the chord.</li>
   </ul>
-  <p>To use these, define a CSS class to apply to the container of the Gridgen span. Then use <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator">descendant combinators</a> to select pitches, degrees, and intervals among that container's children. Note that the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/important">!important</a> property is needed if local changes are to override the SVG's existing CSS. See the source of this document for examples.</p>
+  <p>To use these, define a CSS class to apply to the Gridgen element or its container. Then use <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator">descendant combinators</a> to select pitches, degrees, and intervals among that container's children. Note that the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/important">!important</a> property is needed if local changes are to override the SVG's existing CSS. See the source of this document for examples.</p>
   <p>Here's a chord scale with stops colored by interval.</p>
-  <p class="center colorInterval">
-    <span class="gridgen">
+  <p class="center">
+    <span class="gridgen colorInterval">
       C 1 cho 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
   <p>Here's a chord scale with stops colored by scale degree.</p>
-  <p class="center colorDegree">
-    <span class="gridgen">
+  <p class="center">
+    <span class="gridgen colorDegree">
       C 1 cho 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
