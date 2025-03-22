@@ -54,6 +54,12 @@ const CMA7_6 = new Chord('C', 1, [  // Cma7 with the root on string 6
   new Stop(4, 9, 7),
   new Stop(3, 9, 3),
 ]);
+const CMA7_5_15 = new Chord('C', 1, [  // Cma7 with the root on string 5 fret 15
+  new Stop(5, 15, 1),
+  new Stop(4, 17, 5),
+  new Stop(3, 16, 7),
+  new Stop(2, 17, 3),
+]);
 
 const GDOM7_0 = new Chord('C', 5, [  // G7 inversion 0
   new Stop(4, 0, 2),
@@ -241,6 +247,24 @@ test('Chord.decInversion invalid', () => {
 
 test('Chord.decInversion temporarily invalid', () => {
   expect(GDOM7_0.decInversion().incInversion()).toEqual(GDOM7_0);
+});
+
+// Chord.incOctave / Chord.decOctave
+
+test('Chord.incOctave', () => {
+  expect(CMA7_5.incOctave()).toEqual(CMA7_5_15);
+});
+
+test('Chord.decOctave', () => {
+  expect(CMA7_5_15.decOctave()).toEqual(CMA7_5);
+});
+
+test('Chord.decOctave invalid', () => {
+  expect(CMA7_5.decOctave().isValid()).toBe(false);
+});
+
+test('Chord.decOctave temporarily invalid', () => {
+  expect(CMA7_5.decOctave().incOctave()).toEqual(CMA7_5);
 });
 
 // Chord.mark

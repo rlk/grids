@@ -150,6 +150,12 @@ export function generateGrid(text, debug) {
     } else if (word == 'i-') {
       stack.push(stack.pop().decInversion());
 
+    } else if (word == 'o+') {
+      stack.push(stack.pop().incOctave());
+
+    } else if (word == 'o-') {
+      stack.push(stack.pop().decOctave());
+
     // Bar constructors
 
     } else if (word == '|:') {

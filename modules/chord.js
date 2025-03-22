@@ -134,6 +134,14 @@ export class Chord {
       this.stops.map((stop) => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])))
   }
 
+  incOctave() {
+    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.incOctave()));
+  }
+
+  decOctave() {
+    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.decOctave()));
+  }
+
   mark() {
     const roots = this.stops.filter((stop) => stop.degree == this.degree)
       .toSorted((a, b) => b.string - a.string);

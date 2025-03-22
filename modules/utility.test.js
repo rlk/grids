@@ -230,7 +230,7 @@ test('generateGrid applies inc string', () => {
     .toEqual(new Chord('C', 1).add(6, 10, 2));
 });
 
-test('generateGrid applies dec string-', () => {
+test('generateGrid applies dec string', () => {
   expect(generateGrid('C 1 cho 5 5 2 + s-', true))
     .toEqual(new Chord('C', 1).add(4, 0, 2));
 });
@@ -240,7 +240,7 @@ test('generateGrid applies inc degree', () => {
     .toEqual(new Chord('C', 2));
 });
 
-test('generateGrid applies dec degree-', () => {
+test('generateGrid applies dec degree', () => {
   expect(generateGrid('C 2 cho d-'))
     .toEqual(new Chord('C', 1));
 });
@@ -260,9 +260,19 @@ test('generateGrid applies inc inversion', () => {
     .toEqual(new Chord('C', 1).add(5, 7, 3).add(4, 5, 5).add(3, 5, 1));
 });
 
-test('generateGrid applies dec inversion-', () => {
+test('generateGrid applies dec inversion', () => {
   expect(generateGrid('C 1 cho 5 7 3 + 4 5 5 + 3 5 1 + i-', true))
     .toEqual(new Chord('C', 1).add(5, 3, 1).add(4, 2, 3).add(3, 0, 5));
+});
+
+test('generateGrid applies inc octave', () => {
+  expect(generateGrid('C 1 cho 5 3 1 + o+'))
+    .toEqual(new Chord('C', 1).add(5, 15, 1));
+});
+
+test('generateGrid applies dec octave', () => {
+  expect(generateGrid('C 1 cho 5 15 1 + o-'))
+    .toEqual(new Chord('C', 1).add(5, 3, 1));
 });
 
 test('generateGrid aligns Chords at fret', () => {
