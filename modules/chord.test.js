@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { Stop } from './stop.js';
-import { Chord, Optional, alignFrets, alignMarks } from './chord.js';
+import { Chord, alignFrets, alignMarks } from './chord.js';
 import { Symbol } from './symbol.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
@@ -106,8 +106,8 @@ test('Chord.toString', () => {
   expect(string).toContain('1 1 1 +');
 });
 
-test('Chord.setNote.toString', () => {
-  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).setNote('abc').toString();
+test('Chord.setText.toString', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).setText('abc').toString();
   expect(string).toContain('C');
   expect(string).toContain('1 1 1 +');
   expect(string).toContain('abc');
@@ -162,23 +162,28 @@ test('Chord.add multiple', () => {
         new Stop(1, 7, 7, '+')]));
 })
 
-// Chord.setFinger
+// Chord.setFingers / Chord.addFingers
 
-test('Chord.setFinger', () => {
-  expect(new Chord('C', 5).setFinger(1, 2).finger)
+test('Chord.setFingers', () => {
+  expect(new Chord('C', 5).setFingers({1: 2}).fingers)
     .toEqual(expect.objectContaining({1: 2}));
 })
 
-// Chord.setNote
+test('Chord.addFinger', () => {
+  expect(new Chord('C', 5).addFinger(1, 2).fingers)
+    .toEqual(expect.objectContaining({1: 2}));
+})
 
-test('Chord.setNote', () => {
-  expect(new Chord('C', 5).setNote('abc').note).toBe('abc');
+// Chord.setText
+
+test('Chord.setText', () => {
+  expect(new Chord('C', 5).setText('abc').text).toBe('abc');
 })
 
 // Chord.clone
 
 test('Chord.clone', () => {
-  expect(CMA7_5.clone()).toEqual(CMA7_5);
+  expect(CMA7_5.copy()).toEqual(CMA7_5);
 });
 
 // Chord.incString / Chord.decString
@@ -444,58 +449,66 @@ test('Chord.symbol omit 3 omit 5', () => {
 });
 
 test('Chord.symbol unknown', () => {
-  expect(new Chord('A', 2).add(6, 7, 1).add(6, 9, 2).symbol())
+  expect(new Chord('A', 2).add(6, 7, 1).add(6, 8, 2).symbol())
     .toEqual(new Symbol('B', '?'));
 });
 
 // Chord.symbol of computed chords
 
-test('Chord.symbol inc_degree', () => {
-  expect(EMI7_5.symbol()).toEqual(DMI7_5.incDegree().symbol());
+test('Chord.symbol incDegree', () => {
+  expect(DMI7_5.incDegree().symbol()).toEqual(EMI7_5.symbol());
 });
 
-test('Chord.symbol dec_degree', () => {
-  expect(DMI7_5.symbol()).toEqual(EMI7_5.decDegree().symbol());
+test('Chord.symbol decDegree', () => {
+  expect(EMI7_5.decDegree().symbol()).toEqual(DMI7_5.symbol());
 });
 
-test('Chord.symbol inc_string', () => {
-  expect(CMA7_5.symbol()).toEqual(CMA7_5.incString().symbol());
+test('Chord.symbol incString', () => {
+  expect(CMA7_5.incString().symbol()).toEqual(CMA7_5.symbol());
 });
 
-test('Chord.symbol dec_string', () => {
-  expect(CMA7_6.symbol()).toEqual(CMA7_6.decString().symbol());
+test('Chord.symbol decString', () => {
+  expect(CMA7_6.decString().symbol()).toEqual(CMA7_6.symbol());
 });
 
 test('Chord.symbol incInversion root', () => {
-  expect(GDOM7_3.symbol().root).toBe(GDOM7_3.incInversion().symbol().root);
+  expect(GDOM7_3.incInversion().symbol().root).toBe(GDOM7_3.symbol().root);
 });
 
 test('Chord.symbol incInversion triad', () => {
-  expect(GDOM7_3.symbol().triad).toBe(GDOM7_3.incInversion().symbol().triad);
+  expect(GDOM7_3.incInversion().symbol().triad).toBe(GDOM7_3.symbol().triad);
 });
 
 test('Chord.symbol incInversion extension', () => {
-  expect(GDOM7_3.symbol().extension).toBe(GDOM7_3.incInversion().symbol().extension);
+  expect(GDOM7_3.incInversion().symbol().extension).toBe(GDOM7_3.symbol().extension);
 });
 
 test('Chord.symbol incInversion bass', () => {
-  expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.incInversion().symbol().bass);
+  expect(GDOM7_3.incInversion().symbol().bass).not.toBe(GDOM7_3.symbol().bass);
 });
 
 test('Chord.symbol decInversion root', () => {
-  expect(GDOM7_3.symbol().root).toBe(GDOM7_3.decInversion().symbol().root);
+  expect(GDOM7_3.decInversion().symbol().root).toBe(GDOM7_3.symbol().root);
 });
 
 test('Chord.symbol decInversion triad', () => {
-  expect(GDOM7_3.symbol().triad).toBe(GDOM7_3.decInversion().symbol().triad);
+  expect(GDOM7_3.decInversion().symbol().triad).toBe(GDOM7_3.symbol().triad);
 });
 
 test('Chord.symbol decInversion extension', () => {
-  expect(GDOM7_3.symbol().extension).toBe(GDOM7_3.decInversion().symbol().extension);
+  expect(GDOM7_3.decInversion().symbol().extension).toBe(GDOM7_3.symbol().extension);
 });
 
 test('Chord.symbol decInversion bass', () => {
-  expect(GDOM7_3.symbol().bass).not.toBe(GDOM7_3.decInversion().symbol().bass);
+  expect(GDOM7_3.decInversion().symbol().bass).not.toBe(GDOM7_3.symbol().bass);
+});
+
+test('Chord.symbol incOctave', () => {
+  expect(CMA7_5.incOctave().symbol()).toEqual(CMA7_5.symbol());
+});
+
+test('Chord.symbol decOctave', () => {
+  expect(CMA7_5.decOctave().symbol()).toEqual(CMA7_5.symbol());
 });
 
 // Chord.bass
@@ -562,23 +575,21 @@ test('Chord.toElement column has svg', () => {
   expect(svg.localName).toBe('svg');
 });
 
-test('Chord.toElement (with note) has column span', () => {
-  const column = CMA7_5.setNote('hello').toElement('span').children[0];
+test('Chord.toElement (with text) has column span', () => {
+  const column = CMA7_5.setText('hello').toElement('span').children[0];
   expect(column.localName).toBe('span');
   expect(column.className).toBe('column');
   expect(column.childElementCount).toBe(3);
 });
 
-test('Chord.toElement (with note) column has note span', () => {
-  const note = CMA7_5.setNote('hello').toElement('span').children[0].children[2];
-  expect(note.localName).toBe('span');
-  expect(note.className).toBe('note');
+test('Chord.toElement (with text) column has note span', () => {
+  const text = CMA7_5.setText('hello').toElement('span').children[0].children[2];
+  expect(text.localName).toBe('span');
+  expect(text.className).toBe('note');
 });
 
-// Optional.toElement
-
 test('Optional.toElement has grid span', () => {
-  const element = new Optional('C', 1).add(5, 3, 1).toElement('span');
+  const element = new Chord('C', 1).add(5, 3, 1).toElement('span');
   expect(element.localName).toBe('span');
   expect(element.className).toBe('grid');
   expect(element.childElementCount).toBe(1);

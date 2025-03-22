@@ -23,7 +23,7 @@
 import { jest } from '@jest/globals'
 import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
 import { Stop } from './stop.js';
-import { Chord, Optional } from './chord.js';
+import { Chord } from './chord.js';
 import { Bar } from './bar.js';
 
 // flatten
@@ -168,22 +168,22 @@ test('generateGrid adds labeled Stop', () => {
 
 test('generateGrid adds Chord finger', () => {
   expect(generateGrid('C 1 cho 5 1 #'))
-  .toEqual(new Chord('C', 1, [], { 5: 1 }));
+  .toEqual(new Chord('C', 1).setFingers({ 5: 1 }));
 });
 
 test('generateGrid adds Chord fingers', () => {
   expect(generateGrid('C 1 cho 5 1 # 4 3 #'))
-  .toEqual(new Chord('C', 1, [], { 5: 1, 4: 3 }));
+  .toEqual(new Chord('C', 1).setFingers({ 5: 1, 4: 3 }));
 });
 
-test('generateGrid adds Chord node', () => {
+test('generateGrid sets Optional', () => {
+  expect(generateGrid('C 1 cho ?'))
+    .toEqual(new Chord('C', 1).setOptional(true));
+});
+
+test('generateGrid sets Text', () => {
   expect(generateGrid('C 1 cho hello !'))
-  .toEqual(new Chord('C', 1, [], {}, 'hello'));
-});
-
-test('generateGrid pushes Optional', () => {
-  expect(generateGrid('C 1 opt'))
-    .toEqual(new Optional('C', 1));
+  .toEqual(new Chord('C', 1).setText('hello'));
 });
 
 test('generateGrid adds Chord', () => {

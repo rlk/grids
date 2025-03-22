@@ -19,7 +19,7 @@
 // SOFTWARE.
 
 import { Bar } from './bar.js';
-import { Chord, Optional, alignMarks, alignFrets } from './chord.js';
+import { Chord, alignMarks, alignFrets } from './chord.js';
 
 const offsetOfInterval = {
   1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
@@ -80,11 +80,6 @@ export function generateGrid(text, debug) {
       const k = stack.pop();
       stack.push(new Chord(k, d));
 
-    } else if (word == 'opt') {
-      const d = stack.pop();
-      const k = stack.pop();
-      stack.push(new Optional(k, d));
-
     // Stop constructors
 
     } else if (word == '+' || word == 'x' || word == '=' ||
@@ -113,16 +108,19 @@ export function generateGrid(text, debug) {
 
     // Chord attributes
 
+    } else if (word == '?') {
+      stack.push(stack.pop().setOptional(true));
+
     } else if (word == '!') {
       const n = stack.pop();
       const c = stack.pop();
-      stack.push(c.setNote(n));
+      stack.push(c.setText(n));
 
     } else if (word == '#') {
       const f = stack.pop();
       const s = stack.pop();
       const c = stack.pop();
-      stack.push(c.setFinger(s, f));
+      stack.push(c.addFinger(s, f));
 
     // Chord functions
 
@@ -196,13 +194,13 @@ export function generateGrid(text, debug) {
 
     } else if (word == 'dupe') {
       const a = stack.pop();
-      const b = a.clone();
+      const b = a.copy();
       stack.push(a, b);
 
     } else if (word == 'over') {
       const a = stack.pop();
       const b = stack.pop();
-      const c = b.clone();
+      const c = b.copy();
       stack.push(b, a, c);
 
     } else if (isNaN(word)) {

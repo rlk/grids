@@ -39,6 +39,10 @@ export class Stop {
     this.decor = decor;
   }
 
+  copy() {
+    return new Stop(this.string, this.fret, this.degree, this.label, this.decor);
+  }
+
   toString() {
     if (this.decor) {
       return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label} decor)`;
@@ -61,10 +65,6 @@ export class Stop {
 
   interval(root) {
     return toDegree(this.degree - root + 1);
-  }
-
-  clone() {
-    return new Stop(this.string, this.fret, this.degree, this.label, this.decor);
   }
 
   incString() {

@@ -24,50 +24,97 @@ import { symbolFromSpelling } from './symbol.js'
 import { createGrid } from './grid.js'
 
 const pitchOfName = {
-  'C♭': 12, 'C':  1, 'C♯':  2,
-  'D♭':  2, 'D':  3, 'D♯':  4,
-  'E♭':  4, 'E':  5, 'E♯':  6,
-  'F♭':  5, 'F':  6, 'F♯':  7,
-  'G♭':  7, 'G':  8, 'G♯':  9,
-  'A♭':  9, 'A': 10, 'A♯': 11,
-  'B♭': 11, 'B': 12, 'B♯':  1,
+  'C♭': 12, 'C': 1, 'C♯': 2,
+  'D♭': 2, 'D': 3, 'D♯': 4,
+  'E♭': 4, 'E': 5, 'E♯': 6,
+  'F♭': 5, 'F': 6, 'F♯': 7,
+  'G♭': 7, 'G': 8, 'G♯': 9,
+  'A♭': 9, 'A': 10, 'A♯': 11,
+  'B♭': 11, 'B': 12, 'B♯': 1,
 };
 const nameOfDegreePerKey = {
-    'C'  : { 1: 'C',  2: 'D',  3: 'E',  4: 'F',  5: 'G',  6: 'A',  7: 'B'  },
-    'F'  : { 1: 'F',  2: 'G',  3: 'A',  4: 'B♭', 5: 'C',  6: 'D',  7: 'E'  },
-    'B♭' : { 1: 'B♭', 2: 'C',  3: 'D',  4: 'E♭', 5: 'F',  6: 'G',  7: 'A'  },
-    'E♭' : { 1: 'E♭', 2: 'F',  3: 'G',  4: 'A♭', 5: 'B♭', 6: 'C',  7: 'D'  },
-    'A♭' : { 1: 'A♭', 2: 'B♭', 3: 'C',  4: 'D♭', 5: 'E♭', 6: 'F',  7: 'G'  },
-    'D♭' : { 1: 'D♭', 2: 'E♭', 3: 'F',  4: 'G♭', 5: 'A♭', 6: 'B♭', 7: 'C'  },
-    'G♭' : { 1: 'G♭', 2: 'A♭', 3: 'B♭', 4: 'C♭', 5: 'D♭', 6: 'E♭', 7: 'F'  },
-    'C♭' : { 1: 'C♭', 2: 'D♭', 3: 'E♭', 4: 'F♭', 5: 'G♭', 6: 'A♭', 7: 'B♭' },
-    'G'  : { 1: 'G',  2: 'A',  3: 'B',  4: 'C',  5: 'D',  6: 'E',  7: 'F♯' },
-    'D'  : { 1: 'D',  2: 'E',  3: 'F♯', 4: 'G',  5: 'A',  6: 'B',  7: 'C♯' },
-    'A'  : { 1: 'A',  2: 'B',  3: 'C♯', 4: 'D',  5: 'E',  6: 'F♯', 7: 'G♯' },
-    'E'  : { 1: 'E',  2: 'F♯', 3: 'G♯', 4: 'A',  5: 'B',  6: 'C♯', 7: 'D♯' },
-    'B'  : { 1: 'B',  2: 'C♯', 3: 'D♯', 4: 'E',  5: 'F♯', 6: 'G♯', 7: 'A♯' },
-    'F♯' : { 1: 'F♯', 2: 'G♯', 3: 'A♯', 4: 'B',  5: 'C♯', 6: 'D♯', 7: 'E♯' },
-    'C♯' : { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
+  'C': { 1: 'C', 2: 'D', 3: 'E', 4: 'F', 5: 'G', 6: 'A', 7: 'B' },
+  'F': { 1: 'F', 2: 'G', 3: 'A', 4: 'B♭', 5: 'C', 6: 'D', 7: 'E' },
+  'B♭': { 1: 'B♭', 2: 'C', 3: 'D', 4: 'E♭', 5: 'F', 6: 'G', 7: 'A' },
+  'E♭': { 1: 'E♭', 2: 'F', 3: 'G', 4: 'A♭', 5: 'B♭', 6: 'C', 7: 'D' },
+  'A♭': { 1: 'A♭', 2: 'B♭', 3: 'C', 4: 'D♭', 5: 'E♭', 6: 'F', 7: 'G' },
+  'D♭': { 1: 'D♭', 2: 'E♭', 3: 'F', 4: 'G♭', 5: 'A♭', 6: 'B♭', 7: 'C' },
+  'G♭': { 1: 'G♭', 2: 'A♭', 3: 'B♭', 4: 'C♭', 5: 'D♭', 6: 'E♭', 7: 'F' },
+  'C♭': { 1: 'C♭', 2: 'D♭', 3: 'E♭', 4: 'F♭', 5: 'G♭', 6: 'A♭', 7: 'B♭' },
+  'G': { 1: 'G', 2: 'A', 3: 'B', 4: 'C', 5: 'D', 6: 'E', 7: 'F♯' },
+  'D': { 1: 'D', 2: 'E', 3: 'F♯', 4: 'G', 5: 'A', 6: 'B', 7: 'C♯' },
+  'A': { 1: 'A', 2: 'B', 3: 'C♯', 4: 'D', 5: 'E', 6: 'F♯', 7: 'G♯' },
+  'E': { 1: 'E', 2: 'F♯', 3: 'G♯', 4: 'A', 5: 'B', 6: 'C♯', 7: 'D♯' },
+  'B': { 1: 'B', 2: 'C♯', 3: 'D♯', 4: 'E', 5: 'F♯', 6: 'G♯', 7: 'A♯' },
+  'F♯': { 1: 'F♯', 2: 'G♯', 3: 'A♯', 4: 'B', 5: 'C♯', 6: 'D♯', 7: 'E♯' },
+  'C♯': { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
 };
 
 export class Chord {
-  constructor(key, degree, stops=[], finger={}, note=null) {
+  constructor(key, degree, stops = []) {
     this.key = key
     this.degree = degree
     this.stops = stops
+    this.nosymbol = false
+    this.optional = false
+    this.fingers = {}
+    this.text = null
     this.gridMin = null
     this.gridMax = null
-    this.finger = finger
-    this.note = note
   }
 
-  toString() {
-    const stops = `${this.stops.map((stop) => stop.toString()).join(' ')}`
-    if (this.note) {
-      return `Chord(${this.key} ${this.degree} [${stops}] "${this.note}")`;
-    } else {
-      return `Chord(${this.key} ${this.degree} [${stops}])`;
-    }
+  setKey(key) {
+    this.key = key;
+    return this;
+  }
+
+  setDegree(degree) {
+    this.degree = degree;
+    return this;
+  }
+
+  setStops(stops) {
+    this.stops = stops;
+    return this;
+  }
+
+  setNoSymbol(nosymbol) {
+    this.nosymbol = nosymbol;
+    return this;
+  }
+
+  setOptional(optional) {
+    this.optional = optional;
+    return this;
+  }
+
+  setFingers(fingers) {
+    this.fingers = fingers;
+    return this;
+  }
+
+  setText(text) {
+    this.text = text;
+    return this;
+  }
+
+  copy() {
+    return new Chord(this.key, this.degree)
+      .setStops(this.stops.map((stop => stop.copy())))
+      .setNoSymbol(this.nosymbol)
+      .setOptional(this.optional)
+      .setFingers({ ...this.fingers })
+      .setText(this.text);
+  }
+
+  add(string, fret, interval, label = '+', decor = false) {
+    this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label, decor));
+    return this;
+  }
+
+  addFinger(string, finger) {
+    this.fingers[string] = finger;
+    return this;
   }
 
   isValid() {
@@ -85,66 +132,46 @@ export class Chord {
     return Math.max(...this.stops.map((stop) => stop.fret));
   }
 
-  add(string, fret, interval, label='+', decor=false) {
-    this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label, decor));
-    return this;
-  }
-
-  setFinger(string, finger) {
-    this.finger[string] = finger;
-    return this;
-  }
-
-  setNote(note) {
-    this.note = note;
-    return this;
-  }
-
-  clone() {
-    return new Chord(this.key, this.degree, this.stops.map((stop => stop.clone())), this.finger, this.note);
-  }
-
   incString() {
-    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.incString()));
+    return this.copy().setStops(this.stops.map((stop) => stop.incString()));
   }
 
   decString() {
-    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.decString()));
+    return this.copy().setStops(this.stops.map((stop) => stop.decString()));
   }
 
   incDegree() {
-    return new Chord(this.key, toDegree(this.degree + 1), this.stops.map((stop) => stop.incDegree()));
+    return this.copy().setDegree(toDegree(this.degree + 1)).setStops(this.stops.map((stop) => stop.incDegree()));
   }
 
   decDegree() {
-    return new Chord(this.key, toDegree(this.degree - 1), this.stops.map((stop) => stop.decDegree()));
+    return this.copy().setDegree(toDegree(this.degree - 1)).setStops(this.stops.map((stop) => stop.decDegree()));
   }
 
   incInversion() {
     const sorted = this.stops.map((stop) => stop.degree).sort()
     const looped = sorted.concat(sorted)
-    return new Chord(this.key, this.degree,
-      this.stops.map((stop) => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])))
+    return this.copy().setStops(
+      this.stops.map((stop) => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])));
   }
 
   decInversion() {
     const sorted = this.stops.map((stop) => stop.degree).sort().reverse()
     const looped = sorted.concat(sorted)
-    return new Chord(this.key, this.degree,
-      this.stops.map((stop) => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])))
+    return this.copy().setStops(
+      this.stops.map((stop) => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])));
   }
 
   incOctave() {
-    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.incOctave()));
+    return this.copy().setStops(this.stops.map((stop) => stop.incOctave()));
   }
 
   decOctave() {
-    return new Chord(this.key, this.degree, this.stops.map((stop) => stop.decOctave()));
+    return this.copy().setStops(this.stops.map((stop) => stop.decOctave()));
   }
 
   mark() {
-    const roots = this.stops.filter((stop) => stop.degree == this.degree)
-      .toSorted((a, b) => b.string - a.string);
+    const roots = this.stops.filter((stop) => stop.degree == this.degree).toSorted((a, b) => b.string - a.string);
     const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
     if (roots.length) {
       return roots[0].fret;
@@ -161,8 +188,8 @@ export class Chord {
 
     var spelling = new Array(8);
     this.stops.filter((stop) => !stop.decor)
-             .forEach((stop) => spelling[stop.interval(this.degree)] =
-                calcOffset(root, stop.pitch(), stop.interval(this.degree)));
+      .forEach((stop) => spelling[stop.interval(this.degree)] =
+        calcOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     switch (spelling[1]) {
       case -1: return symbolFromSpelling(flatten(name), spelling.map((o) => o + 1), this.bass());
@@ -188,34 +215,33 @@ export class Chord {
     return null;
   }
 
-  toElement(tag, optional = false) {
+  toElement(tag) {
     var chord = document.createElement(tag);
     chord.setAttribute('class', 'grid');
     var column = document.createElement('span');
     column.setAttribute('class', 'column');
 
-    column.appendChild(this.symbol().toElement(optional));
+    column.appendChild(this.symbol().toElement(this.optional));
     column.appendChild(createGrid(this));
 
-    if (this.note) {
-      var note = document.createElement('span');
-      note.setAttribute('class', 'note');
-      note.innerHTML = this.note;
-      column.appendChild(note);
+    if (this.text) {
+      var text = document.createElement('span');
+      text.setAttribute('class', 'note');
+      text.innerHTML = this.text;
+      column.appendChild(text);
     }
 
     chord.appendChild(column);
     return chord;
   }
-}
 
-export class Optional extends Chord {
-  constructor(key, degree, stops=[]) {
-    super(key, degree, stops);
-  }
-
-  toElement(tag) {
-    return super.toElement(tag, true);
+  toString() {
+    const stops = `${this.stops.map((stop) => stop.toString()).join(' ')}`
+    if (this.text) {
+      return `Chord(${this.key} ${this.degree} [${stops}] "${this.text}")`;
+    } else {
+      return `Chord(${this.key} ${this.degree} [${stops}])`;
+    }
   }
 }
 

@@ -83,10 +83,10 @@ test('Stop.isValid degree high', () => {
   expect(new Stop(1, 1, 8).isValid()).toBe(false);
 });
 
-// Stop.clone
+// Stop.copy
 
 test('Stop.incString', () => {
-  expect(new Stop(2, 1, 1, 'x', true).clone()).toEqual(new Stop(2, 1, 1, 'x', true));
+  expect(new Stop(2, 1, 1, 'x', true).copy()).toEqual(new Stop(2, 1, 1, 'x', true));
 });
 
 // Stop.incString / Stop.decString
