@@ -67,7 +67,7 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-export function generateGrid(text, classList) {
+export function generateGrid(text, className = '') {
   var stack = []
 
   const words = text.trim().split(/[ \n]+/);
@@ -180,10 +180,10 @@ export function generateGrid(text, classList) {
       alignMarks(stack.filter((x) => x.hasOwnProperty('stops')));
 
     } else if (word == 'td') {
-      stack = stack.map((e) => e.toElement('td', classList));
+      stack = stack.map((e) => e.toElement('td', className));
 
     } else if (word == 'span') {
-      stack = stack.map((e) => e.toElement('span', classList));
+      stack = stack.map((e) => e.toElement('span', className));
 
     // Stack functions
 
@@ -212,7 +212,7 @@ export function generateGrid(text, classList) {
     } else {
       stack.push(parseInt(word));
     }
-    if (classList.contains('debug')) {
+    if (className.includes('debug')) {
       console.log(stack.join(' '));
     }
   }

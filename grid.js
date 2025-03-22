@@ -2,7 +2,7 @@ import { generateGrid } from "./modules/utility.js";
 
 function render() {
   for (var element of document.querySelectorAll('.gridgen')) {
-    var grid = generateGrid(element.innerHTML, element.classList);
+    var grid = generateGrid(element.innerHTML, element.className);
     if (Array.isArray(grid)) {
       element.replaceWith(...grid);
     } else {

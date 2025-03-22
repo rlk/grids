@@ -236,7 +236,7 @@ test('generateGrid applies inc string', () => {
 });
 
 test('generateGrid applies dec string', () => {
-  expect(generateGrid('C 1 cho 5 5 2 + s-', true))
+  expect(generateGrid('C 1 cho 5 5 2 + s-'))
     .toEqual(new Chord('C', 1).add(4, 0, 2));
 });
 
@@ -261,12 +261,12 @@ test('generateGrid applies 5th down', () => {
 });
 
 test('generateGrid applies inc inversion', () => {
-  expect(generateGrid('C 1 cho 5 3 1 + 4 2 3 + 3 0 5 + i+', true))
+  expect(generateGrid('C 1 cho 5 3 1 + 4 2 3 + 3 0 5 + i+'))
     .toEqual(new Chord('C', 1).add(5, 7, 3).add(4, 5, 5).add(3, 5, 1));
 });
 
 test('generateGrid applies dec inversion', () => {
-  expect(generateGrid('C 1 cho 5 7 3 + 4 5 5 + 3 5 1 + i-', true))
+  expect(generateGrid('C 1 cho 5 7 3 + 4 5 5 + 3 5 1 + i-'))
     .toEqual(new Chord('C', 1).add(5, 3, 1).add(4, 2, 3).add(3, 0, 5));
 });
 
@@ -336,7 +336,7 @@ test('generateGrid creates Chord td', () => {
 test('debug logging appears', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(generateGrid('A B C', true)).toEqual(['A', 'B', 'C']);
+  expect(generateGrid('A B C', 'debug')).toEqual(['A', 'B', 'C']);
 
   expect(logSpy).toHaveBeenCalledWith('A');
   expect(logSpy).toHaveBeenCalledWith('A B');

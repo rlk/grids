@@ -550,10 +550,20 @@ test('Chord.bass no stops', () => {
 
 // Chord.toElement
 
-test('Chord.toElement has grid span', () => {
-  const element = CMA7_5.toElement('span');
+test('Chord.toElement has span', () => {
+  const element = CMA7_5.toElement('span', 'aoeu snth');
   expect(element.localName).toBe('span');
-  expect(element.className).toBe('grid');
+  expect(element.classList.contains('aoeu')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
+  expect(element.childElementCount).toBe(1);
+});
+
+test('Chord.toElement has grid span', () => {
+  const element = CMA7_5.toElement('span', 'gridgen aoeu snth');
+  expect(element.localName).toBe('span');
+  expect(element.classList.contains('grid')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
   expect(element.childElementCount).toBe(1);
 });
 
@@ -586,13 +596,6 @@ test('Chord.toElement (with text) column has note span', () => {
   const text = CMA7_5.setText('hello').toElement('span').children[0].children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('note');
-});
-
-test('Optional.toElement has grid span', () => {
-  const element = new Chord('C', 1).add(5, 3, 1).toElement('span');
-  expect(element.localName).toBe('span');
-  expect(element.className).toBe('grid');
-  expect(element.childElementCount).toBe(1);
 });
 
 // alignMarks / alignFrets
