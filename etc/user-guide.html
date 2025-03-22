@@ -52,7 +52,7 @@
 
 <body>
   <h1>Gridgen User Guide</h1>
-  <p>Gridgen is a visual calculator for guitar chords. It's capable of manipulating chords, infering chord symbols, rendering chord grids to SVGs, and embedding SVGs in HTML documents. Here's an example output:</p>
+  <p>Gridgen is a visual calculator for guitar chords. It's capable of manipulating chords, inferring chord symbols, rendering chord grids to SVGs, and embedding SVGs in HTML documents. Here's an example output:</p>
   <p class="center">
     <span class="gridgen">
       C 1 cho 6 8 1 + 5 10 5 + 3 9 3 + 2 12 7 x
@@ -141,12 +141,16 @@
     <dd>Replace <i>&lt;chord&gt;</i> with the next higher chord in the systematic inversion. (<a href="#cc">CC</a> p.?)</dd>
     <dt><i>&lt;chord&gt;</i> <code>i-</code></dt>
     <dd>Replace <i>&lt;chord&gt;</i> with the next lower chord in the systematic inversion. (<a href="#cc">CC</a> p.?)</dd>
+    <dt><i>&lt;chord&gt;</i> <code>o+</code></dt>
+    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the same strings, one octave higher.</dd>
+    <dt><i>&lt;chord&gt;</i> <code>o-</code></dt>
+    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the same strings, one octave lower.</dd>
     <dt><i>&lt;chord&gt;</i> <code>4+</code></dt>
     <dd>Replace <i>&lt;chord&gt;</i> with the chord a fourth higher, on the next lower set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">Fma<sup>7</sup></span> rooted on 4.</dd>
     <dt><i>&lt;chord&gt;</i> <code>5-</code></dt>
     <dd>Replace <i>&lt;chord&gt;</i> with the chord a fifth lower, on the next higher set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">G<sup>7</sup></span> rooted on 6.</dd>
   </dl>
-  <p>It's possible for these operations to produce an &ldquo;invalid&rdquo; chord—a chord that uses negative fret numbers or non-existant strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
+  <p>It's possible for these operations to produce an &ldquo;invalid&rdquo; chord—a chord that uses negative fret numbers or non-existent strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
 
   <h3 id="chord-alignment-operators">Chord alignment operators</h3>
   <p>Chord alignment operators take a sequence of chords, equalize their size, and align them visually.</p>
@@ -195,8 +199,8 @@
   <p>The following is a list of gridgen examples. To see how each is defined, examine the HTML source of this document.</p>
 
   <h3 id="arbitrary-stop-labels">Arbitrary Stop Labels</h3>
-  <p>The <code>.</code> operater adds a stop with an arbitrary character label. This has countless uses. For example, it may be used to indicate the fingering of a scale. This being the web, all of Unicode is at your disposal here.</p>
-  <p class="center" style="zoom:150%">
+  <p>The <code>.</code> operator adds a stop with an arbitrary character label. This has countless uses. For example, it may be used to indicate the fingering of a scale. This being the web, all of Unicode is at your disposal here.</p>
+  <p class="center nosymbol" style="zoom:150%">
     <span class="gridgen">
       D 1 cho
       6 2 3 1 . 6 3 4 2 . 6 5 5 4 .
@@ -207,7 +211,7 @@
       1 2 3 1 . 1 3 4 2 . 1 5 5 4 .
       span
     </span>
-    <span class="gridgen debug">
+    <span class="gridgen">
       D 1 cho
       6 2 3 🍏 . 6 3 4 🍎 . 6 5 5 🍊 .
       5 2 6 🍋 . 5 4 7 🍋‍🟩 . 5 5 1 🍌 .
@@ -220,21 +224,37 @@
   </p>
 
   <h3 id="noting-time">Noting time</h3>
-  <p>Slashes and bars.</p>
-
-  <h3>Overlaying Stops</h3>
-  <p>Overlayed stops appear when an elaboration or a melody reuse a chord tone. For example, here's the melody and accompanyment to the lyric &ldquo;You say tomato, I say tomahto,&rdquo;</p>
+  <p>Greene frequently used slashes beneath the chord grid to indicate the number of beats that a chord is played (<a href="#cc">CC</a> p.58). This can be accomplished using the <code>!</code> operation.</p>
   <p class="center">
     <span class="gridgen">
-      G 1 cho 6 3 1 + 4 5 1 + 3 4 3 + 2 5 6 + 1 3 1 + 2 5 6 x 6 1 # 4 3 # 3 2 # 2 4 # 1 1 #
-      G 6 cho 5 7 1 + 4 5 3 + 3 7 7 + 2 7 2 + 2 7 2 x 2 5 1 = 5 2 # 4 1 # 3 3 # 2 4 #
-      G 2 cho 6 5 1 + 4 5 7 + 3 5 3 + 2 8 7 + 1 5 1 x 6 1 # 4 1 # 3 1 # 2 4 # 1 1 #
-      G 5 cho 5 5 1 + 4 7 5 + 3 5 7 + 2 7 3 + 1 7 6 + 1 7 6 x 5 1 # 4 2 # 3 1 # 2 3 # 1 4 #
+      F 4 cho 6 7 1 + 4 7 7 + 3 7 3 + 1 5 7 + 2 6 5 x 6 2 # 4 3 # 3 4 # 2 1 # 1 1 # // !
+      F 4 cho 6 6 1 + 4 6 7 + 3 6 3 + 2 5 5 + 6 2 # 4 3 # 3 4 # 2 1 # / !
+      F 3 cho 6 5 1 + 4 5 7 + 3 5 3 + 2 8 7 + 2 5 5 x 6 1 # 4 1 # 3 1 # 2 4 # // !
+      F 3 cho 6 4 1 + 4 4 7 + 3 4 3 + 2 4 5 + 6 1 # 4 1 # 3 1 # 2 1 # / !
+      F 2 cho 6 3 1 + 4 3 7 + 3 3 3 + 2 6 7 + 2 3 5 x 6 1 # 4 1 # 3 1 # 2 4 # // !
+      F 4 cho 6 8 2 (+) 4 8 1 + 3 7 3 + 2 6 5 + 6 3 # 4 4 # 3 2 # 2 1 # / !
+      F 1 cho 5 8 1 + 4 7 3 + 3 9 7 + 2 8 2 + 5 2 # 4 1 # 3 4 # 2 3 # /// !
       af span
     </span>
   </p>
+  <p>Alternatively, bar markers can imply full measures, and also provide the opportunity to add repeat markers. For example, here's the melody and accompaniment to the lyric &ldquo;You say to-ma-to, I say to-mah-to.&rdquo;</p>
+  <p class="center">
+    <span class="gridgen">
+      |:
+      G 1 cho 6 3 1 + 4 5 1 + 3 4 3 + 2 5 6 + 1 3 1 + 2 5 6 x 6 1 # 4 3 # 3 2 # 2 4 # 1 1 #
+      G 6 cho 5 7 1 + 4 5 3 + 3 7 7 + 2 7 2 + 2 7 2 x 2 5 1 = 5 2 # 4 1 # 3 3 # 2 4 #
+      |
+      G 2 cho 6 5 1 + 4 5 7 + 3 5 3 + 2 8 7 + 1 5 1 x 6 1 # 4 1 # 3 1 # 2 4 # 1 1 #
+      G 5 cho 5 5 1 + 4 7 5 + 3 5 7 + 2 5 2 _ 2 7 3 + 1 7 6 + 1 7 6 x 5 1 # 4 2 # 3 1 # 2 3 # 1 4 #
+      :|
+      af span
+    </span>
+  </p>
+
+  <h3>Overlaying Stops</h3>
+  <p>Overlaid stops appear when an elaboration or a melody reuse a chord tone. The &ldquo;to-ma-to, to-mah-to&rdquo; sequence just above is an example.</p>
   <p>Order sometimes matters. Stops are displayed in the order they are added to a chord. Later stops are displayed topmost. Here's a grid showing each of the standard markers—dot, circle, X, square, and diamond—overlaid with each other standard marker. It should be clear that dot and X should appear on top, while square, diamond, and circle must appear on the bottom.</code></p>
-  <p class="center" style="zoom:150%">
+  <p class="center nosymbol" style="zoom:150%">
     <span class="gridgen">
       C 1 cho
       5 3 1 + 4 3 1 o 3 3 1 x 2 3 1 = 1 3 1 ^
@@ -282,11 +302,9 @@
     </span>
   </p>
 
-  <h3>String transference</h3>
-  <p>&ldquo;The string transference principal can be helpful in situations where you start to &lsquo;run out of room.&rsquo;&rdquo;</p>
-
   <h3>Forms for diatonic chord scales</h3>
-  <p>(<a href="#mcp">MCP</a>, p. 21) introduces several forms for diatonic chord scales, based on first-inversion triads, and suggests the reader build diatonic chords from each of them. We can easily generate these chords just by specifying the initial form and extending the sequence. Clearly, the blind extension of these forms takes us quickly into the high frets. Drop an octave to accommodate.</p>
+  <p>(<a href="#mcp">MCP</a>, p. 21) introduces several forms for diatonic chord scales, based on first-inversion triads, and suggests the reader build diatonic chords from each of them. We can easily generate solutions to these exercises by specifying the initial form and extending the sequence with several <code>dupe d+</code> operations.</p>
+  <p>Clearly, the blind extension of these forms takes us quickly into the high frets. That's part of the exercise. Use string transference or shift an octave to accommodate.</p>
   <p class="center">
     <span class="gridgen">
       E 1 cho 6 4 3 + 4 2 1 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
@@ -297,7 +315,6 @@
       E 1 cho 5 11 3 + 3 9 1 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p>Those first two are what Green refers to (<a href="#mcp">MCP</a>, p. 20) when he states that &ldquo;forms that would be derived from the string transference method are grouped together.&rdquo;</p>
   <p class="center">
     <span class="gridgen">
       E 1 cho 6 4 3 + 3 4 5 + 2 5 1 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
@@ -313,12 +330,12 @@
       E 1 cho 6 4 3 + 4 2 1 + 3 4 5 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p>These next three are another string transference group.</p>
   <p class="center">
     <span class="gridgen">
       E 1 cho 6 4 3 + 5 2 5 + 4 2 1 + 3 4 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
+  <p>These next two sequences are notable in that they are the exact same voicing, thanks to string transference. When you &ldquo;run out of room&rdquo; on the first sequence, jump to the second.</p>
   <p class="center">
     <span class="gridgen">
       E 1 cho 5 11 3 + 4 9 5 + 3 9 1 + 2 12 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
@@ -329,7 +346,6 @@
       E 1 cho 4 6 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p>As are these last two.</p>
   <p class="center">
     <span class="gridgen">
       E 1 cho 6 4 3 + 4 6 3 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
@@ -338,6 +354,12 @@
   <p class="center">
     <span class="gridgen">
       E 1 cho 5 11 3 + 3 13 3 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
+    </span>
+  </p>
+  <p>The <em>moving lines</em> example (<a href="#mcp">MCP</a>, p. 21) works nicely as well, since &ldquo;decoration&rdquo; is preserved through chord operators.</p>
+  <p class="center">
+    <span class="gridgen">
+      E 1 cho 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + 1 5 4 (x) 1 4 3 (=) dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
   <p>(<a href="#mcp">MCP</a>, p. 23) Continues this exercise with diatonic 7th chords. Here are just a few.</p>
@@ -356,22 +378,6 @@
       E 1 cho 4 2 1 + 3 4 5 + 2 4 7 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
-    <span class="gridgen">
-      E 1 cho 6 0 1 + 4 1 7 + 3 1 3 + 2 0 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
-    </span>
-  </p>
-  <p class="center">
-    <span class="gridgen">
-      E 1 cho 5 7 1 + 3 8 7 + 2 9 3 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
-    </span>
-  </p>
-  <p class="center">
-    <span class="gridgen">
-      E 1 cho 6 0 1 + 5 2 5 + 3 1 3 + 2 4 7 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
-    </span>
-  </p>
-  </p>
 
   <h3>The diatonic cycle of 4ths</h3>
   <p>(<a href="#mcp">MCP</a>, p. 49) discusses &ldquo;The Diatonic Cycle of 4ths in Major Keys.&rdquo; The first example there is straightforwardly reproduced by defining only the first two chords, <span class="chord">Cma<sup>7</sup></span> and <span class="chord">Fma<sup>7</sup></span>. Subsequent chords are each generated by an <code>over d-</code> operation. Specifically, the initial two chords on the stack are separated by a fourth. Then, <code>over</code> duplicates the <em>second</em> element from the top of the stack, and <code>d-</code> moves that duplicate down one degree.</p>
@@ -384,15 +390,25 @@
   </p>
   <p>Note how the elaboration established by the initial two chords is maintained in generated chords.</p>
 
-  <h3>Structured inversion</h3>
-
-  <h3>Tweaking the chord symbol</h3>
-  <!-- decor stops -->
-  <!-- spaces -->
-  <!-- removing the chord symbol -->
-  <!-- hard-coding the chord symbol -->
+  <h3>Removing the chord symbol</h3>
+  <p>If a grid is being used to display a scale or diagram other than a chord, then the chord symbol might not be appropriate.It can be removed by setting the CSS of the &ldquo;symbol&rdquo; to have display property &ldquo;none&rdquo;.</p>
+  <p>For convenience, the default CSS defines a &ldquo;nosymbol&rdquo; class that may be added to the &ldquo;gridgen&rdquo; element's parent.</p>
+  <p class="center nosymbol" style="zoom:150%">
+    <span class="gridgen">
+      D 1 cho
+      6 2 3 🍏 . 6 3 4 🍎 . 6 5 5 🍊 .
+      5 2 6 🍋 . 5 4 7 🍋‍🟩 . 5 5 1 🍌 .
+      4 2 2 🍉 . 4 4 3 🍇 . 4 5 4 🍓 .
+      3 2 5 🫐 . 3 4 6 🍈 . 2 2 7 🍒 .
+      2 3 1 🍑 . 2 5 2 🥭 .
+      1 2 3 🍍 . 1 3 4 🥥 . 1 5 5 🥝 .
+      span
+    </span>
+  </p>
 
   <h3>Console debug logging</h3>
+  <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>F 4 cho 4 8 1 + 3 7 3 + 2 6 5 + span</code> gets turned into <span class="gridgen debug">F 4 cho 4 8 1 + 3 7 3 + 2 6 5 + span</span></p>
+
 </body>
 
 </html>
