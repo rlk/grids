@@ -67,6 +67,26 @@
     <li id="mcp">Greene, Ted. <i>Modern Chord Progressions.</i> Vol. 1. Alfred Music Publishing, 1976.</li>
   </ul>
 
+  <h2>Examples</h2>
+  <h3>Tunes</h3>
+  <ul>
+    <li><a href="christmas-time-is-here.html">christmas-time-is-here.html</a></li>
+    <li><a href="julia.html">julia.html</a></li>
+    <li><a href="lets-call-the-whole-thing-off.html">lets-call-the-whole-thing-off.html</a></li>
+    <li><a href="star-trek.html">star-trek.html</a></li>
+  </ul>
+  <h3>References</h3>
+  <ul>
+    <li><a href="I-IV-V-in-five-keys.html">I-IV-V-in-five-keys.html</a></li>
+    <li><a href="I-IV-V-in-five-positions.html">I-IV-V-in-five-positions.html</a></li>
+    <li><a href="c-I-V-triads.html">c-I-V-triads.html</a></li>
+    <li><a href="c-diatonic-chords-in-five-forms.html">c-diatonic-chords-in-five-forms.html</a></li>
+    <li><a href="c-seventh-arpeggios.html">c-seventh-arpeggios.html</a></li>
+    <li><a href="chord-scales-long.html">chord-scales-long.html</a></li>
+    <li><a href="chord-scales-short.html">chord-scales-short.html</a></li>
+    <li><a href="g-chord-scale-tables.html">g-chord-scale-tables.html</a></li>
+  </ul>
+
   <h2>Representation</h2>
   <p>Each Chord has a specified <em>key</em> and <em>degree</em> within that key. For example a G chord might have degree 1 in the key of G, degree 4 in the key of D, or degree 5 in the key of C. Specifying this ensures that manipulations on that chord are performed diatonically within its key.</p>
   <p>Similarly, each Stop has a specified interval within its chord. For example, a stop on 4th string at the 2nd fret would be an E, so its interval in a C chord would be 3. This is to ensure that chord symbols can be correctly inferred, even after chord manipulation. A C chord that marks an E♭ with an interval of 3 would be noted <span class="chord">Cmi</span>. (If it's unclear why this is necessary, note the ambiguous example of an A stop in a C chord, which might have an interval of either 6 or 7, denoting either a 6 chord or a 𝄫7 chord.)</p>
@@ -180,6 +200,7 @@
 
   <h3>HTML element constructors</h3>
   <p>HTML element constructors replace each item on the stack with an HTML element with class &ldquo;grid&rdquo;. On completion, this list of elements replaces the &ldquo;gridgen&rdquo; element whose innerHTML expression generated it.</p>
+  <p>All of the classes on the original element are added to the new one. The existing &ldquo;gridgen&rdquo; class is replaced with class &ldquo;grid&rdquo;.
   <dl>
     <dt id="td-element"><i>&lt;&middot; &middot; &middot;&gt;</i> <code>td</code></dt>
     <dd>Replace each chord on the stack with a td element.</dd>
