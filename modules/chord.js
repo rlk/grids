@@ -51,6 +51,10 @@ const nameOfDegreePerKey = {
   'C♯': { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
 };
 
+export function isChord(object) {
+  return object.hasOwnProperty('stops');
+}
+
 export class Chord {
   constructor(key = 'C', degree = 1, stops = [], options = new Options()) {
     this.key = key
@@ -209,28 +213,29 @@ export class Chord {
   }
 }
 
-export function alignMarks(chords, frets = 5) {
-  var min = Math.max(...chords.map(chord => chord.mark() - chord.minFret() + 1));
-  var max = Math.max(...chords.map(chord => chord.maxFret() - chord.mark()));
+export function alignMarks(elements, frets = 5) {
+  const chords = elements.filter(e => isChord(e));
+
+  var a = Math.min(...chords.map(c => c.minFret() - c.mark())) - 1;
+  var z = Math.max(...chords.map(c => c.maxFret() - c.mark()));
 
   if (frets) {
-    max = -min + Math.max(max - min, frets);
+    z = a + Math.max(z - a, frets);
   }
-  return chords.map(chord => chord.withOptions(
-    chord.options
-      .withGridMin(chord.mark() - min)
-      .withGridMax(chord.mark() + max)));
+  return elements.map(e => !isChord(e) ? e : e.withOptions(
+    e.options.withGridMin(e.mark() + a).withGridMax(e.mark() + z)));
 }
 
-export function alignFrets(chords, frets = 5) {
-  var min = Math.max(0, Math.min(...chords.map(chord => chord.minFret() - 1)));
-  var max = Math.max(0, Math.max(...chords.map(chord => chord.maxFret())));
+export function alignFrets(elements, frets = 5) {
+  const chords = elements.filter(e => isChord(e));
 
+  var a = Math.min(...chords.map(c => c.minFret())) - 1;
+  var z = Math.max(...chords.map(c => c.maxFret()));
+
+  a = Math.max(a, 0);
   if (frets) {
-    max = min + Math.max(max - min, frets);
+    z = a + Math.max(z - a, frets);
   }
-  return chords.map(chord => chord.withOptions(
-    chord.options
-      .withGridMin(min)
-      .withGridMax(max)));
+  return elements.map(e => !isChord(e) ? e : e.withOptions(
+    e.options.withGridMin(a).withGridMax(z)));
 }

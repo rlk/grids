@@ -107,13 +107,15 @@ export function generateGrid(text, className = '') {
       const c = stack.pop();
       stack.push(c.add(s, f, i, l));
 
-    // Chord attributes
+    // Chord options
 
     } else if (word == '?') {
-      stack.push(stack.pop().withOptions(new Options().withOptional(true)));
+      const c = stack.pop();
+      stack.push(c.withOptions(c.options.withOptional(true)));
 
     } else if (word == '$') {
-      stack.push(stack.pop().withOptions(new Options().withNoSymbol(true)));
+      const c = stack.pop();
+      stack.push(c.withOptions(c.options.withNoSymbol(true)));
 
     } else if (word == '!') {
       const t = stack.pop();
@@ -161,16 +163,16 @@ export function generateGrid(text, className = '') {
     // Bar constructors
 
     } else if (word == '|:') {
-      // stack.push(new Bar('&#x1D106;'));
+      stack.push(new Bar('&#x1D106;'));
 
     } else if (word == '|') {
-      // stack.push(new Bar('&#x1D100;'));
+      stack.push(new Bar('&#x1D100;'));
 
     } else if (word == ':|') {
-      // stack.push(new Bar('&#x1D107;'));
+      stack.push(new Bar('&#x1D107;'));
 
     } else if (word == 'spc') {
-      // stack.push(new Bar('&nbsp;'));
+      stack.push(new Bar('&nbsp;'));
 
     // Stack-mapping functions
 
@@ -213,7 +215,7 @@ export function generateGrid(text, className = '') {
     } else {
       stack.push(parseInt(word));
     }
-    if (className.includes('debug') || true) {
+    if (className.includes('debug')) {
       console.log(stack.join(' '));
     }
   }
