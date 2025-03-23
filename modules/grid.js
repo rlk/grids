@@ -125,7 +125,7 @@ export function createGrid(chord) {
       case 'x': grid.appendChild(set(  cross(x(s), t(f), 1.0))); break;
       case '=': grid.appendChild(set( square(x(s), t(f), 1.0))); break;
       case '^': grid.appendChild(set(diamond(x(s), t(f), 1.2))); break;
-      case 'o': grid.appendChild(set( circle(x(s), t(f), 1.0))); break;
+      case 'o': grid.appendChild(set( circle(x(s), t(f), 1.1))); break;
       default:  grid.appendChild(set(  label(x(s), t(f),   l))); break;
     }
   }
