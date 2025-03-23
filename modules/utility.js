@@ -76,7 +76,7 @@ export function generateGrid(text, className = '') {
 
     // Chord constructors
 
-    if (word == 'cho') {
+    if (word == 'chord') {
       const d = stack.pop();
       const k = stack.pop();
       stack.push(new Chord(k, d));
