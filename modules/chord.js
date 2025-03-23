@@ -20,6 +20,7 @@
 
 import { flatten, sharpen, toDegree, toOffset, calcOffset } from './utility.js'
 import { Stop } from './stop.js'
+import { Options } from './options.js'
 import { symbolFromSpelling } from './symbol.js'
 import { createGrid } from './grid.js'
 
@@ -51,60 +52,27 @@ const nameOfDegreePerKey = {
 };
 
 export class Chord {
-  constructor(key, degree, stops = []) {
+  constructor(key = 'C', degree = 1, stops = [], options = new Options()) {
     this.key = key
     this.degree = degree
     this.stops = stops
-    this.nosymbol = false
-    this.optional = false
-    this.fingers = {}
-    this.text = null
-    this.gridMin = null
-    this.gridMax = null
+    this.options = options
   }
 
-  setKey(key) {
-    this.key = key;
-    return this;
+  withDegree(degree) {
+    return Object.assign(new Chord(), this, { degree: toDegree(degree) });
   }
 
-  setDegree(degree) {
-    this.degree = degree;
-    return this;
+  withStopMap(func) {
+    return Object.assign(new Chord(), this, { stops: this.stops.map(func) });
   }
 
-  setStops(stops) {
-    this.stops = stops;
-    return this;
-  }
-
-  setNoSymbol(nosymbol) {
-    this.nosymbol = nosymbol;
-    return this;
-  }
-
-  setOptional(optional) {
-    this.optional = optional;
-    return this;
-  }
-
-  setFingers(fingers) {
-    this.fingers = fingers;
-    return this;
-  }
-
-  setText(text) {
-    this.text = text;
-    return this;
+  withOptions(options) {
+    return Object.assign(new Chord(), this, { options: Object.assign(new Options(), this.options, options) });
   }
 
   copy() {
-    return new Chord(this.key, this.degree)
-      .setStops(this.stops.map((stop => stop.copy())))
-      .setNoSymbol(this.nosymbol)
-      .setOptional(this.optional)
-      .setFingers({ ...this.fingers })
-      .setText(this.text);
+    return Object.assign(new Chord(), this);
   }
 
   add(string, fret, interval, label = '+', decor = false) {
@@ -112,66 +80,59 @@ export class Chord {
     return this;
   }
 
-  addFinger(string, finger) {
-    this.fingers[string] = finger;
-    return this;
-  }
-
   isValid() {
-    return this.stops.every((stop) => stop.isValid())
+    return this.stops.every(stop => stop.isValid())
       && this.degree >= 1
       && this.degree <= 7
       && this.key in nameOfDegreePerKey;
   }
 
   minFret() {
-    return Math.min(...this.stops.map((stop) => stop.fret));
+    return Math.min(...this.stops.map(stop => stop.fret));
   }
 
   maxFret() {
-    return Math.max(...this.stops.map((stop) => stop.fret));
-  }
-
-  incString() {
-    return this.copy().setStops(this.stops.map((stop) => stop.incString()));
-  }
-
-  decString() {
-    return this.copy().setStops(this.stops.map((stop) => stop.decString()));
-  }
-
-  incDegree() {
-    return this.copy().setDegree(toDegree(this.degree + 1)).setStops(this.stops.map((stop) => stop.incDegree()));
-  }
-
-  decDegree() {
-    return this.copy().setDegree(toDegree(this.degree - 1)).setStops(this.stops.map((stop) => stop.decDegree()));
-  }
-
-  incInversion() {
-    const sorted = this.stops.map((stop) => stop.degree).sort()
-    const looped = sorted.concat(sorted)
-    return this.copy().setStops(
-      this.stops.map((stop) => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])));
-  }
-
-  decInversion() {
-    const sorted = this.stops.map((stop) => stop.degree).sort().reverse()
-    const looped = sorted.concat(sorted)
-    return this.copy().setStops(
-      this.stops.map((stop) => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])));
+    return Math.max(...this.stops.map(stop => stop.fret));
   }
 
   incOctave() {
-    return this.copy().setStops(this.stops.map((stop) => stop.incOctave()));
+    return this.withStopMap(stop => stop.incOctave());
   }
 
   decOctave() {
-    return this.copy().setStops(this.stops.map((stop) => stop.decOctave()));
+    return this.withStopMap(stop => stop.decOctave());
+  }
+
+  incString() {
+    return this.withStopMap(stop => stop.incString());
+  }
+
+  decString() {
+    return this.withStopMap(stop => stop.decString());
+  }
+
+  incDegree() {
+    return this.withStopMap(stop => stop.incDegree()).withDegree(this.degree + 1);
+  }
+
+  decDegree() {
+    return this.withStopMap(stop => stop.decDegree()).withDegree(this.degree - 1);
+  }
+
+  incInversion() {
+    const sorted = this.stops.map(stop => stop.degree).sort()
+    const looped = sorted.concat(sorted)
+    return this.withStopMap(stop => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1]));
+  }
+
+  decInversion() {
+    const sorted = this.stops.map(stop => stop.degree).sort().reverse()
+    const looped = sorted.concat(sorted)
+    return this.withStopMap(stop => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1]));
   }
 
   mark() {
-    const roots = this.stops.filter((stop) => stop.degree == this.degree).toSorted((a, b) => b.string - a.string);
+    const roots = this.stops.filter(stop => stop.degree == this.degree).toSorted((a, b) => b.string - a.string);
     const frets = this.stops.toSorted((a, b) => a.fret - b.fret);
     if (roots.length) {
       return roots[0].fret;
@@ -187,8 +148,8 @@ export class Chord {
     const root = pitchOfName[name];
 
     var spelling = new Array(8);
-    this.stops.filter((stop) => !stop.decor)
-      .forEach((stop) => spelling[stop.interval(this.degree)] =
+    this.stops.filter(stop => !stop.decor)
+      .forEach(stop => spelling[stop.interval(this.degree)] =
         calcOffset(root, stop.pitch(), stop.interval(this.degree)));
 
     switch (spelling[1]) {
@@ -221,16 +182,16 @@ export class Chord {
     var column = document.createElement('span');
     column.setAttribute('class', 'column');
 
-    if (!this.nosymbol) {
-      column.appendChild(this.symbol().toElement(this.optional));
+    if (!this.options.nosymbol) {
+      column.appendChild(this.symbol().toElement(this.options.optional));
     }
 
     column.appendChild(createGrid(this));
 
-    if (this.text) {
+    if (this.options.text) {
       var text = document.createElement('span');
       text.setAttribute('class', 'note');
-      text.innerHTML = this.text;
+      text.innerHTML = this.options.text;
       column.appendChild(text);
     }
 
@@ -239,39 +200,37 @@ export class Chord {
   }
 
   toString() {
-    const stops = `${this.stops.map((stop) => stop.toString()).join(' ')}`
-    if (this.text) {
-      return `Chord(${this.key} ${this.degree} [${stops}] "${this.text}")`;
-    } else {
-      return `Chord(${this.key} ${this.degree} [${stops}])`;
-    }
+    var elements = [];
+    elements.push(`${this.key}`);
+    elements.push(`${this.degree}`);
+    elements.push(`[${this.stops.map(stop => stop.toString()).join(' ')}]`);
+    elements.push(`${this.options.toString()}`);
+    return `Chord(${elements.join(' ')})`;
   }
 }
 
 export function alignMarks(chords, frets = 5) {
-  var min = Math.max(...chords.map((chord) => chord.mark() - chord.minFret() + 1));
-  var max = Math.max(...chords.map((chord) => chord.maxFret() - chord.mark()));
+  var min = Math.max(...chords.map(chord => chord.mark() - chord.minFret() + 1));
+  var max = Math.max(...chords.map(chord => chord.maxFret() - chord.mark()));
 
   if (frets) {
     max = -min + Math.max(max - min, frets);
   }
-  for (var chord of chords) {
-    chord.gridMin = chord.mark() - min;
-    chord.gridMax = chord.mark() + max;
-  }
-  return chords;
+  return chords.map(chord => chord.withOptions(
+    chord.options
+      .withGridMin(chord.mark() - min)
+      .withGridMax(chord.mark() + max)));
 }
 
 export function alignFrets(chords, frets = 5) {
-  var min = Math.max(0, Math.min(...chords.map((chord) => chord.minFret() - 1)));
-  var max = Math.max(0, Math.max(...chords.map((chord) => chord.maxFret())));
+  var min = Math.max(0, Math.min(...chords.map(chord => chord.minFret() - 1)));
+  var max = Math.max(0, Math.max(...chords.map(chord => chord.maxFret())));
 
   if (frets) {
     max = min + Math.max(max - min, frets);
   }
-  for (var chord of chords) {
-    chord.gridMin = min;
-    chord.gridMax = max;
-  }
-  return chords;
+  return chords.map(chord => chord.withOptions(
+    chord.options
+      .withGridMin(min)
+      .withGridMax(max)));
 }

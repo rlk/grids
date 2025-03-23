@@ -94,10 +94,12 @@ export function createGrid(chord) {
   var grid = elem('svg', []);
   var smin = 1;
   var smax = 6;
-  var fgap = Object.keys(chord.fingers).length ? 1.0 : 0.25;
+  var fgap = Object.keys(chord.options.fingers).length ? 1.0 : 0.25;
 
-  const fmin = chord.gridMin ?? Math.max(0, chord.minFret() - 1);
-  const fmax = chord.gridMax ?? Math.max(0, chord.maxFret());
+  console.log(`createGrid: ${chord.toString()}`)
+
+  const fmin = chord.options.gridMin ?? Math.max(0, chord.minFret() - 1);
+  const fmax = chord.options.gridMax ?? Math.max(0, chord.maxFret());
 
   function x(s) {
     return (1 + smax - s) * stringDistance;
@@ -131,8 +133,8 @@ export function createGrid(chord) {
   if (chord.mark()) {
     grid.appendChild(label(x(smax) - labelDistance, y(chord.mark()), chord.mark().toString()));
   }
-  for (const s in chord.fingers) {
-    grid.appendChild(label(x(s), labelDistance + y(fmax), chord.fingers[s].toString()));
+  for (const s in chord.options.fingers) {
+    grid.appendChild(label(x(s), labelDistance + y(fmax), chord.options.fingers[s].toString()));
   }
 
   var width  = (smax - smin + 2) * stringDistance;

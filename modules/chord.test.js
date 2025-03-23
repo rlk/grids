@@ -22,6 +22,7 @@
 
 import { Stop } from './stop.js';
 import { Chord, alignFrets, alignMarks } from './chord.js';
+import { Options } from './options.js';
 import { Symbol } from './symbol.js';
 
 const AMI7_5 = new Chord('C', 6, [  // Ami7 with the root on string 5
@@ -98,42 +99,11 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
-// Chord.toString
+// Chord.copy
 
-test('Chord.toString', () => {
-  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).toString();
-  expect(string).toContain('C');
-  expect(string).toContain('1 1 1 +');
+test('Chord.copy', () => {
+  expect(CMA7_5.copy()).toEqual(CMA7_5);
 });
-
-test('Chord.setText.toString', () => {
-  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).setText('abc').toString();
-  expect(string).toContain('C');
-  expect(string).toContain('1 1 1 +');
-  expect(string).toContain('abc');
-});
-
-// Chord.isValid
-
-test('Chord.isValid', () => {
-  expect(new Chord('C', 1, [new Stop(1, 1, 1)]).isValid()).toBe(true);
-})
-
-test('Chord.isValid bad stop', () => {
-  expect(new Chord('C', 1, [new Stop(0, 1, 1)]).isValid()).toBe(false);
-})
-
-test('Chord.isValid degree low', () => {
-  expect(new Chord('C', 0, [new Stop(1, 1, 1)]).isValid()).toBe(false);
-})
-
-test('Chord.isValid degree high', () => {
-  expect(new Chord('C', 8, [new Stop(1, 1, 1)]).isValid()).toBe(false);
-})
-
-test('Chord.isValid bad key', () => {
-  expect(new Chord('X', 1, [new Stop(1, 1, 1)]).isValid()).toBe(false);
-})
 
 // Chord builders
 
@@ -162,29 +132,27 @@ test('Chord.add multiple', () => {
         new Stop(1, 7, 7, '+')]));
 })
 
-// Chord.setFingers / Chord.addFingers
+// Chord.isValid
 
-test('Chord.setFingers', () => {
-  expect(new Chord('C', 5).setFingers({1: 2}).fingers)
-    .toEqual(expect.objectContaining({1: 2}));
+test('Chord.isValid', () => {
+  expect(new Chord('C', 1, [new Stop(1, 1, 1)]).isValid()).toBe(true);
 })
 
-test('Chord.addFinger', () => {
-  expect(new Chord('C', 5).addFinger(1, 2).fingers)
-    .toEqual(expect.objectContaining({1: 2}));
+test('Chord.isValid bad stop', () => {
+  expect(new Chord('C', 1, [new Stop(0, 1, 1)]).isValid()).toBe(false);
 })
 
-// Chord.setText
-
-test('Chord.setText', () => {
-  expect(new Chord('C', 5).setText('abc').text).toBe('abc');
+test('Chord.isValid degree low', () => {
+  expect(new Chord('C', 0, [new Stop(1, 1, 1)]).isValid()).toBe(false);
 })
 
-// Chord.clone
+test('Chord.isValid degree high', () => {
+  expect(new Chord('C', 8, [new Stop(1, 1, 1)]).isValid()).toBe(false);
+})
 
-test('Chord.clone', () => {
-  expect(CMA7_5.copy()).toEqual(CMA7_5);
-});
+test('Chord.isValid bad key', () => {
+  expect(new Chord('X', 1, [new Stop(1, 1, 1)]).isValid()).toBe(false);
+})
 
 // Chord.incString / Chord.decString
 
@@ -275,18 +243,18 @@ test('Chord.decOctave temporarily invalid', () => {
 // Chord.mark
 
 test('Chord.mark one root', () => {
-    expect(new Chord('C', 1).add(5, 3, 1).add(4, 5, 5).add(3, 4, 7).add(2, 5, 3).mark())
-      .toBe(3);
+  expect(new Chord('C', 1).add(5, 3, 1).add(4, 5, 5).add(3, 4, 7).add(2, 5, 3).mark())
+    .toBe(3);
 });
 
 test('Chord.mark two root', () => {
-    expect(new Chord('C', 1).add(5, 3, 1).add(4, 5, 5).add(3, 5, 1).add(2, 5, 3).mark())
-      .toBe(3);
+  expect(new Chord('C', 1).add(5, 3, 1).add(4, 5, 5).add(3, 5, 1).add(2, 5, 3).mark())
+    .toBe(3);
 });
 
 test('Chord.mark no root', () => {
-    expect(new Chord('C', 1).add(4, 5, 5).add(3, 4, 7).add(2, 5, 3).mark())
-      .toBe(4);
+  expect(new Chord('C', 1).add(4, 5, 5).add(3, 4, 7).add(2, 5, 3).mark())
+    .toBe(4);
 });
 
 // Chord.symbol
@@ -586,16 +554,34 @@ test('Chord.toElement column has svg', () => {
 });
 
 test('Chord.toElement (with text) has column span', () => {
-  const column = CMA7_5.setText('hello').toElement('span').children[0];
+  const chord = CMA7_5.withOptions(new Options().withText('hello'));
+  const column = chord.toElement('span').children[0];
   expect(column.localName).toBe('span');
   expect(column.className).toBe('column');
   expect(column.childElementCount).toBe(3);
 });
 
 test('Chord.toElement (with text) column has note span', () => {
-  const text = CMA7_5.setText('hello').toElement('span').children[0].children[2];
+  const chord = CMA7_5.withOptions(new Options().withText('hello'));
+  const text = chord.toElement('span').children[0].children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('note');
+});
+
+// Chord.toString
+
+test('Chord.toString', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).toString();
+  expect(string).toContain('C');
+  expect(string).toContain('1 1 1 +');
+  expect(string).toContain('<>');
+});
+
+test('Chord.withOptions', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).withOptions(new Options().withText('abc')).toString();
+  expect(string).toContain('C');
+  expect(string).toContain('1 1 1 +');
+  expect(string).toContain('abc');
 });
 
 // alignMarks / alignFrets
@@ -603,37 +589,37 @@ test('Chord.toElement (with text) column has note span', () => {
 test('alignMarks default size', () => {
   const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 0);
 
-  expect(chords[0].mark() - chords[0].gridMin).toBe(chords[1].mark() - chords[1].gridMin);
-  expect(chords[0].gridMax - chords[0].mark()).toBe(chords[1].gridMax - chords[1].mark());
+  expect(chords[0].mark() - chords[0].options.gridMin).toBe(chords[1].mark() - chords[1].options.gridMin);
+  expect(chords[0].options.gridMax - chords[0].mark()).toBe(chords[1].options.gridMax - chords[1].mark());
 
-  expect(chords[0].gridMax - chords[0].gridMin).toBe(3);
-  expect(chords[1].gridMax - chords[1].gridMin).toBe(3);
+  expect(chords[0].options.gridMax - chords[0].options.gridMin).toBe(3);
+  expect(chords[1].options.gridMax - chords[1].options.gridMin).toBe(3);
 });
 
 test('alignMarks', () => {
   const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 5);
 
-  expect(chords[0].mark() - chords[0].gridMin).toBe(chords[1].mark() - chords[1].gridMin);
-  expect(chords[0].gridMax - chords[0].mark()).toBe(chords[1].gridMax - chords[1].mark());
+  expect(chords[0].mark() - chords[0].options.gridMin).toBe(chords[1].mark() - chords[1].options.gridMin);
+  expect(chords[0].options.gridMax - chords[0].mark()).toBe(chords[1].options.gridMax - chords[1].mark());
 
-  expect(chords[0].gridMax - chords[0].gridMin).toBe(5);
-  expect(chords[1].gridMax - chords[1].gridMin).toBe(5);
+  expect(chords[0].options.gridMax - chords[0].options.gridMin).toBe(5);
+  expect(chords[1].options.gridMax - chords[1].options.gridMin).toBe(5);
 });
 
 test('alignFrets default size', () => {
   const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 0);
 
-  expect(chords[0].gridMin).toBe(chords[1].gridMin);
-  expect(chords[1].gridMin).toBe(chords[2].gridMin);
-  expect(chords[0].gridMax).toBe(chords[1].gridMax);
-  expect(chords[1].gridMax).toBe(chords[2].gridMax);
+  expect(chords[0].options.gridMin).toBe(chords[1].options.gridMin);
+  expect(chords[1].options.gridMin).toBe(chords[2].options.gridMin);
+  expect(chords[0].options.gridMax).toBe(chords[1].options.gridMax);
+  expect(chords[1].options.gridMax).toBe(chords[2].options.gridMax);
 });
 
 test('alignFrets', () => {
   const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 5);
 
-  expect(chords[0].gridMin).toBe(chords[1].gridMin);
-  expect(chords[1].gridMin).toBe(chords[2].gridMin);
-  expect(chords[0].gridMax).toBe(chords[1].gridMax);
-  expect(chords[1].gridMax).toBe(chords[2].gridMax);
+  expect(chords[0].options.gridMin).toBe(chords[1].options.gridMin);
+  expect(chords[1].options.gridMin).toBe(chords[2].options.gridMin);
+  expect(chords[0].options.gridMax).toBe(chords[1].options.gridMax);
+  expect(chords[1].options.gridMax).toBe(chords[2].options.gridMax);
 });

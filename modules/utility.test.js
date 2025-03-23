@@ -24,6 +24,7 @@ import { jest } from '@jest/globals'
 import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
 import { Stop } from './stop.js';
 import { Chord } from './chord.js';
+import { Options } from './options.js';
 import { Bar } from './bar.js';
 
 // flatten
@@ -168,27 +169,27 @@ test('generateGrid adds labeled Stop', () => {
 
 test('generateGrid adds Chord finger', () => {
   expect(generateGrid('C 1 cho 5 1 #'))
-  .toEqual(new Chord('C', 1).setFingers({ 5: 1 }));
+    .toEqual(new Chord('C', 1).withOptions(new Options().withFinger(5, 1)));
 });
 
 test('generateGrid adds Chord fingers', () => {
   expect(generateGrid('C 1 cho 5 1 # 4 3 #'))
-  .toEqual(new Chord('C', 1).setFingers({ 5: 1, 4: 3 }));
+    .toEqual(new Chord('C', 1).withOptions(new Options().withFinger(5, 1).withFinger(4, 3)));
 });
 
 test('generateGrid sets Optional', () => {
   expect(generateGrid('C 1 cho ?'))
-    .toEqual(new Chord('C', 1).setOptional(true));
+    .toEqual(new Chord('C', 1).withOptions(new Options().withOptional(true)));
 });
 
 test('generateGrid sets NoSymbol', () => {
   expect(generateGrid('C 1 cho $'))
-    .toEqual(new Chord('C', 1).setNoSymbol(true));
+    .toEqual(new Chord('C', 1).withOptions(new Options().withNoSymbol(true)));
 });
 
 test('generateGrid sets Text', () => {
   expect(generateGrid('C 1 cho hello !'))
-  .toEqual(new Chord('C', 1).setText('hello'));
+    .toEqual(new Chord('C', 1).withOptions(new Options().withText('hello')));
 });
 
 test('generateGrid adds Chord', () => {
@@ -286,8 +287,12 @@ test('generateGrid aligns Chords at fret', () => {
     'C 1 cho 3  5 1 + 2 5 3 + 1 3 4 + af'))
     .toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ gridMin: 2, gridMax: 10 }),
-        expect.objectContaining({ gridMin: 2, gridMax: 10 }),
+        expect.objectContaining({
+          options: expect.objectContaining({ gridMin: 2, gridMax: 10 })
+        }),
+        expect.objectContaining({
+          options: expect.objectContaining({ gridMin: 2, gridMax: 10 })
+        }),
       ]));
 });
 
@@ -296,8 +301,12 @@ test('generateGrid aligns Chords at mark', () => {
     'C 1 cho 4 10 1 + 3 9 3 + 2 8 5 + ' +
     'C 1 cho 3 5 1 + 2 5 3 + 1 3 4 + am'))
     .toEqual(expect.arrayContaining([
-      expect.objectContaining({ gridMin: 7, gridMax: 12 }),
-      expect.objectContaining({ gridMin: 2, gridMax: 7 }),
+      expect.objectContaining({
+        options: expect.objectContaining({ gridMin: 7, gridMax: 12 })
+      }),
+      expect.objectContaining({
+        options: expect.objectContaining({ gridMin: 2, gridMax: 7 })
+      }),
     ]));
 });
 

@@ -43,14 +43,6 @@ export class Stop {
     return new Stop(this.string, this.fret, this.degree, this.label, this.decor);
   }
 
-  toString() {
-    if (this.decor) {
-      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label} decor)`;
-    } else {
-      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label})`;
-    }
-  }
-
   isValid() {
     return this.fret >= 0
       && this.string >= 1
@@ -97,5 +89,13 @@ export class Stop {
 
   decOctave() {
     return new Stop(this.string, this.fret - 12, this.degree, this.label, this.decor)
+  }
+
+  toString() {
+    if (this.decor) {
+      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label} decor)`;
+    } else {
+      return `Stop(${this.string} ${this.fret} ${this.degree} ${this.label})`;
+    }
   }
 }

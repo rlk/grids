@@ -22,6 +22,7 @@
 
 import { createGrid } from './grid.js';
 import { Chord } from './chord.js';
+import { Options } from './options.js';
 
 function filterElements(elements, localName, className) {
   return [...elements].filter(
@@ -81,11 +82,11 @@ test('createGrid mark creates label', () => {
 });
 
 test('createGrid finger creates label', () => {
-  const svg = createGrid(new Chord('A', 1).setFingers({5: 3}));
+  const svg = createGrid(new Chord('A', 1).withOptions(new Options().withFinger(5, 3)));
   expect(filterElements(svg.children, 'text', 'label')).toHaveLength(1);
 });
 
 test('createGrid two finger creates two labels', () => {
-  const svg = createGrid(new Chord('A', 1).setFingers({5: 3, 4: 2}));
+  const svg = createGrid(new Chord('A', 1).withOptions(new Options().withFinger(5, 3).withFinger(4, 2)));
   expect(filterElements(svg.children, 'text', 'label')).toHaveLength(2);
 });

@@ -134,10 +134,6 @@ export class Symbol {
     this.bass = bass;
   }
 
-  toString() {
-    return `<${this.root}${this.triad}${this.extension}/${this.bass}>`
-  }
-
   toElement(optional = false) {
     function span(innerHTML, className = null) {
       var e = document.createElement('span');
@@ -175,5 +171,9 @@ export class Symbol {
       symbol.appendChild(span(')'));
     }
     return symbol;
+  }
+
+  toString() {
+    return `<${this.root}${this.triad}${this.extension}/${this.bass}>`
   }
 }

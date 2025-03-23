@@ -20,6 +20,7 @@
 
 import { Bar } from './bar.js';
 import { Chord, alignMarks, alignFrets } from './chord.js';
+import { Options } from './options.js';
 
 const offsetOfInterval = {
   1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
@@ -109,21 +110,21 @@ export function generateGrid(text, className = '') {
     // Chord attributes
 
     } else if (word == '?') {
-      stack.push(stack.pop().setOptional(true));
+      stack.push(stack.pop().withOptions(new Options().withOptional(true)));
 
     } else if (word == '$') {
-      stack.push(stack.pop().setNoSymbol(true));
+      stack.push(stack.pop().withOptions(new Options().withNoSymbol(true)));
 
     } else if (word == '!') {
-      const n = stack.pop();
+      const t = stack.pop();
       const c = stack.pop();
-      stack.push(c.setText(n));
+      stack.push(c.withOptions(c.options.withText(t)));
 
     } else if (word == '#') {
       const f = stack.pop();
       const s = stack.pop();
       const c = stack.pop();
-      stack.push(c.addFinger(s, f));
+      stack.push(c.withOptions(c.options.withFinger(s, f)));
 
     // Chord functions
 
@@ -160,24 +161,24 @@ export function generateGrid(text, className = '') {
     // Bar constructors
 
     } else if (word == '|:') {
-      stack.push(new Bar('&#x1D106;'));
+      // stack.push(new Bar('&#x1D106;'));
 
     } else if (word == '|') {
-      stack.push(new Bar('&#x1D100;'));
+      // stack.push(new Bar('&#x1D100;'));
 
     } else if (word == ':|') {
-      stack.push(new Bar('&#x1D107;'));
+      // stack.push(new Bar('&#x1D107;'));
 
     } else if (word == 'spc') {
-      stack.push(new Bar('&nbsp;'));
+      // stack.push(new Bar('&nbsp;'));
 
     // Stack-mapping functions
 
     } else if (word == 'af') {
-      alignFrets(stack.filter((x) => x.hasOwnProperty('stops')));
+      stack = alignFrets(stack);
 
     } else if (word == 'am') {
-      alignMarks(stack.filter((x) => x.hasOwnProperty('stops')));
+      stack = alignMarks(stack);
 
     } else if (word == 'td') {
       stack = stack.map((e) => e.toElement('td', className));
@@ -212,7 +213,7 @@ export function generateGrid(text, className = '') {
     } else {
       stack.push(parseInt(word));
     }
-    if (className.includes('debug')) {
+    if (className.includes('debug') || true) {
       console.log(stack.join(' '));
     }
   }
