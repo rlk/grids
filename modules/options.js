@@ -20,20 +20,20 @@
 
 export class Options {
   constructor() {
-    this.text = null
     this.fingers = {}
+    this.text = null
     this.nosymbol = false
     this.optional = false
     this.gridMin = null
     this.gridMax = null
   }
 
-  withText(text) {
-    return Object.assign(new Options(), this, { text: text });
-  }
-
   withFinger(string, finger) {
     return Object.assign(new Options(), this, { fingers: Object.assign({}, this.fingers, { [string]: finger }) });
+  }
+
+  withText(text) {
+    return Object.assign(new Options(), this, { text: text });
   }
 
   withNoSymbol(nosymbol) {
@@ -54,18 +54,11 @@ export class Options {
 
   toString() {
     var options = [];
+    for (const string in this.fingers) {
+      options.push(`${string}:${this.fingers[string]}`);
+    }
     if (this.text) {
       options.push(`"${this.text}"`);
-    }
-    if (Object.keys(this.fingers).length > 0) {
-      options.push(
-        `${this.fingers[6] ?? 'x'}` +
-        `${this.fingers[5] ?? 'x'}` +
-        `${this.fingers[4] ?? 'x'}` +
-        `${this.fingers[3] ?? 'x'}` +
-        `${this.fingers[2] ?? 'x'}` +
-        `${this.fingers[1] ?? 'x'}`
-      );
     }
     if (this.nosymbol) {
       options.push('nosymbol')

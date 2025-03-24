@@ -148,7 +148,7 @@ test('generateGrid pushes stack', () => {
 // generateGrid Chord
 
 test('generateGrid pushes Chord', () => {
-  expect(generateGrid('C 1 cho'))
+  expect(generateGrid('C 1 chord'))
     .toEqual(new Chord('C', 1));
 });
 
@@ -193,12 +193,12 @@ test('generateGrid sets Text', () => {
 });
 
 test('generateGrid adds Chord', () => {
-  expect(generateGrid('C 1 cho'))
+  expect(generateGrid('C 1 chord'))
     .toEqual(new Chord('C', 1));
 });
 
 test('generateGrid adds Chords', () => {
-  expect(generateGrid('C 1 chord C 2 cho'))
+  expect(generateGrid('C 1 chord C 2 chord'))
     .toEqual([new Chord('C', 1), new Chord('C', 2)]);
 });
 

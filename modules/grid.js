@@ -96,8 +96,6 @@ export function createGrid(chord) {
   var smax = 6;
   var fgap = Object.keys(chord.options.fingers).length ? 1.0 : 0.25;
 
-  console.log(`createGrid: ${chord.toString()}`)
-
   const fmin = chord.options.gridMin ?? Math.max(0, chord.minFret() - 1);
   const fmax = chord.options.gridMax ?? Math.max(0, chord.maxFret());
 
