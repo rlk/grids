@@ -53,7 +53,7 @@
 <body>
   <h1>Gridgen User Guide</h1>
   <p>Gridgen is a visual calculator for guitar chords. It's capable of manipulating chords, inferring chord symbols, rendering chord grids to SVGs, and embedding SVGs in HTML documents. Here's an example output.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       C 1 chord 6 8 1 + 5 10 5 + 3 9 3 + 2 12 7 x
       C 4 chord 5 8 1 + 4 10 5 + 3 9 7 x 2 10 3 +
@@ -229,7 +229,7 @@
 
   <h3 id="arbitrary-stop-labels">Arbitrary Stop Labels</h3>
   <p>The <code>.</code> operator adds a stop with an arbitrary character label. This has countless uses. For example, it may be used to indicate the fingering of a scale. This being the web, all of Unicode is at your disposal here.</p>
-  <p class="center" style="zoom:150%">
+  <p class="display" style="zoom:150%">
     <span class="gridgen">
       D 1 chord $
       6 2 3 1 . 6 3 4 2 . 6 5 5 4 .
@@ -254,7 +254,7 @@
 
   <h3 id="noting-time">Noting Time</h3>
   <p>Greene frequently used slashes beneath the chord grid to indicate the number of beats that a chord is played (<a href="#cc">CC</a> p.58). This can be accomplished using the <code>!</code> operator.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       F 4 chord 6 7 1 + 4 7 7 + 3 7 3 + 1 5 7 + 2 6 5 x 6 2 # 4 3 # 3 4 # 2 1 # 1 1 # // !
       F 4 chord 6 6 1 + 4 6 7 + 3 6 3 + 2 5 5 + 6 2 # 4 3 # 3 4 # 2 1 # / !
@@ -267,7 +267,7 @@
     </span>
   </p>
   <p>Alternatively, bar markers can indicate full measures, and can imply beat count, They also provide the opportunity to add repeat markers. For example, here's the melody and accompaniment to the lyric &ldquo;You say to-ma-to, I say to-mah-to.&rdquo;</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       |:
       G 1 chord 6 3 1 + 4 5 1 + 3 4 3 + 2 5 6 + 1 3 1 + 2 5 6 x 6 1 # 4 3 # 3 2 # 2 4 # 1 1 #
@@ -283,7 +283,7 @@
   <h3>Overlaying Stops</h3>
   <p>Overlaid stops appear when an elaboration or a melody reuses a chord tone. The &ldquo;to-ma-to, to-mah-to&rdquo; sequence just above is an example.</p>
   <p>Order sometimes matters. Stops are displayed in the order they are added to a chord. Later stops are displayed topmost. Here's a grid showing each of the standard markers—dot, circle, X, square, and diamond—overlaid with each other standard marker. It should be clear that dot and X should appear on top, while square, diamond, and circle must appear on the bottom.</code></p>
-  <p class="center" style="zoom:150%">
+  <p class="display" style="zoom:150%">
     <span class="gridgen">
       C 1 chord $
       5 3 1 + 4 3 1 o 3 3 1 x 2 3 1 = 1 3 1 ^
@@ -304,7 +304,7 @@
 
   <h3>Size</h3>
   <p>To produce larger or smaller grids, set the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/zoom">zoom</a> CSS property on the container of the element with gridgen class.</p>
-  <p class="center" style="zoom:150%">
+  <p class="display" style="zoom:150%">
     <span class="gridgen">
       C 1 chord 5 3 1 + 4 2 3 + 3 4 7 + 2 3 2 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -319,13 +319,13 @@
   </ul>
   <p>To use these, define a CSS class to apply to the Gridgen element or its container. Then use <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator">descendant combinators</a> to select pitches, degrees, and intervals among that container's children. Note that the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/important">!important</a> property is needed if local changes are to override the SVG's existing CSS. See the source of this document for examples.</p>
   <p>Here's a chord scale with stops colored by interval.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen colorInterval">
       C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
   <p>Here's a chord scale with stops colored by scale degree.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen colorDegree">
       C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -334,7 +334,7 @@
   <h3>Forms for Diatonic Chord Scales</h3>
   <p>(<a href="#mcp">MCP</a>, p. 21) introduces several forms for diatonic chord scales based on first-inversion triads, and suggests the reader build diatonic chords from each of them. We can easily generate solutions to these exercises by specifying the initial form and extending the sequence with several <code>dupe d+</code> operations.</p>
   <p>Clearly, the blind extension of these forms takes us quickly into the high frets. That's part of the exercise. When displaying chord grids, we <em>could</em> use string transference (<code>s+</code> and <code>s-</code>) or shift the octave (<code>o+</code> and <code>o-</code>) to accommodate. There are many ways to use operators to make these comfortably playable.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -343,7 +343,7 @@
       E 1 chord 5 11 3 + 3 9 1 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -352,7 +352,7 @@
       E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -361,7 +361,7 @@
       E 1 chord 6 4 3 + 5 2 5 + 4 2 1 + 3 4 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 5 11 3 + 4 9 5 + 3 9 1 + 2 12 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -370,7 +370,7 @@
       E 1 chord 4 6 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 4 3 + 4 6 3 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -380,23 +380,23 @@
     </span>
   </p>
   <p>The <em>moving lines</em> example (<a href="#mcp">MCP</a>, p. 21) works nicely as well, since decoration stops are preserved through chord operators.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + 1 5 4 (x) 1 4 3 (=) dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
   <p>(<a href="#mcp">MCP</a>, p. 23) Continues the chord scale exercise with diatonic 7th chords. Here are just a few.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 6 0 1 + 5 2 5 + 4 1 7 + 3 1 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 5 7 1 + 4 9 5 + 3 8 7 + 2 9 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       E 1 chord 4 2 1 + 3 4 5 + 2 4 7 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -404,19 +404,19 @@
 
   <h3>The Commonality of Chords and Scales</h3>
   <p>While designed for use on chords, Gridgen is equally capable of handling scales. Here, the <code>dupe d+</code> operator is used to generate the modes of the key of D. The <code>am</code> operator aligns them into positions.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       D 1 chord 5 5 1 + 5 7 2 + 4 4 3 + 4 5 4 + 4 7 5 + 3 4 6 + 3 6 7 + 3 7 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
   </p>
   <p>And the <code>af</code> operator lays them out across the fretboard.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       D 1 chord 5 5 1 + 5 7 2 + 4 4 3 + 4 5 4 + 4 7 5 + 3 4 6 + 3 6 7 + 3 7 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ af span
     </span>
   </p>
   <p>It's interesting to see the modes overlaid by the arpeggios.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       D 1 chord 5 5 1 o 4 4 3 o 4 7 5 o 3 6 7 o 3 7 1 o 5 5 1 + 5 7 2 + 4 4 3 + 4 5 4 + 4 7 5 + 3 4 6 + 3 6 7 + 3 7 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span
     </span>
@@ -424,7 +424,7 @@
 
   <h3>The Diatonic Cycle of 4ths</h3>
   <p>(<a href="#mcp">MCP</a>, p. 49) discusses &ldquo;The Diatonic Cycle of 4ths in Major Keys.&rdquo; The first example there is straightforwardly reproduced by defining only the first two chords, <span class="chord">Cma<sup>7</sup></span> and <span class="chord">Fma<sup>7</sup></span>. Subsequent chords are each generated by an <code>over d-</code> operation. Specifically, the initial two chords on the stack are separated by a fourth. Then, <code>over</code> duplicates the <em>second</em> element from the top of the stack, and <code>d-</code> moves that duplicate down one degree.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       C 1 chord 6 8 1 + 5 10 5 + 3 9 3 + 2 12 7 x
       C 4 chord 5 8 1 + 4 10 5 + 3 9 7 x 2 10 3 +
@@ -435,7 +435,7 @@
 
   <h3>Structured Inversion</h3>
   <p>(<a href="#cc">CC</a>, p. 9) presents the concept of structured inversion as a formal way of enumerating chord voicings. The examples (<a href="#cc">CC</a>, p. 10) are straightforwardly reproduced using the <code>i+</code> operator.</p>
-  <p class="center">
+  <p class="display">
     <span class="gridgen">
       C 3 chord 6 3 3 + 4 2 1 + 3 4 5 + dupe i+ dupe i+ af span
     </span>
