@@ -67,5 +67,10 @@ footer {
   text-align: center;
   margin-left: 0;
   margin-right: 0;
-  white-space: nowrap;
+}
+
+.block {
+  display: inline-block;
+  margin-left: 1em;
+  margin-right: 1em;
 }
