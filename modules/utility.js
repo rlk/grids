@@ -183,10 +183,10 @@ export function generateGrid(text, className = '') {
       stack = alignMarks(stack);
 
     } else if (word == 'td') {
-      stack = stack.map((e) => e.toElement('td', className));
+      stack = stack.map((e) => e.toElement('td', text.trim(), className));
 
     } else if (word == 'span') {
-      stack = stack.map((e) => e.toElement('span', className));
+      stack = stack.map((e) => e.toElement('span', text.trim(), className));
 
     // Stack functions
 

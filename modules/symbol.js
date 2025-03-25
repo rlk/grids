@@ -174,6 +174,6 @@ export class Symbol {
   }
 
   toString() {
-    return `<${this.root}${this.triad}${this.extension}/${this.bass}>`
+    return `${this.root}${this.triad}${this.extension}/${this.bass}`
   }
 }

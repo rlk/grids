@@ -519,7 +519,7 @@ test('Chord.bass no stops', () => {
 // Chord.toElement
 
 test('Chord.toElement has span', () => {
-  const element = CMA7_5.toElement('span', 'aoeu snth');
+  const element = CMA7_5.toElement('span', '', 'aoeu snth');
   expect(element.localName).toBe('span');
   expect(element.classList.contains('aoeu')).toBe(true);
   expect(element.classList.contains('snth')).toBe(true);
@@ -527,7 +527,7 @@ test('Chord.toElement has span', () => {
 });
 
 test('Chord.toElement has grid span', () => {
-  const element = CMA7_5.toElement('span', 'gridgen aoeu snth');
+  const element = CMA7_5.toElement('span', '', 'gridgen aoeu snth');
   expect(element.localName).toBe('span');
   expect(element.classList.contains('grid')).toBe(true);
   expect(element.classList.contains('snth')).toBe(true);

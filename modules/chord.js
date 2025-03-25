@@ -180,17 +180,18 @@ export class Chord {
     return null;
   }
 
-  toElement(tagName, className = '') {
+  toElement(tagName, title = '', className = '') {
     var chord = document.createElement(tagName);
     chord.setAttribute('class', className.replace('gridgen', 'grid'));
     var column = document.createElement('span');
     column.setAttribute('class', 'column');
+    column.setAttribute('title', title);
 
     if (!this.options.nosymbol) {
       column.appendChild(this.symbol().toElement(this.options.optional));
     }
 
-    column.appendChild(createGrid(this));
+    column.appendChild(createGrid(this, title));
 
     if (this.options.text) {
       var text = document.createElement('span');

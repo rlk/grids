@@ -331,13 +331,15 @@ test('generateGrid adds space Bar', () => {
 // generateGrid toElement
 
 test('generateGrid creates Chord span', () => {
-  expect(generateGrid('C 1 chord 5 3 1 + span'))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span'));
+  const expr = 'C 1 chord 5 3 1 + span';
+  expect(generateGrid(expr))
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span', expr));
 });
 
 test('generateGrid creates Chord td', () => {
-  expect(generateGrid('C 1 chord 5 3 1 + td'))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td'));
+  const expr = 'C 1 chord 5 3 1 + td';
+  expect(generateGrid(expr))
+    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td', expr));
 });
 
 // debug logging
