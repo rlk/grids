@@ -445,6 +445,21 @@
     </span>
   </p>
 
+  <h3>Chord Symbol Inference</h3>
+  <p>Gridgen maintains a small dictionary of chord formulas that it uses to infer the chord symbol shown at the top of each grid.</p>
+  <p>Consider, <span class="gridgen">F 5 chord 6 3 5 + 5 3 1 + 4 2 3 + 3 3 7 + 2 3 2 + span</span>. This chord is defined in the key of F with 5th degree. From this alone, Gridgen knows the root is C. So, it compares the stops found on the fretboard, (G&nbsp;C&nbsp;E&nbsp;B♭&nbsp;D), with the notes of the C major scale. This gives the intervals (5&nbsp;1&nbsp;3&nbsp;♭7&nbsp;2). Sorted, (1&nbsp;2&nbsp;3&nbsp;5&nbsp;♭7) appears in the dictionary as a dominant 9 chord. But the bass note is not the root C, it's G, so Gridgen indicates this with slash notation.</p>
+  <p>Now consider, <span class="gridgen">F 5 chord 5 3 1 + 4 2 3 + 3 3 7 + 2 3 2 + span</span>. This is the same chord, but it's missing the 5. Gridgen knows that 5 is often omitted, and will insert a perfect 5th, or a major 3rd, in its effort to find a matching dictionary entry.</p>
+
+  <h3>Chord Symbol Inference Failure</h3>
+  <p>Consider <span class="gridgen">C 1 chord 6 8 1 + 5 4 2 + span</span>. That's a (1 ♭2) chord, and Gridgen doesn't know what to call it. The question mark indicates that inference has failed. This can happen in two ways:</p>
+  <ul>
+  <li><em>Not enough notes:</em> In this example, we need to add stops. If we actually want this to be inferred as, say, a partial ♭9&nbsp;chord or the start of the C&nbsp;Phrygian scale, we can use the <code>_</code> operator to add invisible stops to fill in the gaps.</li>
+  <li><em>Too many notes:</em> We would need to remove stops. The extra notes are probably due to elaboration or melody, so we can mark any such notes as <a href="#decor-stop">decoration</a>.</li>
+  </ul>
+
+  <h3>Hover Text</h3>
+  <p>Hovering the mouse pointer over any any grid will display a tool tip giving the expression that generated that grid.</p>
+
   <h3>Console Debug Logging</h3>
   <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span</code> gets turned into <span class="gridgen debug">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span</span></p>
 
