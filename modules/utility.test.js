@@ -325,7 +325,7 @@ test('generateGrid adds end repeat Bar ', () => {
 });
 
 test('generateGrid adds space Bar', () => {
-  expect(generateGrid('spc')).toEqual(new Bar('&nbsp;'));
+  expect(generateGrid('emsp')).toEqual(new Bar('&emsp;'));
 });
 
 // generateGrid toElement

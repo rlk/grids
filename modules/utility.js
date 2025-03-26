@@ -171,8 +171,8 @@ export function generateGrid(text, className = '') {
     } else if (word == ':|') {
       stack.push(new Bar('&#x1D107;'));
 
-    } else if (word == 'spc') {
-      stack.push(new Bar('&nbsp;'));
+    } else if (word == 'emsp') {
+      stack.push(new Bar('&emsp;'));
 
     // Stack-mapping functions
 
