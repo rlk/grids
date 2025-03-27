@@ -107,6 +107,17 @@ test('Symbol.toElement default triad', () => {
   expect(element.children[0].innerHTML).toContain('A');
 });
 
+test('Symbol.toElement bass with no extension', () => {
+  const element = new Symbol('A', 'mi', null, 'E').toElement();
+
+  expect(element.classList).toContain('symbol');
+  expect(element.childElementCount).toBe(3);
+
+  expect(element.children[0].innerHTML).toContain('A');
+  expect(element.children[1].innerHTML).toContain('mi');
+  expect(element.children[2].innerHTML).toContain('E');
+});
+
 test('Symbol.toElement empty', () => {
   const element = new Symbol(null).toElement();
 
@@ -114,7 +125,7 @@ test('Symbol.toElement empty', () => {
   expect(element.childElementCount).toBe(0);
 });
 
-test('Symbol.toElement optional with', () => {
+test('Symbol.toElement optional', () => {
   const element = new Symbol('A', 'mi', '7', 'E').toElement(true);
 
   expect(element.classList).toContain('symbol');
