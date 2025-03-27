@@ -169,27 +169,27 @@ test('generateGrid adds labeled Stop', () => {
 
 test('generateGrid adds Chord finger', () => {
   expect(generateGrid('C 1 chord 5 1 #'))
-    .toEqual(new Chord('C', 1).withOptions(new Options().setFinger(5, 1)));
+    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1)));
 });
 
 test('generateGrid adds Chord fingers', () => {
   expect(generateGrid('C 1 chord 5 1 # 4 3 #'))
-    .toEqual(new Chord('C', 1).withOptions(new Options().setFinger(5, 1).setFinger(4, 3)));
+    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1).setFinger(4, 3)));
 });
 
 test('generateGrid sets Optional', () => {
   expect(generateGrid('C 1 chord ?'))
-    .toEqual(new Chord('C', 1).withOptions(new Options().setOptional(true)));
+    .toEqual(new Chord('C', 1, [], new Options().setOptional(true)));
 });
 
 test('generateGrid sets NoSymbol', () => {
   expect(generateGrid('C 1 chord $'))
-    .toEqual(new Chord('C', 1).withOptions(new Options().setNoSymbol(true)));
+    .toEqual(new Chord('C', 1, [], new Options().setNoSymbol(true)));
 });
 
 test('generateGrid sets Text', () => {
   expect(generateGrid('C 1 chord hello !'))
-    .toEqual(new Chord('C', 1).withOptions(new Options().setText('hello')));
+    .toEqual(new Chord('C', 1, [], new Options().setText('hello')));
 });
 
 test('generateGrid adds Chord', () => {

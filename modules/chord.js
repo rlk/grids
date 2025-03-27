@@ -63,20 +63,23 @@ export class Chord {
     this.options = options
   }
 
-  withDegree(degree) {
-    return Object.assign(new Chord(), this, { degree: toDegree(degree) });
+  setDegree(degree) {
+    this.degree = toDegree(degree);
+    return this;
   }
 
-  withStopMap(func) {
-    return Object.assign(new Chord(), this, { stops: this.stops.map(func) });
+  setStops(stops) {
+    this.stops = stops;
+    return this;
   }
 
-  withOptions(options) {
-    return Object.assign(new Chord(), this, { options: Object.assign(new Options(), this.options, options) });
+  setOptions(options) {
+    this.options = options;
+    return this;
   }
 
   copy() {
-    return Object.assign(new Chord(), this);
+    return Object.assign(new Chord(), this, { options: this.options.copy() });
   }
 
   add(string, fret, interval, label = '+', decor = false) {
@@ -100,39 +103,39 @@ export class Chord {
   }
 
   incOctave() {
-    return this.withStopMap(stop => stop.incOctave());
+    return this.copy().setStops(this.stops.map(stop => stop.incOctave()));
   }
 
   decOctave() {
-    return this.withStopMap(stop => stop.decOctave());
+    return this.copy().setStops(this.stops.map(stop => stop.decOctave()));
   }
 
   incString() {
-    return this.withStopMap(stop => stop.incString());
+    return this.copy().setStops(this.stops.map(stop => stop.incString()));
   }
 
   decString() {
-    return this.withStopMap(stop => stop.decString());
+    return this.copy().setStops(this.stops.map(stop => stop.decString()));
   }
 
   incDegree() {
-    return this.withStopMap(stop => stop.incDegree()).withDegree(this.degree + 1);
+    return this.copy().setStops(this.stops.map(stop => stop.incDegree())).setDegree(this.degree + 1);
   }
 
   decDegree() {
-    return this.withStopMap(stop => stop.decDegree()).withDegree(this.degree - 1);
+    return this.copy().setStops(this.stops.map(stop => stop.decDegree())).setDegree(this.degree - 1);
   }
 
   incInversion() {
     const sorted = this.stops.map(stop => stop.degree).sort()
     const looped = sorted.concat(sorted)
-    return this.withStopMap(stop => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1]));
+    return this.copy().setStops(this.stops.map(stop => stop.incToDegree(looped[looped.indexOf(stop.degree) + 1])));
   }
 
   decInversion() {
     const sorted = this.stops.map(stop => stop.degree).sort().reverse()
     const looped = sorted.concat(sorted)
-    return this.withStopMap(stop => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1]));
+    return this.copy().setStops(this.stops.map(stop => stop.decToDegree(looped[looped.indexOf(stop.degree) + 1])));
   }
 
   mark() {

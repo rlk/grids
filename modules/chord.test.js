@@ -554,7 +554,7 @@ test('Chord.toElement column has svg', () => {
 });
 
 test('Chord.toElement (with text) has column span', () => {
-  const chord = CMA7_5.withOptions(new Options().setText('hello'));
+  const chord = CMA7_5.setOptions(new Options().setText('hello'));
   const column = chord.toElement('span').children[0];
   expect(column.localName).toBe('span');
   expect(column.className).toBe('column');
@@ -562,7 +562,7 @@ test('Chord.toElement (with text) has column span', () => {
 });
 
 test('Chord.toElement (with text) column has note span', () => {
-  const chord = CMA7_5.withOptions(new Options().setText('hello'));
+  const chord = CMA7_5.setOptions(new Options().setText('hello'));
   const text = chord.toElement('span').children[0].children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('note');
@@ -577,8 +577,8 @@ test('Chord.toString', () => {
   expect(string).toContain('<>');
 });
 
-test('Chord.withOptions', () => {
-  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).withOptions(new Options().setText('abc')).toString();
+test('Chord.toString with Options', () => {
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)], new Options().setText('abc')).toString();
   expect(string).toContain('C');
   expect(string).toContain('1 1 1 +');
   expect(string).toContain('abc');

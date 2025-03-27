@@ -58,6 +58,10 @@ export class Options {
     return this;
   }
 
+  copy() {
+    return Object.assign(new Options(), this);
+  }
+
   toString() {
     var options = [];
     for (const string in this.fingers) {
