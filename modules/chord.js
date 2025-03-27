@@ -183,28 +183,24 @@ export class Chord {
     return null;
   }
 
-  toElement(tagName, title = '', className = '') {
-    var chord = document.createElement(tagName);
-    chord.setAttribute('class', className.replace('gridgen', 'grid'));
-    var column = document.createElement('span');
-    column.setAttribute('class', 'column');
-    column.setAttribute('title', title);
+  toElement() {
+    var span = document.createElement('span');
+    span.setAttribute('class', 'grid');
 
     if (!this.options.nosymbol) {
-      column.appendChild(this.symbol().toElement(this.options.optional));
+      span.appendChild(this.symbol().toElement(this.options.optional));
     }
 
-    column.appendChild(createGrid(this, title));
+    span.appendChild(createGrid(this));
 
     if (this.options.text) {
       var text = document.createElement('span');
       text.setAttribute('class', 'note');
       text.innerHTML = this.options.text;
-      column.appendChild(text);
+      span.appendChild(text);
     }
 
-    chord.appendChild(column);
-    return chord;
+    return span;
   }
 
   toString() {

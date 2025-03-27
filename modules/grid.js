@@ -72,10 +72,10 @@ function label(x, y, t) {
   return elem('text', [['class', 'label'], ['x', x], ['y', y]], t)
 }
 function dot(x, y, k) {
-  return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  return elem('circle', [['class', 'dot'], ['cx', x], ['cy', y], ['r', (stopSize * k).toFixed(1)]])
 }
 function circle(x, y, k) {
-  return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', stopSize * k]])
+  return elem('circle', [['class', 'circle'], ['cx', x], ['cy', y], ['r', (stopSize * k).toFixed(1)]])
 }
 function cross(x, y, k) {
   return elem('path', [['class', 'cross'], ['d', crossPath(x, y, stopSize * k)]])

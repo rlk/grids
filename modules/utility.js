@@ -68,13 +68,30 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-export function generateGrid(text, className = '') {
+export function toNode(x) {
+  if (x instanceof Chord) {
+    return x.toElement();
+  }
+  if (x instanceof Element) {
+    return x;
+  }
+  return document.createTextNode(` ${x} `);
+}
+
+function spanWithText(text, className) {
+  var span = document.createElement('span');
+  span.setAttribute('class', className);
+  span.innerHTML = text;
+  return span;
+}
+
+export function evaluate(text, debug) {
   var stack = []
 
   const words = text.trim().split(/[ \n]+/);
   for (const word of words) {
 
-    // Chord constructors
+    // Chord constructor
 
     if (word == 'chord') {
       const d = stack.pop();
@@ -132,7 +149,7 @@ export function generateGrid(text, className = '') {
       c.options.setFinger(s, f);
       stack.push(c);
 
-    // Chord functions
+    // Chord operators
 
     } else if (word == 's+') {
       stack.push(stack.pop().incString());
@@ -167,32 +184,46 @@ export function generateGrid(text, className = '') {
     // Bar constructors
 
     } else if (word == '|:') {
-      stack.push(new Bar('&#x1D106;'));
+      stack.push(spanWithText('&#x1D106;', 'bar'));
 
     } else if (word == '|') {
-      stack.push(new Bar('&#x1D100;'));
+      stack.push(spanWithText('&#x1D100;', 'bar'));
 
     } else if (word == ':|') {
-      stack.push(new Bar('&#x1D107;'));
+      stack.push(spanWithText('&#x1D107;', 'bar'));
 
-    } else if (word == 'emsp') {
-      stack.push(new Bar('&emsp;'));
-
-    // Stack-mapping functions
+    // Stack-mapping operators
 
     } else if (word == 'af') {
-      alignFrets(stack.filter(x => isChord(x)));
+      alignFrets(stack.filter(x => x instanceof Chord));
 
     } else if (word == 'am') {
-      alignMarks(stack.filter(x => isChord(x)));
+      alignMarks(stack.filter(x => x instanceof Chord));
 
-    } else if (word == 'td') {
-      stack = stack.map((e) => e.toElement('td', text.trim(), className));
+    // HTML element operators
 
-    } else if (word == 'span') {
-      stack = stack.map((e) => e.toElement('span', text.trim(), className));
+    } else if (word == 'b' || word == 'i' || word == 'p' || word == 'span' || word == 'td') {
+      stack.push(document.createElement(word));
 
-    // Stack functions
+    } else if (word == 'class') {
+      var name = stack.pop();
+      var element = stack.pop();
+      element.setAttribute('class', name);
+      stack.push(element);
+
+    } else if (word == '(') {
+      stack.push(null);
+
+    } else if (word == ')') {
+      var parent = stack.pop();
+      var child = stack.pop();
+      while (child) {
+        parent.prepend(toNode(child));
+        child = stack.pop();
+      }
+      stack.push(parent);
+
+    // Stack operators
 
     } else if (word == 'drop') {
       stack.pop();
@@ -213,14 +244,17 @@ export function generateGrid(text, className = '') {
       const c = b.copy();
       stack.push(b, a, c);
 
+    // Operands
+
     } else if (isNaN(word)) {
       stack.push(word);
 
     } else {
       stack.push(parseInt(word));
     }
-    if (className.includes('debug')) {
-      console.log(stack.join(' '));
+
+    if (debug) {
+      console.log(stack.map(e => e instanceof Element ? e.outerHTML : (e ? e : '(')).join(' '));
     }
   }
   return stack.length == 1 ? stack[0] : stack;

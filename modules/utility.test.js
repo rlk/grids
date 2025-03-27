@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import { jest } from '@jest/globals'
-import { flatten, sharpen, toDegree, toPitch, toOffset, generateGrid } from './utility.js'
+import { flatten, sharpen, toDegree, toPitch, toOffset, evaluate } from './utility.js'
 import { Stop } from './stop.js';
 import { Chord } from './chord.js';
 import { Options } from './options.js';
@@ -131,79 +131,79 @@ test('toOffset double sharp wraps', () => {
   expect(toOffset(1 - 11)).toBe(+2);
 });
 
-// generateGrid
+// evaluate
 
-test('generateGrid pushes number', () => {
-  expect(generateGrid('1')).toBe(1);
+test('evaluate pushes number', () => {
+  expect(evaluate('1')).toBe(1);
 });
 
-test('generateGrid pushes symbol', () => {
-  expect(generateGrid('A')).toBe('A');
+test('evaluate pushes symbol', () => {
+  expect(evaluate('A')).toBe('A');
 });
 
-test('generateGrid pushes stack', () => {
-  expect(generateGrid('A B')).toEqual(['A', 'B']);
+test('evaluate pushes stack', () => {
+  expect(evaluate('A B')).toEqual(['A', 'B']);
 });
 
-// generateGrid Chord
+// evaluate Chord
 
-test('generateGrid pushes Chord', () => {
-  expect(generateGrid('C 1 chord'))
+test('evaluate pushes Chord', () => {
+  expect(evaluate('C 1 chord'))
     .toEqual(new Chord('C', 1));
 });
 
-test('generateGrid adds Stop', () => {
-  expect(generateGrid('C 1 chord 5 3 1 +'))
+test('evaluate adds Stop', () => {
+  expect(evaluate('C 1 chord 5 3 1 +'))
     .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', false)]));
 });
 
-test('generateGrid adds decor Stop', () => {
-  expect(generateGrid('C 1 chord 5 3 1 (+)'))
+test('evaluate adds decor Stop', () => {
+  expect(evaluate('C 1 chord 5 3 1 (+)'))
     .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', true)]));
 });
 
-test('generateGrid adds labeled Stop', () => {
-  expect(generateGrid('C 1 chord 5 3 1 foo .'))
+test('evaluate adds labeled Stop', () => {
+  expect(evaluate('C 1 chord 5 3 1 foo .'))
     .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, 'foo', false)]));
 });
 
-test('generateGrid adds Chord finger', () => {
-  expect(generateGrid('C 1 chord 5 1 #'))
+test('evaluate adds Chord finger', () => {
+  expect(evaluate('C 1 chord 5 1 #'))
     .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1)));
 });
 
-test('generateGrid adds Chord fingers', () => {
-  expect(generateGrid('C 1 chord 5 1 # 4 3 #'))
+test('evaluate adds Chord fingers', () => {
+  expect(evaluate('C 1 chord 5 1 # 4 3 #'))
     .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1).setFinger(4, 3)));
 });
 
-test('generateGrid sets Optional', () => {
-  expect(generateGrid('C 1 chord ?'))
+test('evaluate sets Optional', () => {
+  expect(evaluate('C 1 chord ?'))
     .toEqual(new Chord('C', 1, [], new Options().setOptional(true)));
 });
 
-test('generateGrid sets NoSymbol', () => {
-  expect(generateGrid('C 1 chord $'))
+test('evaluate sets NoSymbol', () => {
+  expect(evaluate('C 1 chord $'))
     .toEqual(new Chord('C', 1, [], new Options().setNoSymbol(true)));
 });
 
-test('generateGrid sets Text', () => {
-  expect(generateGrid('C 1 chord hello !'))
+test('evaluate sets Text', () => {
+  expect(evaluate('C 1 chord hello !'))
     .toEqual(new Chord('C', 1, [], new Options().setText('hello')));
 });
 
-test('generateGrid adds Chord', () => {
-  expect(generateGrid('C 1 chord'))
+test('evaluate adds Chord', () => {
+  expect(evaluate('C 1 chord'))
     .toEqual(new Chord('C', 1));
 });
 
-test('generateGrid adds Chords', () => {
-  expect(generateGrid('C 1 chord C 2 chord'))
+test('evaluate adds Chords', () => {
+  expect(evaluate('C 1 chord C 2 chord'))
     .toEqual([new Chord('C', 1), new Chord('C', 2)]);
 });
 
-test('generateGrid adds Chord with stops', () => {
-  expect(generateGrid('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 +'))
+test('evaluate adds Chord with stops', () => {
+  expect(evaluate('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 +'))
     .toEqual(new Chord('C', 1, [
       new Stop(5, 3, 1),
       new Stop(4, 2, 3),
@@ -211,78 +211,78 @@ test('generateGrid adds Chord with stops', () => {
     ]));
 });
 
-test('generateGrid adds Chord drop', () => {
-  expect(generateGrid('C 1 chord C 2 chord drop'))
+test('evaluate adds Chord drop', () => {
+  expect(evaluate('C 1 chord C 2 chord drop'))
     .toEqual(new Chord('C', 1));
 });
 
-test('generateGrid adds Chord swap', () => {
-  expect(generateGrid('C 1 chord C 2 chord swap'))
+test('evaluate adds Chord swap', () => {
+  expect(evaluate('C 1 chord C 2 chord swap'))
     .toEqual([new Chord('C', 2), new Chord('C', 1)]);
 });
 
-test('generateGrid adds Chord dupe', () => {
-  expect(generateGrid('C 1 chord C 2 chord dupe'))
+test('evaluate adds Chord dupe', () => {
+  expect(evaluate('C 1 chord C 2 chord dupe'))
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 2)]);
 });
 
-test('generateGrid adds Chord over', () => {
-  expect(generateGrid('C 1 chord C 2 chord over'))
+test('evaluate adds Chord over', () => {
+  expect(evaluate('C 1 chord C 2 chord over'))
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 1)]);
 });
 
-test('generateGrid applies inc string', () => {
-  expect(generateGrid('C 1 chord 5 5 2 + s+'))
+test('evaluate applies inc string', () => {
+  expect(evaluate('C 1 chord 5 5 2 + s+'))
     .toEqual(new Chord('C', 1).add(6, 10, 2));
 });
 
-test('generateGrid applies dec string', () => {
-  expect(generateGrid('C 1 chord 5 5 2 + s-'))
+test('evaluate applies dec string', () => {
+  expect(evaluate('C 1 chord 5 5 2 + s-'))
     .toEqual(new Chord('C', 1).add(4, 0, 2));
 });
 
-test('generateGrid applies inc degree', () => {
-  expect(generateGrid('C 1 chord d+'))
+test('evaluate applies inc degree', () => {
+  expect(evaluate('C 1 chord d+'))
     .toEqual(new Chord('C', 2));
 });
 
-test('generateGrid applies dec degree', () => {
-  expect(generateGrid('C 2 chord d-'))
+test('evaluate applies dec degree', () => {
+  expect(evaluate('C 2 chord d-'))
     .toEqual(new Chord('C', 1));
 });
 
-test('generateGrid applies 4th up', () => {
-  expect(generateGrid('C 1 chord 4+'))
+test('evaluate applies 4th up', () => {
+  expect(evaluate('C 1 chord 4+'))
     .toEqual(new Chord('C', 4));
 });
 
-test('generateGrid applies 5th down', () => {
-  expect(generateGrid('C 1 chord 5-'))
+test('evaluate applies 5th down', () => {
+  expect(evaluate('C 1 chord 5-'))
     .toEqual(new Chord('C', 4));
 });
 
-test('generateGrid applies inc inversion', () => {
-  expect(generateGrid('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 + i+'))
+test('evaluate applies inc inversion', () => {
+  expect(evaluate('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 + i+'))
     .toEqual(new Chord('C', 1).add(5, 7, 3).add(4, 5, 5).add(3, 5, 1));
 });
 
-test('generateGrid applies dec inversion', () => {
-  expect(generateGrid('C 1 chord 5 7 3 + 4 5 5 + 3 5 1 + i-'))
+test('evaluate applies dec inversion', () => {
+  expect(evaluate('C 1 chord 5 7 3 + 4 5 5 + 3 5 1 + i-'))
     .toEqual(new Chord('C', 1).add(5, 3, 1).add(4, 2, 3).add(3, 0, 5));
 });
 
-test('generateGrid applies inc octave', () => {
-  expect(generateGrid('C 1 chord 5 3 1 + o+'))
+test('evaluate applies inc octave', () => {
+  expect(evaluate('C 1 chord 5 3 1 + o+'))
     .toEqual(new Chord('C', 1).add(5, 15, 1));
 });
 
-test('generateGrid applies dec octave', () => {
-  expect(generateGrid('C 1 chord 5 15 1 + o-'))
+test('evaluate applies dec octave', () => {
+  expect(evaluate('C 1 chord 5 15 1 + o-'))
     .toEqual(new Chord('C', 1).add(5, 3, 1));
 });
 
-test('generateGrid aligns Chords at fret', () => {
-  expect(generateGrid(
+test('evaluate aligns Chords at fret', () => {
+  expect(evaluate(
     'C 1 chord 4 10 1 + 3 9 3 + 2 8 5 + ' +
     'C 1 chord 3  5 1 + 2 5 3 + 1 3 4 + af'))
     .toEqual(
@@ -296,8 +296,8 @@ test('generateGrid aligns Chords at fret', () => {
       ]));
 });
 
-test('generateGrid aligns Chords at mark', () => {
-  expect(generateGrid(
+test('evaluate aligns Chords at mark', () => {
+  expect(evaluate(
     'C 1 chord 4 10 1 + 3 9 3 + 2 8 5 + ' +
     'C 1 chord 3 5 1 + 2 5 3 + 1 3 4 + am'))
     .toEqual(expect.arrayContaining([
@@ -310,36 +310,51 @@ test('generateGrid aligns Chords at mark', () => {
     ]));
 });
 
-// generateGrid Bar
+// evaluate Bar
 
-test('generateGrid adds start repeat Bar ', () => {
-  expect(generateGrid('|:')).toEqual(new Bar('&#x1D106;'));
+test('evaluate adds start repeat Bar ', () => {
+  const element = evaluate('|:');
+  expect(element.classList.contains('bar')).toBe(true);
+  expect(element.innerHTML).toContain('𝄆');
 });
 
-test('generateGrid adds Bar', () => {
-  expect(generateGrid('|')).toEqual(new Bar('&#x1D100;'));
+test('evaluate adds Bar', () => {
+  const element = evaluate('|');
+  expect(element.classList.contains('bar')).toBe(true);
+  expect(element.innerHTML).toContain('𝄀');
 });
 
-test('generateGrid adds end repeat Bar ', () => {
-  expect(generateGrid(':|')).toEqual(new Bar('&#x1D107;'));
+test('evaluate adds end repeat Bar ', () => {
+  const element = evaluate(':|');
+  expect(element.classList.contains('bar')).toBe(true);
+  expect(element.innerHTML).toContain('𝄇');
 });
 
-test('generateGrid adds space Bar', () => {
-  expect(generateGrid('emsp')).toEqual(new Bar('&emsp;'));
+// evaluate Elements
+
+test('evaluate creates element', () => {
+  const element = evaluate('span');
+  expect(element.localName).toBe('span');
 });
 
-// generateGrid toElement
-
-test('generateGrid creates Chord span', () => {
-  const expr = 'C 1 chord 5 3 1 + span';
-  expect(generateGrid(expr))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('span', expr));
+test('evaluate creates text element', () => {
+  const element = evaluate('( abc span )');
+  expect(element.localName).toBe('span');
+  expect(element.innerHTML).toContain('abc');
 });
 
-test('generateGrid creates Chord td', () => {
-  const expr = 'C 1 chord 5 3 1 + td';
-  expect(generateGrid(expr))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1)]).toElement('td', expr));
+test('evaluate creates Chord span', () => {
+  const element = evaluate('( C 1 chord 5 3 1 + span )');
+  expect(element.localName).toBe('span');
+  expect(element.innerHTML).toContain('svg');
+});
+
+test('evaluate creates Chord spans', () => {
+  const elements = evaluate('( C 1 chord span ) ( C 2 chord span )');
+  expect(elements[0].localName).toBe('span');
+  expect(elements[0].innerHTML).toContain('svg');
+  expect(elements[1].localName).toBe('span');
+  expect(elements[1].innerHTML).toContain('svg');
 });
 
 // debug logging
@@ -347,7 +362,7 @@ test('generateGrid creates Chord td', () => {
 test('debug logging appears', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(generateGrid('A B C', 'debug')).toEqual(['A', 'B', 'C']);
+  expect(evaluate('A B C', 'debug')).toEqual(['A', 'B', 'C']);
 
   expect(logSpy).toHaveBeenCalledWith('A');
   expect(logSpy).toHaveBeenCalledWith('A B');

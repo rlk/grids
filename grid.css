@@ -1,14 +1,4 @@
 
-span.grid {
-    display: inline;
-    vertical-align: middle;
-}
-
-td.grid {
-    display: table-cell;
-    vertical-align: middle;
-}
-
 .grid text.label {
     font-size:   7px;
     font-weight: bold;
@@ -28,28 +18,28 @@ td.grid {
 .grid path.cross    { stroke: black; }
 .grid path.board    { stroke: dimgray; fill: none; stroke-linecap: round;}
 
-.grid .column {
+.grid {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
 }
 
-.grid .column .symbol {
+.grid > .symbol {
     font-variant: small-caps;
     margin-bottom: -0.25em;
 }
 
-.grid .column .symbol .extension {
+.grid > .symbol > .extension {
     font-size: smaller;
     vertical-align: super;
 }
 
-.grid .column .note {
+.grid > .note {
     font-size: smaller;
 }
 
 .bar {
-    font-size: 250%;
+    font-size: 200%;
     display: inline;
     vertical-align: middle;
 }

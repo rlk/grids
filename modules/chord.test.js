@@ -99,6 +99,13 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
+const CMA7_TEXT = new Chord('C', 1, [  // Cma7 with text annotation
+  new Stop(5, 3, 1),
+  new Stop(4, 5, 5),
+  new Stop(3, 4, 7),
+  new Stop(2, 5, 3),
+], new Options().setText('abc'));
+
 // Chord.copy
 
 test('Chord.copy', () => {
@@ -518,54 +525,50 @@ test('Chord.bass no stops', () => {
 
 // Chord.toElement
 
-test('Chord.toElement has span', () => {
-  const element = CMA7_5.toElement('span', '', 'aoeu snth');
+test('Chord.toElement has two children', () => {
+  const element = CMA7_5.toElement();
   expect(element.localName).toBe('span');
-  expect(element.classList.contains('aoeu')).toBe(true);
-  expect(element.classList.contains('snth')).toBe(true);
-  expect(element.childElementCount).toBe(1);
+  expect(element.childElementCount).toBe(2);
 });
 
-test('Chord.toElement has grid span', () => {
-  const element = CMA7_5.toElement('span', '', 'gridgen aoeu snth');
+test('Chord.toElement with text has three children', () => {
+  const element = CMA7_TEXT.toElement();
   expect(element.localName).toBe('span');
-  expect(element.classList.contains('grid')).toBe(true);
-  expect(element.classList.contains('snth')).toBe(true);
-  expect(element.classList.contains('snth')).toBe(true);
-  expect(element.childElementCount).toBe(1);
+  expect(element.childElementCount).toBe(3);
 });
 
-test('Chord.toElement grid has column span', () => {
-  const column = CMA7_5.toElement('span').children[0];
-  expect(column.localName).toBe('span');
-  expect(column.className).toBe('column');
-  expect(column.childElementCount).toBe(2);
-});
-
-test('Chord.toElement column has symbol span', () => {
-  const symbol = CMA7_5.toElement('span').children[0].children[0];
+test('Chord.toElement has symbol span', () => {
+  const symbol = CMA7_5.toElement().children[0];
   expect(symbol.localName).toBe('span');
   expect(symbol.className).toBe('symbol');
 });
 
-test('Chord.toElement column has svg', () => {
-  const svg = CMA7_5.toElement('span').children[0].children[1];
+test('Chord.toElement has svg', () => {
+  const svg = CMA7_5.toElement().children[1];
   expect(svg.localName).toBe('svg');
 });
 
-test('Chord.toElement (with text) has column span', () => {
-  const chord = CMA7_5.setOptions(new Options().setText('hello'));
-  const column = chord.toElement('span').children[0];
-  expect(column.localName).toBe('span');
-  expect(column.className).toBe('column');
-  expect(column.childElementCount).toBe(3);
-});
-
-test('Chord.toElement (with text) column has note span', () => {
-  const chord = CMA7_5.setOptions(new Options().setText('hello'));
-  const text = chord.toElement('span').children[0].children[2];
+test('Chord.toElement with text has text span', () => {
+  const text = CMA7_TEXT.toElement().children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('note');
+});
+
+test('Chord.toElement receives classes', () => {
+  const element = CMA7_5.toElement('', 'aoeu snth');
+  expect(element.localName).toBe('span');
+  expect(element.classList.contains('aoeu')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
+  expect(element.childElementCount).toBe(2);
+});
+
+test('Chord.toElement replaces gridgen with grid', () => {
+  const element = CMA7_5.toElement('', 'gridgen aoeu snth');
+  expect(element.localName).toBe('span');
+  expect(element.classList.contains('grid')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
+  expect(element.classList.contains('snth')).toBe(true);
+  expect(element.childElementCount).toBe(2);
 });
 
 // Chord.toString
