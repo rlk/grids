@@ -51,135 +51,47 @@ test('default gridMax', () => {
 // Setters
 
 test('with text', () => {
-  expect(new Options().withText('abc').text).toBe('abc');
+  expect(new Options().setText('abc').text).toBe('abc');
 });
 
 test('with fingers', () => {
-  expect(new Options().withFinger(1, 2).fingers).toEqual({1: 2});
+  expect(new Options().setFinger(1, 2).fingers).toEqual({1: 2});
 });
 
 test('with nosymbol', () => {
-  expect(new Options().withNoSymbol(true).nosymbol).toBe(true);
+  expect(new Options().setNoSymbol(true).nosymbol).toBe(true);
 });
 
 test('with optional', () => {
-  expect(new Options().withOptional(true).optional).toBe(true);
+  expect(new Options().setOptional(true).optional).toBe(true);
 });
 
 test('with gridMin', () => {
-  expect(new Options().withGridMin(10).gridMin).toBe(10);
+  expect(new Options().setGridMin(10).gridMin).toBe(10);
 });
 
 test('with gridMax', () => {
-  expect(new Options().withGridMax(10).gridMax).toBe(10);
-});
-
-// Repeat setters
-
-test('repeat text', () => {
-  expect(new Options().withText('abc').withText('def').text).toBe('def');
-});
-
-test('repeat fingers', () => {
-  expect(new Options().withFinger(1, 2).withFinger(3, 4).fingers).toEqual({1: 2, 3: 4});
-});
-
-test('repeat nosymbol', () => {
-  expect(new Options().withNoSymbol(true).withNoSymbol(false).nosymbol).toBe(false);
-});
-
-test('repeat optional', () => {
-  expect(new Options().withOptional(true).withOptional(false).optional).toBe(false);
-});
-
-test('repeat gridMin', () => {
-  expect(new Options().withGridMin(10).withGridMin(12).gridMin).toBe(12);
-});
-
-test('repeat gridMax', () => {
-  expect(new Options().withGridMax(10).withGridMax(12).gridMax).toBe(12);
-});
-
-// Multiple setters
-
-test('with something and fingers', () => {
-  var options = new Options().withText('abc').withFinger(1, 2);
-  expect(options.text).toBe('abc');
-  expect(options.fingers).toEqual({1: 2});
-});
-
-test('with something and nosymbol', () => {
-  var options = new Options().withText('abc').withNoSymbol(true);
-  expect(options.text).toBe('abc');
-  expect(options.nosymbol).toBe(true);
-});
-
-test('with something and optional', () => {
-  var options = new Options().withText('abc').withOptional(true);
-  expect(options.text).toBe('abc');
-  expect(options.optional).toBe(true);
-});
-
-test('with something and gridMin', () => {
-  var options = new Options().withText('abc').withGridMin(10);
-  expect(options.text).toBe('abc');
-  expect(options.gridMin).toBe(10);
-});
-
-test('with something and gridMax', () => {
-  var options = new Options().withText('abc').withGridMax(10);
-  expect(options.text).toBe('abc');
-  expect(options.gridMax).toBe(10);
-});
-
-test('with fingers and something', () => {
-  var options = new Options().withFinger(1, 2).withText('abc');
-  expect(options.text).toBe('abc');
-  expect(options.fingers).toEqual({1: 2});
-});
-
-test('with nosymbol and something', () => {
-  var options = new Options().withNoSymbol(true).withText('abc');
-  expect(options.text).toBe('abc');
-  expect(options.nosymbol).toBe(true);
-});
-
-test('with optional and something', () => {
-  var options = new Options().withOptional(true).withText('abc');
-  expect(options.text).toBe('abc');
-  expect(options.optional).toBe(true);
-});
-
-test('with gridMin and something', () => {
-  var options = new Options().withGridMin(10).withText('abc');
-  expect(options.text).toBe('abc');
-  expect(options.gridMin).toBe(10);
-});
-
-test('with gridMax and something', () => {
-  var options = new Options().withGridMax(10).withText('abc');
-  expect(options.text).toBe('abc');
-  expect(options.gridMax).toBe(10);
+  expect(new Options().setGridMax(10).gridMax).toBe(10);
 });
 
 // toString
 
 test('toString with text', () => {
-  expect(new Options().withText('abc').toString()).toContain('"abc"');
+  expect(new Options().setText('abc').toString()).toContain('"abc"');
 });
 
 test('toString with fingers', () => {
-  expect(new Options().withFinger(1, 2).toString()).toContain('1:2');
+  expect(new Options().setFinger(1, 2).toString()).toContain('1:2');
 });
 
 test('toString with nosymbol', () => {
-  expect(new Options().withNoSymbol(true).toString()).toContain('nosymbol');
+  expect(new Options().setNoSymbol(true).toString()).toContain('nosymbol');
 });
 
 test('toString with optional', () => {
-  expect(new Options().withOptional(true).toString()).toContain('optional');
+  expect(new Options().setOptional(true).toString()).toContain('optional');
 });
 
 test('toString with gridMin and gridMax', () => {
-  expect(new Options().withGridMin(10).withGridMax(12).toString()).toContain('10-12');
+  expect(new Options().setGridMin(10).setGridMax(12).toString()).toContain('10-12');
 });

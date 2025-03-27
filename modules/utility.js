@@ -19,7 +19,7 @@
 // SOFTWARE.
 
 import { Bar } from './bar.js';
-import { Chord, alignMarks, alignFrets } from './chord.js';
+import { Chord, isChord, alignMarks, alignFrets } from './chord.js';
 import { Options } from './options.js';
 
 const offsetOfInterval = {
@@ -111,22 +111,26 @@ export function generateGrid(text, className = '') {
 
     } else if (word == '?') {
       const c = stack.pop();
-      stack.push(c.withOptions(c.options.withOptional(true)));
+      c.options.setOptional(true);
+      stack.push(c);
 
     } else if (word == '$') {
       const c = stack.pop();
-      stack.push(c.withOptions(c.options.withNoSymbol(true)));
+      c.options.setNoSymbol(true);
+      stack.push(c);
 
     } else if (word == '!') {
       const t = stack.pop();
       const c = stack.pop();
-      stack.push(c.withOptions(c.options.withText(t)));
+      c.options.setText(t);
+      stack.push(c);
 
     } else if (word == '#') {
       const f = stack.pop();
       const s = stack.pop();
       const c = stack.pop();
-      stack.push(c.withOptions(c.options.withFinger(s, f)));
+      c.options.setFinger(s, f);
+      stack.push(c);
 
     // Chord functions
 
@@ -177,10 +181,10 @@ export function generateGrid(text, className = '') {
     // Stack-mapping functions
 
     } else if (word == 'af') {
-      stack = alignFrets(stack);
+      alignFrets(stack.filter(x => isChord(x)));
 
     } else if (word == 'am') {
-      stack = alignMarks(stack);
+      alignMarks(stack.filter(x => isChord(x)));
 
     } else if (word == 'td') {
       stack = stack.map((e) => e.toElement('td', text.trim(), className));

@@ -214,22 +214,17 @@ export class Chord {
   }
 }
 
-export function alignMarks(elements, frets = 5) {
-  const chords = elements.filter(e => isChord(e));
-
+export function alignMarks(chords, frets = 5) {
   var a = Math.min(...chords.map(c => c.minFret() - c.mark())) - 1;
   var z = Math.max(...chords.map(c => c.maxFret() - c.mark()));
 
   if (frets) {
     z = a + Math.max(z - a, frets);
   }
-  return elements.map(e => !isChord(e) ? e : e.withOptions(
-    e.options.withGridMin(e.mark() + a).withGridMax(e.mark() + z)));
+  chords.forEach(chord => chord.options.setGridMin(chord.mark() + a).setGridMax(chord.mark() + z));
 }
 
-export function alignFrets(elements, frets = 5) {
-  const chords = elements.filter(e => isChord(e));
-
+export function alignFrets(chords, frets = 5) {
   var a = Math.min(...chords.map(c => c.minFret())) - 1;
   var z = Math.max(...chords.map(c => c.maxFret()));
 
@@ -237,6 +232,5 @@ export function alignFrets(elements, frets = 5) {
   if (frets) {
     z = a + Math.max(z - a, frets);
   }
-  return elements.map(e => !isChord(e) ? e : e.withOptions(
-    e.options.withGridMin(a).withGridMax(z)));
+  chords.forEach(chord => chord.options.setGridMin(a).setGridMax(z));
 }

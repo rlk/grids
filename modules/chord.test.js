@@ -554,7 +554,7 @@ test('Chord.toElement column has svg', () => {
 });
 
 test('Chord.toElement (with text) has column span', () => {
-  const chord = CMA7_5.withOptions(new Options().withText('hello'));
+  const chord = CMA7_5.withOptions(new Options().setText('hello'));
   const column = chord.toElement('span').children[0];
   expect(column.localName).toBe('span');
   expect(column.className).toBe('column');
@@ -562,7 +562,7 @@ test('Chord.toElement (with text) has column span', () => {
 });
 
 test('Chord.toElement (with text) column has note span', () => {
-  const chord = CMA7_5.withOptions(new Options().withText('hello'));
+  const chord = CMA7_5.withOptions(new Options().setText('hello'));
   const text = chord.toElement('span').children[0].children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('note');
@@ -578,7 +578,7 @@ test('Chord.toString', () => {
 });
 
 test('Chord.withOptions', () => {
-  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).withOptions(new Options().withText('abc')).toString();
+  const string = new Chord('C', 1, [new Stop(1, 1, 1)]).withOptions(new Options().setText('abc')).toString();
   expect(string).toContain('C');
   expect(string).toContain('1 1 1 +');
   expect(string).toContain('abc');
@@ -587,7 +587,9 @@ test('Chord.withOptions', () => {
 // alignMarks / alignFrets
 
 test('alignMarks default size', () => {
-  const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 0);
+  const chords = [CMA7_5, DMI7_5, EMI7_5];
+
+  alignMarks(chords, 0);
 
   expect(chords[0].mark() - chords[0].options.gridMin).toBe(chords[1].mark() - chords[1].options.gridMin);
   expect(chords[0].options.gridMax - chords[0].mark()).toBe(chords[1].options.gridMax - chords[1].mark());
@@ -597,7 +599,9 @@ test('alignMarks default size', () => {
 });
 
 test('alignMarks', () => {
-  const chords = alignMarks([CMA7_5, DMI7_5, EMI7_5], 5);
+  const chords = [CMA7_5, DMI7_5, EMI7_5];
+
+  alignMarks(chords, 5);
 
   expect(chords[0].mark() - chords[0].options.gridMin).toBe(chords[1].mark() - chords[1].options.gridMin);
   expect(chords[0].options.gridMax - chords[0].mark()).toBe(chords[1].options.gridMax - chords[1].mark());
@@ -607,7 +611,9 @@ test('alignMarks', () => {
 });
 
 test('alignFrets default size', () => {
-  const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 0);
+  const chords = [CMA7_5, DMI7_5, EMI7_5];
+
+  alignFrets(chords, 0);
 
   expect(chords[0].options.gridMin).toBe(chords[1].options.gridMin);
   expect(chords[1].options.gridMin).toBe(chords[2].options.gridMin);
@@ -616,7 +622,9 @@ test('alignFrets default size', () => {
 });
 
 test('alignFrets', () => {
-  const chords = alignFrets([CMA7_5, DMI7_5, EMI7_5], 5);
+  const chords = [CMA7_5, DMI7_5, EMI7_5];
+
+  alignFrets(chords, 5);
 
   expect(chords[0].options.gridMin).toBe(chords[1].options.gridMin);
   expect(chords[1].options.gridMin).toBe(chords[2].options.gridMin);

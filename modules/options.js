@@ -28,28 +28,34 @@ export class Options {
     this.gridMax = null
   }
 
-  withFinger(string, finger) {
-    return Object.assign(new Options(), this, { fingers: Object.assign({}, this.fingers, { [string]: finger }) });
+  setFinger(string, finger) {
+    this.fingers[string] = finger;
+    return this;
   }
 
-  withText(text) {
-    return Object.assign(new Options(), this, { text: text });
+  setText(text) {
+    this.text = text;
+    return this;
   }
 
-  withNoSymbol(nosymbol) {
-    return Object.assign(new Options(), this, { nosymbol: nosymbol });
+  setNoSymbol(nosymbol) {
+    this.nosymbol = nosymbol;
+    return this;
   }
 
-  withOptional(optional) {
-    return Object.assign(new Options(), this, { optional: optional });
+  setOptional(optional) {
+    this.optional = optional;
+    return this;
   }
 
-  withGridMin(gridMin) {
-    return Object.assign(new Options(), this, { gridMin: gridMin });
+  setGridMin(gridMin) {
+    this.gridMin = gridMin;
+    return this;
   }
 
-  withGridMax(gridMax) {
-    return Object.assign(new Options(), this, { gridMax: gridMax });
+  setGridMax(gridMax) {
+    this.gridMax = gridMax;
+    return this;
   }
 
   toString() {
