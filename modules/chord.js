@@ -51,10 +51,6 @@ const nameOfDegreePerKey = {
   'C♯': { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
 };
 
-export function isChord(object) {
-  return object.hasOwnProperty('stops');
-}
-
 export class Chord {
   constructor(key = 'C', degree = 1, stops = [], options = new Options()) {
     this.key = key
@@ -183,8 +179,8 @@ export class Chord {
     return null;
   }
 
-  toElement() {
-    var span = document.createElement('span');
+  toElement(tagName) {
+    var span = document.createElement(tagName);
     span.setAttribute('class', 'grid');
 
     if (!this.options.nosymbol) {
@@ -195,7 +191,7 @@ export class Chord {
 
     if (this.options.text) {
       var text = document.createElement('span');
-      text.setAttribute('class', 'note');
+      text.setAttribute('class', 'text');
       text.innerHTML = this.options.text;
       span.appendChild(text);
     }

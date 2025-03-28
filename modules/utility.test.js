@@ -21,11 +21,10 @@
 // SOFTWARE.
 
 import { jest } from '@jest/globals'
-import { flatten, sharpen, toDegree, toPitch, toOffset, evaluate } from './utility.js'
+import { flatten, sharpen, toDegree, toPitch, toOffset, toNode, evaluate } from './utility.js'
 import { Stop } from './stop.js';
 import { Chord } from './chord.js';
 import { Options } from './options.js';
-import { Bar } from './bar.js';
 
 // flatten
 
@@ -129,6 +128,26 @@ test('toOffset double flat wraps', () => {
 test('toOffset double sharp wraps', () => {
   expect(toOffset(2 - 12)).toBe(+2);
   expect(toOffset(1 - 11)).toBe(+2);
+});
+
+// toNode
+
+test('toNode handles Chord', () => {
+  const node = toNode(new Chord(), 'abc');
+  expect(node).toBeInstanceOf(Node);
+  expect(node.localName).toBe('abc');
+});
+
+test('toNode handles Element', () => {
+  const node = toNode(document.createElement('abc'), null);
+  expect(node).toBeInstanceOf(Node);
+  expect(node.localName).toBe('abc');
+});
+
+test('toNode handles text', () => {
+  const node = toNode('abc', null);
+  expect(node).toBeInstanceOf(Node);
+  expect(node.wholeText).toBe(' abc ');
 });
 
 // evaluate
@@ -310,21 +329,21 @@ test('evaluate aligns Chords at mark', () => {
     ]));
 });
 
-// evaluate Bar
+// evaluate bar
 
-test('evaluate adds start repeat Bar ', () => {
+test('evaluate adds start repeat bar ', () => {
   const element = evaluate('|:');
   expect(element.classList.contains('bar')).toBe(true);
   expect(element.innerHTML).toContain('𝄆');
 });
 
-test('evaluate adds Bar', () => {
+test('evaluate adds bar', () => {
   const element = evaluate('|');
   expect(element.classList.contains('bar')).toBe(true);
   expect(element.innerHTML).toContain('𝄀');
 });
 
-test('evaluate adds end repeat Bar ', () => {
+test('evaluate adds end repeat bar ', () => {
   const element = evaluate(':|');
   expect(element.classList.contains('bar')).toBe(true);
   expect(element.innerHTML).toContain('𝄇');
@@ -357,14 +376,21 @@ test('evaluate creates Chord spans', () => {
   expect(elements[1].innerHTML).toContain('svg');
 });
 
+test('evaluate sets class', () => {
+  const element = evaluate('span abc class');
+  expect(element.localName).toBe('span');
+  expect(element.className).toBe('abc');
+});
+
 // debug logging
 
 test('debug logging appears', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(evaluate('A B C', 'debug')).toEqual(['A', 'B', 'C']);
+  expect(evaluate('( A B C', true)).toEqual([null, 'A', 'B', 'C']);
 
-  expect(logSpy).toHaveBeenCalledWith('A');
-  expect(logSpy).toHaveBeenCalledWith('A B');
-  expect(logSpy).toHaveBeenCalledWith('A B C');
+  expect(logSpy).toHaveBeenCalledWith('(');
+  expect(logSpy).toHaveBeenCalledWith('( A');
+  expect(logSpy).toHaveBeenCalledWith('( A B');
+  expect(logSpy).toHaveBeenCalledWith('( A B C');
 });

@@ -19,7 +19,7 @@
 // SOFTWARE.
 
 import { Bar } from './bar.js';
-import { Chord, isChord, alignMarks, alignFrets } from './chord.js';
+import { Chord, alignMarks, alignFrets } from './chord.js';
 import { Options } from './options.js';
 
 const offsetOfInterval = {
@@ -68,25 +68,25 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-export function toNode(x) {
-  if (x instanceof Chord) {
-    return x.toElement();
+export function toNode(operand, tagName) {
+  if (operand instanceof Chord) {
+    return operand.toElement(tagName);
   }
-  if (x instanceof Element) {
-    return x;
+  if (operand instanceof Element) {
+    return operand;
   }
-  return document.createTextNode(` ${x} `);
-}
-
-function spanWithText(text, className) {
-  var span = document.createElement('span');
-  span.setAttribute('class', className);
-  span.innerHTML = text;
-  return span;
+  return document.createTextNode(` ${operand} `);
 }
 
 export function evaluate(text, debug) {
   var stack = []
+
+  function textSpan(text, className) {
+    var span = document.createElement('span');
+    span.setAttribute('class', className);
+    span.textContent = text;
+    return span;
+  }
 
   const words = text.trim().split(/[ \n]+/);
   for (const word of words) {
@@ -184,13 +184,13 @@ export function evaluate(text, debug) {
     // Bar constructors
 
     } else if (word == '|:') {
-      stack.push(spanWithText('&#x1D106;', 'bar'));
+      stack.push(textSpan('𝄆', 'bar'));
 
     } else if (word == '|') {
-      stack.push(spanWithText('&#x1D100;', 'bar'));
+      stack.push(textSpan('𝄀', 'bar'));
 
     } else if (word == ':|') {
-      stack.push(spanWithText('&#x1D107;', 'bar'));
+      stack.push(textSpan('𝄇', 'bar'));
 
     // Stack-mapping operators
 
@@ -202,7 +202,8 @@ export function evaluate(text, debug) {
 
     // HTML element operators
 
-    } else if (word == 'b' || word == 'i' || word == 'p' || word == 'span' || word == 'td') {
+    } else if (word == 'b'    || word == 'i'  || word == 'p' ||
+               word == 'span' || word == 'td' || word == 'tr') {
       stack.push(document.createElement(word));
 
     } else if (word == 'class') {
@@ -218,7 +219,7 @@ export function evaluate(text, debug) {
       var parent = stack.pop();
       var child = stack.pop();
       while (child) {
-        parent.prepend(toNode(child));
+        parent.prepend(toNode(child, 'span'));
         child = stack.pop();
       }
       stack.push(parent);

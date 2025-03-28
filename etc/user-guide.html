@@ -94,7 +94,7 @@
 
   <h2>Operations</h2>
   <h3>Introduction</h3>
-  <p>Here's a minimal example to get started. The expression <code>( F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span )</code> produces <span class="gridgen">( F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span )</span></p>
+  <p>Here's a minimal example to get started. The expression <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</code> produces <span class="gridgen">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</span></p>
   <p>This is a <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">postfix</a> expression. Its evaluation uses a stack. It proceeds as follows:</p>
   <ul>
     <li><code>F 4 chord</code> is a <a href="#chord-constructor">chord constructor</a>.
@@ -111,9 +111,8 @@
     </li>
     <li><code>3 7 3 +</code> is another dot stop operation, leaving a chord with two stops on the stack.
     <li><code>2 6 5 +</code> is another dot stop operation, leaving a chord with three stops on the stack.
-    <li><code>span</code> pops the chord from the stack, creates an HTML <a href="#span-element">span element</a> to represent it, and pushes the element onto the stack.</li>
   </ul>
-  <p>At the end of all of this, only an HTML element remains on the stack. It is inserted into the document.</p>
+  <p>At the end of all of this, the chord remains on the stack. It is converted to an HTML element and inserted into the document.</p>
 
   <h3 id="chord-constructor">Chord Constructor</h3>
   <dl>
@@ -317,13 +316,13 @@
   <p>Here's a chord scale with stops colored by interval.</p>
   <p class="display colorInterval">
     <span class="gridgen">
-    C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+      C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
     </span>
   </p>
   <p>Here's a chord scale with stops colored by scale degree.</p>
   <p class="display colorDegree">
     <span class="gridgen">
-    C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+      C 1 chord 5 3 1 + 4 5 5 + 3 4 7 + 2 5 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
     </span>
   </p>
 
@@ -331,37 +330,41 @@
   <p>(<a href="#mcp">MCP</a>, p. 21) introduces several forms for diatonic chord scales based on first-inversion triads, and suggests the reader build diatonic chords from each of them. We can easily generate solutions to these exercises by specifying the initial form and extending the sequence with several <code>dupe d+</code> operations.</p>
   <p>Clearly, the blind extension of these forms takes us quickly into the high frets. That's part of the exercise. When displaying chord grids, we <em>could</em> use string transference (<code>s+</code> and <code>s-</code>) or shift the octave (<code>o+</code> and <code>o-</code>) to accommodate. There are many ways to use operators to make these comfortably playable.</p>
   <p class="display">
-  <span class="gridgen">
-    ( E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 5 11 3 + 3 9 1 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 6 4 3 + 5 2 5 + 4 2 1 + 3 4 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 5 11 3 + 4 9 5 + 3 9 1 + 2 12 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 4 6 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 6 4 3 + 4 6 3 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-    ( E 1 chord 5 11 3 + 3 13 3 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
-  </span>
+    <span class="gridgen">
+      ( E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 5 11 3 + 3 9 1 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 6 4 3 + 4 2 1 + 3 4 5 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 6 4 3 + 5 2 5 + 4 2 1 + 3 4 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 5 11 3 + 4 9 5 + 3 9 1 + 2 12 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 4 6 3 + 3 4 5 + 2 5 1 + 1 7 5 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 6 4 3 + 4 6 3 + 3 4 5 + 2 5 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+      ( E 1 chord 5 11 3 + 3 13 3 + 2 12 5 + 1 12 1 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am span block class )
+    </span>
   </p>
   <p>The <em>moving lines</em> example (<a href="#mcp">MCP</a>, p. 21) works nicely as well, since decoration stops are preserved through chord operators.</p>
   <p class="display">
-  <span class="gridgen">
-    E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + 1 5 4 (x) 1 4 3 (=) dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
-  </span></p>
+    <span class="gridgen">
+      E 1 chord 6 4 3 + 3 4 5 + 2 5 1 + 1 7 5 + 1 5 4 (x) 1 4 3 (=) dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+    </span>
+  </p>
   <p>(<a href="#mcp">MCP</a>, p. 23) Continues the chord scale exercise with diatonic 7th chords. Here are just a few.</p>
   <p class="display">
-  <span class="gridgen">
-    E 1 chord 6 0 1 + 5 2 5 + 4 1 7 + 3 1 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
-  </span></p>
+    <span class="gridgen">
+      E 1 chord 6 0 1 + 5 2 5 + 4 1 7 + 3 1 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+    </span>
+  </p>
   <p class="display">
-  <span class="gridgen">
-    E 1 chord 5 7 1 + 4 9 5 + 3 8 7 + 2 9 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
-  </span></p>
+    <span class="gridgen">
+      E 1 chord 5 7 1 + 4 9 5 + 3 8 7 + 2 9 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+    </span>
+  </p>
   <p class="display">
-  <span class="gridgen">
-    E 1 chord 4 2 1 + 3 4 5 + 2 4 7 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
-  </span></p>
+    <span class="gridgen">
+      E 1 chord 4 2 1 + 3 4 5 + 2 4 7 + 1 4 3 + dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ dupe d+ am
+    </span>
+  </p>
 
   <h3>The Commonality of Chords and Scales</h3>
   <p>While designed for use on chords, Gridgen is equally capable of handling scales. Here, the <code>dupe d+</code> operator is used to generate the modes of the key of D. The <code>am</code> operator aligns them into positions.</p>
@@ -422,7 +425,7 @@
   <p>Hovering the mouse pointer over any any grid will display a tool tip giving the expression that generated that grid.</p>
 
   <h3>Console Debug Logging</h3>
-  <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>( F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span )</code> gets turned into <span class="gridgen debug">( F 4 chord 4 8 1 + 3 7 3 + 2 6 5 + span )</span></p>
+  <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</code> gets turned into <span class="gridgen debug">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</span></p>
 
 </body>
 
