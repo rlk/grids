@@ -79,6 +79,9 @@ export class Options {
     if (this.gridMin && this.gridMax) {
       options.push(`${this.gridMin}-${this.gridMax}`)
     }
-    return `<${options.join(' ')}>`;
+    if (options.length > 0) {
+      return `<${options.join(' ')}>`;
+    }
+    return '';
   }
 }

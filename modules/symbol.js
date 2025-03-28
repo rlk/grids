@@ -90,6 +90,30 @@ const symbolOfSpelling = {
   ',0,-1,-1,,,,-1':  ['mi', '7♭9'],
 };
 
+export function toFormula(spelling) {
+  var formula = [];
+  for (let i = 1; i < 8; i++) {
+    switch (spelling[i]) {
+      case -2:
+        formula.push(`𝄫${i}`);
+        break;
+      case -1:
+        formula.push(`♭${i}`);
+        break;
+      case 0:
+        formula.push(`${i}`);
+        break;
+      case +1:
+        formula.push(`♯${i}`);
+        break;
+      case +2:
+        formula.push(`𝄪${i}`);
+        break;
+    }
+  }
+  return formula.join(' ');
+}
+
 function add(spelling, interval, offset) {
   return Object.assign(new Array(8), {...spelling, [interval]: offset})
 }
@@ -98,7 +122,7 @@ function findSpelling(root, spelling, bass) {
   const key = spelling.toString();
   if (key in symbolOfSpelling) {
     const [triad, extension] = symbolOfSpelling[key];
-    return new Symbol(root, triad, extension, bass);
+    return new Symbol(root, triad, extension, bass, toFormula(spelling));
   }
 
   var symbol;
@@ -122,16 +146,17 @@ export function symbolFromSpelling(root, spelling, bass) {
     return symbol;
   } else {
     console.log(`Failed to interpret ${root} ${spelling} ${bass}`);
-    return new Symbol(root, '?', null, bass);
+    return new Symbol(root, '?', null, bass, toFormula(spelling));
   }
 }
 
 export class Symbol {
-  constructor(root, triad = null, extension = null, bass = null) {
+  constructor(root, triad = null, extension = null, bass = null, formula = null) {
     this.root = root;
     this.triad = triad;
     this.extension = extension;
     this.bass = bass;
+    this.formula = formula;
   }
 
   toElement(optional = false) {
@@ -147,6 +172,7 @@ export class Symbol {
     }
 
     var symbol = span(null, 'symbol');
+    symbol.setAttribute('title', this.formula);
 
     if (optional) {
       symbol.appendChild(span('('));

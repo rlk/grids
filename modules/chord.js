@@ -205,7 +205,7 @@ export class Chord {
     elements.push(`${this.degree}`);
     elements.push(`[${this.stops.map(stop => stop.toString()).join(' ')}]`);
     elements.push(`${this.options.toString()}`);
-    return `Chord(${elements.join(' ')})`;
+    return `Chord(${elements.filter(s => s).join(' ')})`;
   }
 }
 
