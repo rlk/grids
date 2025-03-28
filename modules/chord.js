@@ -21,7 +21,7 @@
 import { flatten, sharpen, toDegree, toOffset, calcOffset } from './utility.js'
 import { Stop } from './stop.js'
 import { Options } from './options.js'
-import { symbolFromSpelling } from './symbol.js'
+import { symbolFromOffsets } from './symbol.js'
 import { createGrid } from './grid.js'
 
 const pitchOfName = {
@@ -150,15 +150,15 @@ export class Chord {
     const name = nameOfDegreePerKey[this.key][this.degree];
     const root = pitchOfName[name];
 
-    var spelling = new Array(8);
+    var offsets = new Array(8);
     this.stops.filter(stop => !stop.decor)
-      .forEach(stop => spelling[stop.interval(this.degree)] =
+      .forEach(stop => offsets[stop.interval(this.degree)] =
         calcOffset(root, stop.pitch(), stop.interval(this.degree)));
 
-    switch (spelling[1]) {
-      case -1: return symbolFromSpelling(flatten(name), spelling.map(o => o + 1), this.bass());
-      case +1: return symbolFromSpelling(sharpen(name), spelling.map(o => o - 1), this.bass());
-      default: return symbolFromSpelling(name, spelling, this.bass());
+    switch (offsets[1]) {
+      case -1: return symbolFromOffsets(flatten(name), offsets.map(o => o + 1), this.bass());
+      case +1: return symbolFromOffsets(sharpen(name), offsets.map(o => o - 1), this.bass());
+      default: return symbolFromOffsets(name, offsets, this.bass());
     }
   }
 

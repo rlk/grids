@@ -18,82 +18,67 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-const symbolOfSpelling = {
-  ',0,,,,,,':        ['bass',  null],
-  ',0,,,,0,,':       ['5',     null],
-
-  ',0,0,0,0,0,0,0':      ['major', null],
-  ',0,0,-1,0,0,0,-1':    ['dor', null],
-  ',0,-1,-1,0,0,-1,-1':  ['phr', null],
-  ',0,0,0,1,0,0,0':      ['lyd', null],
-  ',0,0,0,0,0,0,-1':     ['mix', null],
-  ',0,0,-1,0,0,-1,-1':   ['aeo', null],
-  ',0,-1,-1,0,-1,-1,-1': ['loc', null],
-
-  ',0,,0,,0,,':      [null,  null],
-  ',0,,-1,,0,,':     ['mi',  null],
-  ',0,,-1,,-1,,':    ['dim', null],
-  ',0,,0,,1,,':      ['aug', null],
-  ',0,,,0,0,,':      ['sus', null],
-
-  ',0,,0,,0,0,':     [null, '6'],
-  ',0,,-1,,0,0,':    ['mi', '6'],
-  ',0,,-1,,0,-1,':   ['mi', '♭6'],
-
-  ',0,0,0,,0,,':     [null, 'add9'],
-  ',0,0,-1,,0,,':    ['mi', 'add9'],
-  ',0,0,0,,0,0,':    [null, '6/9'],
-  ',0,0,-1,,0,0,':   ['mi', '6/9'],
-
-  ',0,,0,,0,,0':     ['ma', '7'],
-  ',0,0,0,,0,,0':    ['ma', '9'],
-  ',0,0,0,,0,0,0':   ['ma', '13'],
-
-  ',0,,0,,0,,-1':    [null, '7'],
-  ',0,0,0,,0,,-1':   [null, '9'],
-  ',0,0,0,,0,0,-1':  [null, '13'],
-
-  ',0,,,0,0,,-1':    ['sus', '7'],
-  ',0,0,,0,0,,-1':   ['sus', '9'],
-  ',0,0,,0,0,0,-1':  ['sus', '13'],
-
-  ',0,,-1,,0,,-1':   ['mi', '7'],
-  ',0,0,-1,,0,,-1':  ['mi', '9'],
-  ',0,0,-1,,0,0,-1': ['mi', '13'],
-
-  ',0,,0,,-1,,0':    ['ma', '7♭5'],
-  ',0,,-1,,-1,,-1':  ['mi', '7♭5'],
-  ',0,,0,,1,,0':     ['ma', '7♯5'],
-  ',0,,-1,,1,,-1':   ['mi', '7♯5'],
-
-  ',0,,-1,,-1,,-2':  ['dim', '7'],
-
-  ',0,,0,,1,,-1':    [null, '7♯5'],
-  ',0,,0,,-1,,-1':   [null, '7♭5'],
-  ',0,1,0,,0,,-1':   [null, '7♯9'],
-  ',0,-1,0,,0,,-1':  [null, '7♭9'],
-
-  ',0,-1,0,,-1,,-1': [null, '7♭5♭9'],
-  ',0,1,0,,-1,,-1':  [null, '7♭5♯9'],
-  ',0,-1,0,,1,,-1':  [null, '7♯5♭9'],
-  ',0,1,0,,1,,-1':   [null, '7♯5♯9'],
-
-  ',0,0,0,,-1,,-1':  [null, '9♭5'],
-  ',0,0,0,,1,,-1':   [null, '9♯5'],
-  ',0,0,0,,-1,0,-1': [null, '13♭5'],
-  ',0,0,0,,1,0,-1':  [null, '13♯5'],
-
-  ',0,,0,1,0,,-1':   [null, '7♯11'],
-  ',0,0,0,1,0,,-1':  [null, '9♯11'],
-  ',0,0,0,1,0,0,-1': [null, '13♯11'],
-
-  ',0,-1,-1,,,,-1':  ['mi', '7♭9'],
+const symbolOfFormula = {
+  '1': ["bass", null],
+  '1 5': ["5", null],
+  '1 2 3 4 5 6 7': ["major", null],
+  '1 2 ♭3 4 5 6 ♭7': ["dor", null],
+  '1 ♭2 ♭3 4 5 ♭6 ♭7': ["phr", null],
+  '1 2 3 ♯4 5 6 7': ["lyd", null],
+  '1 2 3 4 5 6 ♭7': ["mix", null],
+  '1 2 ♭3 4 5 ♭6 ♭7': ["aeo", null],
+  '1 ♭2 ♭3 4 ♭5 ♭6 ♭7': ["loc", null],
+  '1 3 5': [null, null],
+  '1 ♭3 5': ["mi", null],
+  '1 ♭3 ♭5': ["dim", null],
+  '1 3 ♯5': ["aug", null],
+  '1 4 5': ["sus", null],
+  '1 3 5 6': [null, "6"],
+  '1 ♭3 5 6': ["mi", "6"],
+  '1 ♭3 5 ♭6': ["mi", "♭6"],
+  '1 2 3 5': [null, "add9"],
+  '1 2 ♭3 5': ["mi", "add9"],
+  '1 2 3 5 6': [null, "6/9"],
+  '1 2 ♭3 5 6': ["mi", "6/9"],
+  '1 3 5 7': ["ma", "7"],
+  '1 2 3 5 7': ["ma", "9"],
+  '1 2 3 5 6 7': ["ma", "13"],
+  '1 3 5 ♭7': [null, "7"],
+  '1 2 3 5 ♭7': [null, "9"],
+  '1 2 3 5 6 ♭7': [null, "13"],
+  '1 4 5 ♭7': ["sus", "7"],
+  '1 2 4 5 ♭7': ["sus", "9"],
+  '1 2 4 5 6 ♭7': ["sus", "13"],
+  '1 ♭3 5 ♭7': ["mi", "7"],
+  '1 2 ♭3 5 ♭7': ["mi", "9"],
+  '1 2 ♭3 5 6 ♭7': ["mi", "13"],
+  '1 3 ♭5 7': ["ma", "7♭5"],
+  '1 ♭3 ♭5 ♭7': ["mi", "7♭5"],
+  '1 3 ♯5 7': ["ma", "7♯5"],
+  '1 ♭3 ♯5 ♭7': ["mi", "7♯5"],
+  '1 3 ♯5 ♭7': [null, "7♯5"],
+  '1 3 ♭5 ♭7': [null, "7♭5"],
+  '1 ♯2 3 5 ♭7': [null, "7♯9"],
+  '1 ♭2 3 5 ♭7': [null, "7♭9"],
+  '1 ♭2 3 ♭5 ♭7': [null, "7♭5♭9"],
+  '1 ♯2 3 ♭5 ♭7': [null, "7♭5♯9"],
+  '1 ♭2 3 ♯5 ♭7': [null, "7♯5♭9"],
+  '1 ♯2 3 ♯5 ♭7': [null, "7♯5♯9"],
+  '1 2 3 ♭5 ♭7': [null, "9♭5"],
+  '1 2 3 ♯5 ♭7': [null, "9♯5"],
+  '1 2 3 ♭5 6 ♭7': [null, "13♭5"],
+  '1 2 3 ♯5 6 ♭7': [null, "13♯5"],
+  '1 3 ♯4 5 ♭7': [null, "7♯11"],
+  '1 2 3 ♯4 5 ♭7': [null, "9♯11"],
+  '1 2 3 ♯4 5 6 ♭7': [null, "13♯11"],
+  '1 ♭2 ♭3 ♭7': ["mi", "7♭9"],
+  '1 ♭3 ♭5 𝄫7': ["dim", "7"],
 };
 
-export function toFormula(spelling) {
+export function toFormula(offsets) {
   var formula = [];
   for (let i = 1; i < 8; i++) {
-    switch (spelling[i]) {
+    switch (offsets[i]) {
       case -2:
         formula.push(`𝄫${i}`);
         break;
@@ -114,39 +99,39 @@ export function toFormula(spelling) {
   return formula.join(' ');
 }
 
-function add(spelling, interval, offset) {
-  return Object.assign(new Array(8), {...spelling, [interval]: offset})
+function add(offsets, interval, offset) {
+  return Object.assign(new Array(8), { ...offsets, [interval]: offset })
 }
 
-function findSpelling(root, spelling, bass) {
-  const key = spelling.toString();
-  if (key in symbolOfSpelling) {
-    const [triad, extension] = symbolOfSpelling[key];
-    return new Symbol(root, triad, extension, bass, toFormula(spelling));
+function findFormula(root, offsets, bass) {
+  const formula = toFormula(offsets);
+  if (formula in symbolOfFormula) {
+    const [triad, extension] = symbolOfFormula[formula];
+    return new Symbol(root, triad, extension, bass, formula);
   }
 
   var symbol;
-  if (!(5 in spelling)) {
-    if ((symbol = findSpelling(root, add(spelling, 5, 0), bass))) {
+  if (!(5 in offsets)) {
+    if ((symbol = findFormula(root, add(offsets, 5, 0), bass))) {
       return symbol;
     }
   }
-  if (!(3 in spelling)) {
-    if ((symbol = findSpelling(root, add(spelling, 3, 0), bass))) {
+  if (!(3 in offsets)) {
+    if ((symbol = findFormula(root, add(offsets, 3, 0), bass))) {
       return symbol;
     }
   }
   return null;
 }
 
-export function symbolFromSpelling(root, spelling, bass) {
+export function symbolFromOffsets(root, offsets, bass) {
   var symbol;
 
-  if ((symbol = findSpelling(root, spelling, bass))) {
+  if ((symbol = findFormula(root, offsets, bass))) {
     return symbol;
   } else {
-    console.log(`Failed to interpret ${root} ${spelling} ${bass}`);
-    return new Symbol(root, '?', null, bass, toFormula(spelling));
+    console.log(`Failed to interpret ${root} ${offsets} ${bass}`);
+    return new Symbol(root, '?', null, bass, toFormula(offsets));
   }
 }
 

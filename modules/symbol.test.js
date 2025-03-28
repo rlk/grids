@@ -20,7 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Symbol } from './symbol.js';
+import { Symbol, toFormula } from './symbol.js';
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {3:-2}))).toBe('𝄫3');
+});
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {3:-1}))).toBe('♭3');
+});
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {3:0}))).toBe('3');
+});
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {3:1}))).toBe('♯3');
+});
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {3:2}))).toBe('𝄪3');
+});
+
+test('toFormula', () => {
+  expect(toFormula(Object.assign(new Array(8), {1:0, 3:0, 5:0}))).toBe('1 3 5');
+});
 
 test('Symbol.constructor', () => {
   const symbol = new Symbol('A', 'mi', '7', 'E');
