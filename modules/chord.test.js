@@ -99,13 +99,6 @@ const GDOM7_5 = new Chord('C', 5, [  // G7 inversion 5
   new Stop(1, 15, 5),
 ]);
 
-const CMA7_TEXT = new Chord('C', 1, [  // Cma7 with text annotation
-  new Stop(5, 3, 1),
-  new Stop(4, 5, 5),
-  new Stop(3, 4, 7),
-  new Stop(2, 5, 3),
-], new Options().setText('abc'));
-
 // Chord setters
 
 test('Chord.setDegree', () => {
@@ -551,12 +544,6 @@ test('Chord.toElement has two children', () => {
   expect(element.childElementCount).toBe(2);
 });
 
-test('Chord.toElement with text has three children', () => {
-  const element = CMA7_TEXT.toElement('foo');
-  expect(element.localName).toBe('foo');
-  expect(element.childElementCount).toBe(3);
-});
-
 test('Chord.toElement has symbol span', () => {
   const symbol = CMA7_5.toElement().children[0];
   expect(symbol.localName).toBe('span');
@@ -568,8 +555,23 @@ test('Chord.toElement has svg', () => {
   expect(svg.localName).toBe('svg');
 });
 
+test('Chord.toElement with no symbol has 1 child', () => {
+  const chord = CMA7_5.copy().setOptions(new Options().setNoSymbol(true));
+  const element = chord.toElement('foo');
+  expect(element.localName).toBe('foo');
+  expect(element.childElementCount).toBe(1);
+});
+
+test('Chord.toElement with text has three children', () => {
+  const chord = CMA7_5.copy().setOptions(new Options().setText('abc'));
+  const element = chord.toElement('foo');
+  expect(element.localName).toBe('foo');
+  expect(element.childElementCount).toBe(3);
+});
+
 test('Chord.toElement with text has text span', () => {
-  const text = CMA7_TEXT.toElement().children[2];
+  const chord = CMA7_5.copy().setOptions(new Options().setText('abc'));
+  const text = chord.toElement().children[2];
   expect(text.localName).toBe('span');
   expect(text.className).toBe('text');
 });

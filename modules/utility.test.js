@@ -387,10 +387,29 @@ test('evaluate sets class', () => {
 test('debug logging appears', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(evaluate('( A B C', true)).toEqual([null, 'A', 'B', 'C']);
+  expect(evaluate('A B C', true)).toEqual(['A', 'B', 'C']);
+
+  expect(logSpy).toHaveBeenCalledWith('A');
+  expect(logSpy).toHaveBeenCalledWith('A B');
+  expect(logSpy).toHaveBeenCalledWith('A B C');
+});
+
+test('debug logging displays the sentinal', () => {
+  const logSpy = jest.spyOn(console, 'log');
+
+  expect(evaluate('( A', true)).toEqual([null, 'A']);
 
   expect(logSpy).toHaveBeenCalledWith('(');
   expect(logSpy).toHaveBeenCalledWith('( A');
-  expect(logSpy).toHaveBeenCalledWith('( A B');
-  expect(logSpy).toHaveBeenCalledWith('( A B C');
+});
+
+test('debug logging displays HTML', () => {
+  const logSpy = jest.spyOn(console, 'log');
+
+  expect(evaluate('( A b )', true).outerHTML).toBe("<b> A </b>");
+
+  expect(logSpy).toHaveBeenCalledWith('(');
+  expect(logSpy).toHaveBeenCalledWith('( A');
+  expect(logSpy).toHaveBeenCalledWith('( A <b></b>');
+  expect(logSpy).toHaveBeenCalledWith('<b> A </b>');
 });
