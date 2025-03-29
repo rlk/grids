@@ -109,7 +109,6 @@ export function evaluate(text, debug) {
   }
 
   const words = text.trim().split(/[ \n]+/);
-  console.log(`words = <${words.join(' ')}>`);
   for (const word of words) {
 
     // Chord constructor

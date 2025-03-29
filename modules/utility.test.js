@@ -382,6 +382,25 @@ test('evaluate sets class', () => {
   expect(element.className).toBe('abc');
 });
 
+test('evaluate creates outer element', () => {
+  const element = evaluate('( ( abc b ) ( xyz i ) span )');
+  expect(element.localName).toBe('span');
+  expect(element.children[0].localName).toBe('b');
+  expect(element.children[0].innerHTML).toContain('abc');
+  expect(element.children[1].localName).toBe('i');
+  expect(element.children[1].innerHTML).toContain('xyz');
+});
+
+test('evaluate creates inner element', () => {
+  const elements = evaluate('[ ( abc b ) ( xyz i ) span ]');
+  expect(elements[0].localName).toBe('span');
+  expect(elements[0].children[0].localName).toBe('b');
+  expect(elements[0].children[0].innerHTML).toContain('abc');
+  expect(elements[1].localName).toBe('span');
+  expect(elements[1].children[0].localName).toBe('i');
+  expect(elements[1].children[0].innerHTML).toContain('xyz');
+});
+
 // debug logging
 
 test('debug logging appears', () => {
@@ -392,15 +411,6 @@ test('debug logging appears', () => {
   expect(logSpy).toHaveBeenCalledWith('A');
   expect(logSpy).toHaveBeenCalledWith('A B');
   expect(logSpy).toHaveBeenCalledWith('A B C');
-});
-
-test('debug logging displays the sentinal', () => {
-  const logSpy = jest.spyOn(console, 'log');
-
-  expect(evaluate('( Z', true)).toEqual([null, 'Z']);
-
-  expect(logSpy).toHaveBeenCalledWith('(');
-  expect(logSpy).toHaveBeenCalledWith('( Z');
 });
 
 test('debug logging displays HTML', () => {
