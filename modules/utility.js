@@ -68,14 +68,10 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-function toElement(tagName, innerHTML = '', className = '') {
+export function toElement(tagName, innerHTML, className) {
   var span = document.createElement(tagName);
-  if (innerHTML) {
-    span.innerHTML = innerHTML;
-  }
-  if (className) {
-    span.setAttribute('class', className);
-  }
+  span.innerHTML = innerHTML;
+  span.setAttribute('class', className);
   return span;
 }
 
@@ -86,7 +82,7 @@ export function toNode(operand, tagName) {
   if (operand instanceof Element) {
     return operand;
   }
-  return toElement(tagName, ` ${operand} `);
+  return document.createTextNode(` ${operand} `);
 }
 
 export function evaluate(text, debug) {
@@ -238,8 +234,13 @@ export function evaluate(text, debug) {
 
     } else if (word === 'dupe') {
       const a = stack.pop();
-      const b = a.copy(); // TODO: let this support Chords, Elements, operands
-      stack.push(a, b);
+      if (a instanceof Element) {
+        stack.push(a, a.cloneNode(true));
+      } else if (a instanceof Chord) {
+        stack.push(a, a.copy());
+      } else {
+        stack.push(a, a);
+      }
 
     } else if (word === 'over') {
       const a = stack.pop();
@@ -247,7 +248,7 @@ export function evaluate(text, debug) {
       const c = b.copy();
       stack.push(b, a, c);
 
-    // HTML element operators
+      // HTML element operators
 
     } else if (word === ')') {
       outerElement(stack.pop());

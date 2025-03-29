@@ -349,6 +349,23 @@ test('evaluate adds end repeat bar ', () => {
   expect(element.innerHTML).toContain('𝄇');
 });
 
+// evaluate dupe
+
+test('evaluate dupe text', () => {
+  expect(evaluate('abc dupe'))
+    .toEqual(['abc', 'abc']);
+});
+
+test('evaluate dupe Chord', () => {
+  expect(evaluate('C 1 chord dupe'))
+    .toEqual([new Chord('C', 1), new Chord('C', 1)]);
+});
+
+test('evaluate dupe Element', () => {
+  expect(evaluate('( span ) dupe'))
+    .toEqual([document.createElement('span'), document.createElement('span')]);
+});
+
 // evaluate Elements
 
 test('evaluate creates element', () => {
