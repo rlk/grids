@@ -130,8 +130,9 @@ export function symbolFromOffsets(root, offsets, bass) {
   if ((symbol = findFormula(root, offsets, bass))) {
     return symbol;
   } else {
-    console.log(`Failed to interpret ${root} ${offsets} ${bass}`);
-    return new Symbol(root, '?', null, bass, toFormula(offsets));
+    const formula = toFormula(offsets);
+    console.log(`Failed to interpret ${root} (${formula}) ${bass ?? ''}`);
+    return new Symbol(root, '?', null, bass, formula);
   }
 }
 
