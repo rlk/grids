@@ -4,9 +4,9 @@ function render() {
   for (var element of document.querySelectorAll('.gridgen')) {
     var result = evaluate(element.innerHTML, element.classList.contains('debug'));
     if (Array.isArray(result)) {
-      element.replaceWith(...result.map(x => toNode(x, element.tagName)));
+      element.replaceWith(...result.map(x => toNode(x, element.localName)));
     } else {
-      element.replaceWith(toNode(result, element.tagName));
+      element.replaceWith(toNode(result, element.localName));
     }
   }
 }

@@ -352,7 +352,7 @@ test('evaluate adds end repeat bar ', () => {
 // evaluate Elements
 
 test('evaluate creates element', () => {
-  const element = evaluate('span');
+  const element = evaluate('( span )');
   expect(element.localName).toBe('span');
 });
 
@@ -377,7 +377,7 @@ test('evaluate creates Chord spans', () => {
 });
 
 test('evaluate sets class', () => {
-  const element = evaluate('span abc class');
+  const element = evaluate('( span ) abc class');
   expect(element.localName).toBe('span');
   expect(element.className).toBe('abc');
 });
@@ -397,10 +397,10 @@ test('debug logging appears', () => {
 test('debug logging displays the sentinal', () => {
   const logSpy = jest.spyOn(console, 'log');
 
-  expect(evaluate('( A', true)).toEqual([null, 'A']);
+  expect(evaluate('( Z', true)).toEqual([null, 'Z']);
 
   expect(logSpy).toHaveBeenCalledWith('(');
-  expect(logSpy).toHaveBeenCalledWith('( A');
+  expect(logSpy).toHaveBeenCalledWith('( Z');
 });
 
 test('debug logging displays HTML', () => {
@@ -410,6 +410,6 @@ test('debug logging displays HTML', () => {
 
   expect(logSpy).toHaveBeenCalledWith('(');
   expect(logSpy).toHaveBeenCalledWith('( A');
-  expect(logSpy).toHaveBeenCalledWith('( A <b></b>');
+  expect(logSpy).toHaveBeenCalledWith('( A b');
   expect(logSpy).toHaveBeenCalledWith('<b> A </b>');
 });

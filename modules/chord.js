@@ -179,24 +179,22 @@ export class Chord {
     return null;
   }
 
-  toElement(tagName) {
-    var span = document.createElement(tagName);
-    span.setAttribute('class', 'grid');
+  toElement(localName) {
+    var element = document.createElement(localName);
+    element.setAttribute('class', 'grid');
 
     if (!this.options.nosymbol) {
-      span.appendChild(this.symbol().toElement(this.options.optional));
+      element.appendChild(this.symbol().toElement(this.options.optional));
     }
 
-    span.appendChild(createGrid(this));
+    element.appendChild(createGrid(this));
 
     if (this.options.text) {
-      var text = document.createElement('span');
+      var text = element.appendChild(document.createElement('span'));
       text.setAttribute('class', 'text');
       text.innerHTML = this.options.text;
-      span.appendChild(text);
     }
-
-    return span;
+    return element;
   }
 
   toString() {

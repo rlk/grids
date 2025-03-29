@@ -1,6 +1,11 @@
+.grid {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .grid text.label {
-    font-size:   7px;
+    font-size: 7px;
     font-weight: bold;
     text-anchor: middle;
     dominant-baseline: central;
@@ -11,30 +16,47 @@
     stroke-linejoin: round;
 }
 
-.grid circle.circle { stroke: black; fill: white; }
-.grid circle.dot    { stroke: none; fill: black; }
-.grid path.square   { stroke: black; fill: white; }
-.grid path.diamond  { stroke: black; fill: white; }
-.grid path.cross    { stroke: black; }
-.grid path.board    { stroke: dimgray; fill: none; stroke-linecap: round;}
-
-.grid {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
+.grid circle.circle {
+    stroke: black;
+    fill: white;
 }
 
-.grid > .symbol {
+.grid circle.dot {
+    stroke: none;
+    fill: black;
+}
+
+.grid path.square {
+    stroke: black;
+    fill: white;
+}
+
+.grid path.diamond {
+    stroke: black;
+    fill: white;
+}
+
+.grid path.cross {
+    stroke: black;
+}
+
+.grid path.board {
+    stroke: dimgray;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.grid>.symbol {
     font-variant: small-caps;
     margin-bottom: -0.25em;
 }
 
-.grid > .symbol > .extension {
+.grid>.symbol>.extension {
     font-size: smaller;
     vertical-align: super;
 }
 
-.grid > .text {
+.grid>.text {
     font-size: smaller;
 }
 
@@ -47,23 +69,28 @@
 body.tune {
     font-family: "Noto Music", "Helvetica Neue", Arial, sans;
 }
+
 .tune h1 {
     font-weight: normal;
     font-variant: small-caps;
     text-align: center;
 }
+
 .tune h2 {
     font-weight: normal;
     font-style: italic;
     text-align: center;
 }
+
 .tune h3 {
     font-weight: normal;
     text-align: center;
 }
+
 .tune h4 {
     font-weight: normal;
 }
+
 .tune footer {
     text-align: right;
     font-size: smaller;

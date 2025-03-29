@@ -532,48 +532,47 @@ test('Chord.bass no stops', () => {
 
 // Chord.toElement
 
+test('Chord.toElement has tag', () => {
+  const element = CMA7_5.toElement('abc');
+  expect(element.localName).toBe('abc');
+});
+
 test('Chord.toElement has grid class', () => {
-  const element = CMA7_5.toElement('foo');
-  expect(element.localName).toBe('foo');
+  const element = CMA7_5.toElement('abc');
   expect(element.classList.contains('grid')).toBe(true);
 });
 
 test('Chord.toElement has two children', () => {
-  const element = CMA7_5.toElement('foo');
-  expect(element.localName).toBe('foo');
+  const element = CMA7_5.toElement('abc');
   expect(element.childElementCount).toBe(2);
 });
 
-test('Chord.toElement has symbol span', () => {
-  const symbol = CMA7_5.toElement().children[0];
-  expect(symbol.localName).toBe('span');
-  expect(symbol.className).toBe('symbol');
+test('Chord.toElement has symbol child', () => {
+  const element = CMA7_5.toElement('abc');
+  expect(element.children[0].className).toBe('symbol');
 });
 
-test('Chord.toElement has svg', () => {
-  const svg = CMA7_5.toElement().children[1];
-  expect(svg.localName).toBe('svg');
+test('Chord.toElement has svg child', () => {
+  const element = CMA7_5.toElement('abc');
+  expect(element.children[1].localName).toBe('svg');
 });
 
 test('Chord.toElement with no symbol has 1 child', () => {
   const chord = CMA7_5.copy().setOptions(new Options().setNoSymbol(true));
-  const element = chord.toElement('foo');
-  expect(element.localName).toBe('foo');
+  const element = chord.toElement('abc');
   expect(element.childElementCount).toBe(1);
 });
 
 test('Chord.toElement with text has three children', () => {
-  const chord = CMA7_5.copy().setOptions(new Options().setText('abc'));
-  const element = chord.toElement('foo');
-  expect(element.localName).toBe('foo');
+  const chord = CMA7_5.copy().setOptions(new Options().setText('xyz'));
+  const element = chord.toElement('abc');
   expect(element.childElementCount).toBe(3);
 });
 
-test('Chord.toElement with text has text span', () => {
-  const chord = CMA7_5.copy().setOptions(new Options().setText('abc'));
-  const text = chord.toElement().children[2];
-  expect(text.localName).toBe('span');
-  expect(text.className).toBe('text');
+test('Chord.toElement with text has text child', () => {
+  const chord = CMA7_5.copy().setOptions(new Options().setText('xyz'));
+  const element = chord.toElement('abc');
+  expect(element.children[2].className).toBe('text');
 });
 
 // Chord.toString
