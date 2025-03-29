@@ -68,6 +68,17 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
+function toElement(tagName, innerHTML = '', className = '') {
+  var span = document.createElement(tagName);
+  if (innerHTML) {
+    span.innerHTML = innerHTML;
+  }
+  if (className) {
+    span.setAttribute('class', className);
+  }
+  return span;
+}
+
 export function toNode(operand, tagName) {
   if (operand instanceof Chord) {
     return operand.toElement(tagName);
@@ -75,18 +86,11 @@ export function toNode(operand, tagName) {
   if (operand instanceof Element) {
     return operand;
   }
-  return document.createTextNode(` ${operand} `);
+  return toElement(tagName, ` ${operand} `);
 }
 
 export function evaluate(text, debug) {
   var stack = []
-
-  function textSpan(text, className) {
-    var span = document.createElement('span');
-    span.setAttribute('class', className);
-    span.textContent = text;
-    return span;
-  }
 
   function outerElement(tagName) {
     var element = document.createElement(tagName);
@@ -206,13 +210,13 @@ export function evaluate(text, debug) {
       // Bar constructors
 
     } else if (word === '|:') {
-      stack.push(textSpan('𝄆', 'bar'));
+      stack.push(toElement('span', '&#x1D106;', 'bar'));
 
     } else if (word === '|') {
-      stack.push(textSpan('𝄀', 'bar'));
+      stack.push(toElement('span', '&#x1D100;', 'bar'));
 
     } else if (word === ':|') {
-      stack.push(textSpan('𝄇', 'bar'));
+      stack.push(toElement('span', '&#x1D107;', 'bar'));
 
       // Stack-mapping operators
 
@@ -234,7 +238,7 @@ export function evaluate(text, debug) {
 
     } else if (word === 'dupe') {
       const a = stack.pop();
-      const b = a.copy();
+      const b = a.copy(); // TODO: let this support Chords, Elements, operands
       stack.push(a, b);
 
     } else if (word === 'over') {
