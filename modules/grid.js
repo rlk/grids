@@ -29,7 +29,7 @@ function elem(tag, attributes, text) {
     element.setAttribute(k, v);
   }
   if (text) {
-    element.innerHTML = text;
+    element.textContent = text;
   }
   return element
 }

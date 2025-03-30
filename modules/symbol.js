@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import { toElement } from './utility.js'
+
 const symbolOfFormula = {
   '1': ["bass", null],
   '1 5': ["5", null],
@@ -146,42 +148,32 @@ export class Symbol {
   }
 
   toElement(optional = false) {
-    function span(innerHTML, className = null) {
-      var e = document.createElement('span');
-      if (className) {
-        e.setAttribute('class', className);
-      }
-      if (innerHTML) {
-        e.innerHTML = innerHTML;
-      }
-      return e;
-    }
-
-    var symbol = span(null, 'symbol');
-    symbol.setAttribute('title', this.formula);
+    var symbol = toElement('span', 'symbol', null);
 
     if (optional) {
-      symbol.appendChild(span('('));
+      symbol.appendChild(toElement('span', null, '('));
     }
     if (this.root) {
-      symbol.appendChild(span(this.root));
+      symbol.appendChild(toElement('span', null, this.root));
     }
     if (this.triad) {
-      symbol.appendChild(span(this.triad));
+      symbol.appendChild(toElement('span', null, this.triad));
     }
     if (this.extension) {
-      symbol.appendChild(span(this.extension, 'extension'));
+      symbol.appendChild(toElement('span', 'extension', this.extension));
     }
     if (this.bass) {
       if (this.extension) {
-        symbol.appendChild(span(`/&#8239;${this.bass}`));
+        symbol.appendChild(toElement('span', null, `/ ${this.bass}`));
       } else {
-        symbol.appendChild(span(`&#8239;/&#8239;${this.bass}`));
+        symbol.appendChild(toElement('span', null, ` / ${this.bass}`));
       }
     }
     if (optional) {
-      symbol.appendChild(span(')'));
+      symbol.appendChild(toElement('span', null, ')'));
     }
+
+    symbol.setAttribute('title', this.formula);
     return symbol;
   }
 

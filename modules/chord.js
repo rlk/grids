@@ -192,7 +192,7 @@ export class Chord {
     if (this.options.text) {
       var text = element.appendChild(document.createElement('span'));
       text.setAttribute('class', 'text');
-      text.innerHTML = this.options.text;
+      text.textContent = this.options.text;
     }
     return element;
   }

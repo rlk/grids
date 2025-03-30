@@ -334,19 +334,19 @@ test('evaluate aligns Chords at mark', () => {
 test('evaluate adds start repeat bar ', () => {
   const element = evaluate('|:');
   expect(element.classList.contains('bar')).toBe(true);
-  expect(element.innerHTML).toContain('𝄆');
+  expect(element.textContent).toContain('𝄆');
 });
 
 test('evaluate adds bar', () => {
   const element = evaluate('|');
   expect(element.classList.contains('bar')).toBe(true);
-  expect(element.innerHTML).toContain('𝄀');
+  expect(element.textContent).toContain('𝄀');
 });
 
 test('evaluate adds end repeat bar ', () => {
   const element = evaluate(':|');
   expect(element.classList.contains('bar')).toBe(true);
-  expect(element.innerHTML).toContain('𝄇');
+  expect(element.textContent).toContain('𝄇');
 });
 
 // evaluate dupe
@@ -376,7 +376,7 @@ test('evaluate creates element', () => {
 test('evaluate creates text element', () => {
   const element = evaluate('( abc span )');
   expect(element.localName).toBe('span');
-  expect(element.innerHTML).toContain('abc');
+  expect(element.textContent).toContain('abc');
 });
 
 test('evaluate creates Chord span', () => {
@@ -403,19 +403,19 @@ test('evaluate creates outer element', () => {
   const element = evaluate('( ( abc b ) ( xyz i ) span )');
   expect(element.localName).toBe('span');
   expect(element.children[0].localName).toBe('b');
-  expect(element.children[0].innerHTML).toContain('abc');
+  expect(element.children[0].textContent).toContain('abc');
   expect(element.children[1].localName).toBe('i');
-  expect(element.children[1].innerHTML).toContain('xyz');
+  expect(element.children[1].textContent).toContain('xyz');
 });
 
 test('evaluate creates inner element', () => {
   const elements = evaluate('[ ( abc b ) ( xyz i ) span ]');
   expect(elements[0].localName).toBe('span');
   expect(elements[0].children[0].localName).toBe('b');
-  expect(elements[0].children[0].innerHTML).toContain('abc');
+  expect(elements[0].children[0].textContent).toContain('abc');
   expect(elements[1].localName).toBe('span');
   expect(elements[1].children[0].localName).toBe('i');
-  expect(elements[1].children[0].innerHTML).toContain('xyz');
+  expect(elements[1].children[0].textContent).toContain('xyz');
 });
 
 // debug logging

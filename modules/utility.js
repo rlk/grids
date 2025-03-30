@@ -18,9 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { Bar } from './bar.js';
 import { Chord, alignMarks, alignFrets } from './chord.js';
-import { Options } from './options.js';
 
 const offsetOfInterval = {
   1: 0, 2: 2, 3: 4, 4: 5, 5: 7, 6: 9, 7: 11
@@ -68,9 +66,9 @@ export function calcOffset(root, pitch, interval) {
   return toOffset(pitch - toPitch(root + offsetOfInterval[interval]));
 }
 
-export function toElement(tagName, innerHTML, className) {
+export function toElement(tagName, className, textContent) {
   var span = document.createElement(tagName);
-  span.innerHTML = innerHTML;
+  span.textContent = textContent;
   span.setAttribute('class', className);
   return span;
 }
@@ -206,13 +204,13 @@ export function evaluate(text, debug) {
       // Bar constructors
 
     } else if (word === '|:') {
-      stack.push(toElement('span', '&#x1D106;', 'bar'));
+      stack.push(toElement('span', 'bar', '𝄆')); // &#x1D106;
 
     } else if (word === '|') {
-      stack.push(toElement('span', '&#x1D100;', 'bar'));
+      stack.push(toElement('span', 'bar', '𝄀')); // &#x1D100;
 
     } else if (word === ':|') {
-      stack.push(toElement('span', '&#x1D107;', 'bar'));
+      stack.push(toElement('span', 'bar', '𝄇')); // &#x1D107;
 
       // Stack-mapping operators
 
@@ -264,11 +262,11 @@ export function evaluate(text, debug) {
 
       // Operands
 
-    } else if (isNaN(word)) {
+    } else if (isNaN(word) || word.trim().length == 0) {
       stack.push(word);
 
     } else {
-      stack.push(parseInt(word));
+      stack.push(parseInt(word, 10));
     }
 
     if (debug) {
