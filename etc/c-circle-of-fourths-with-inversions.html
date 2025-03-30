@@ -12,18 +12,14 @@
   <h1>Circle of 4ths with Systematic Inversions</h1>
   <p>Here's a chording exercise that combines the diatonic circle of fourths (a pair of diatonic chord scales) with systematic inversion and string transference&mdash;essentially all of the Greene-inspired chord operations. On first approach, play each row in order.</p>
   <span class="gridgen"> (
-    ( [ 1573 C 1 chord 6 8 1 + 5 10 5 + 4 9 7 + 3 9 3 +
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 3715 C 1 chord 6 8 1 + 5 10 5 + 4 9 7 + 3 9 3 + i+
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 5137 C 1 chord 6 8 1 + 5 10 5 + 4 9 7 + 3 9 3 + i+ i+ s-
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 7351 C 1 chord 6 8 1 + 5 10 5 + 4 9 7 + 3 9 3 + i+ i+ i+ s-
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    table ) center class
+    C 1 chord 6 8 1 + 5 10 5 + 4 9 7 + 3 9 3 +
+    ( over [ swap dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 1573 td ] tr ) swap
+    ( over [ swap i+ dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 3715 td ] tr ) swap
+    ( over [ swap i+ i+ s- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 5137 td ] tr ) swap
+    ( over [ swap i+ i+ i+ s- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 7351 td ] tr ) swap
+    drop table ) center class
   </span>
   <p>The last row of chords, with 7s in the bass, will challenge the ear. &ldquo;Breaking these chords up softens the dissonance&rdquo; (<a href="user-guide.html#mcp">MCP</a> p.23). That is to say, try plucking the (3 5 1) and adding the 7 a beat later.</p>
-
   <p>Now, combine the rows in a zig-zag pattern:</p>
   <nl>
     <li>Start by playing <span class="chord">Cma<sup>7</sup></span></li>
@@ -35,17 +31,13 @@
   <p>Continue in this pattern until you reach the last column. When you're comfortable switching rows, extend the zig-zag pattern to three or four rows.</p>
 
   <p>Here's another form to work with.</p>
-
   <span class="gridgen"> (
-    ( [ 1735 C 1 chord 6 8 1 + 4 9 7 + 3 9 3 + 2 8 5 +
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 3157 C 1 chord 6 8 1 + 4 9 7 + 3 9 3 + 2 8 5 + i+
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 5371 C 1 chord 6 8 1 + 4 9 7 + 3 9 3 + 2 8 5 + i+ i+
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    ( [ 7513 C 1 chord 6 8 1 + 4 9 7 + 3 9 3 + 2 8 5 + i+ i+ i+
-    dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am td ] tr )
-    table ) center class
+    C 1 chord 6 8 1 + 4 9 7 + 3 9 3 + 2 8 5 +
+    ( over [ swap dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 1735 td ] tr ) swap
+    ( over [ swap i+ dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 3157 td ] tr ) swap
+    ( over [ swap i+ i+ dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 5371 td ] tr ) swap
+    ( over [ swap i+ i+ i+ dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ dupe 5- dupe 4+ am 7513 td ] tr ) swap
+    drop table ) center class
   </span>
   <footer><a href="http://rlk.github.io/grids">grids &copy; 2025 rlk</a></footer>
 </body>
