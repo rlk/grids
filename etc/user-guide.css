@@ -54,6 +54,11 @@ dd {
   margin-bottom: 0.5em;
 }
 
+footer {
+  text-align: right;
+  font-size: smaller;
+}
+
 .chord {
   font-variant: small-caps;
 }

@@ -96,6 +96,10 @@ body.tune {
     font-size: smaller;
 }
 
+.chord {
+    font-variant: small-caps;
+  }
+
 .center {
     text-align: center;
     margin-left: auto;
