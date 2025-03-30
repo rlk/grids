@@ -1,10 +1,10 @@
 body {
-  font-family: "Noto Music", "Helvetica Neue", Arial, sans;
+  font-family: "Noto Music", "Helvetica Neue", Arial, sans-serif;
   line-height: 175%;
 }
 
-code, pre {
-  font-family: "Noto Sans Mono", "Courier New", mono;
+code, p.listing {
+  font-family: "Noto Sans Mono", "Courier New Bold", monospace;
   background: #CCFFCC;
   padding-left: 4px;
   padding-right: 4px;
@@ -52,11 +52,6 @@ dt {
 
 dd {
   margin-bottom: 0.5em;
-}
-
-footer {
-  text-align: right;
-  font-size: smaller;
 }
 
 .chord {

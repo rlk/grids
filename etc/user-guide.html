@@ -418,24 +418,27 @@
   <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</code> gets turned into <span class="gridgen debug">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</span></p>
 
   <h3>HTML Structure</h3>
-  <p>This example demonstrates a non-trivial HTML structure.</p>
-  <pre>
-( ( [ A 1 chord 6 5 1 + 5 4 3 + 4 2 5 + dupe d+ dupe d+ dupe d+ am td ] tr )
-  ( [ A 1 chord 4 7 1 + 3 6 3 + 2 5 5 + dupe d+ dupe d+ dupe d+ am td ] tr )
-table ) display class</pre>
+  <p>This example demonstrates the <code>( )</code> and <code>[ ]</code> element operators with a non-trivial HTML structure.</p>
+  <p class="listing">
+    <code>( ( [ A 1 chord 6 5 1 + 5 4 3 + 4 2 5 +</code><br>
+    <code>&emsp;&emsp; dupe d+ dupe d+ dupe d+ am td ] tr )</code><br>
+    <code>  ( [ A 1 chord 4 7 1 + 3 6 3 + 2 5 5 +</code><br>
+    <code>&emsp;&emsp; dupe d+ dupe d+ dupe d+ am td ] tr ) table ) display class</code>
+  </p>
   <span class="gridgen">
-    ( ( [ A 1 chord 6 5 1 + 5 4 3 + 4 2 5 + dupe d+ dupe d+ dupe d+ am td ] tr )
-    ( [ A 1 chord 4 7 1 + 3 6 3 + 2 5 5 + dupe d+ dupe d+ dupe d+ am td ] tr )
-    table ) display class</span>
-  <p>The chord constructor and <code>dupe d+</code> operator generate four chords. <code>[ ]</code> wraps each chord in a table cell. <code>( )</code> wraps these four table cells in a table row. This is done a second time, and <code>( )</code> wraps these two table rows in a table. Finally, the display class is given to the table, which centers it on this page.</p>
+    ( ( [ A 1 chord 6 5 1 + 5 4 3 + 4 2 5 +
+    dupe d+ dupe d+ dupe d+ am td ] tr )
+    ( [ A 1 chord 4 7 1 + 3 6 3 + 2 5 5 +
+    dupe d+ dupe d+ dupe d+ am td ] tr ) table ) display class</span>
+  <p>The chord constructor and <code>dupe d+</code> operator generate four chords. <code>[ ... td ]</code> wraps each chord in a table cell. <code>( ... tr )</code> wraps these four table cells in a table row. This is done twice, and <code>( ... table )</code> wraps these two table rows in a table. Finally, the display class is given to the table, which centers it on this page.</p>
 
   <h3>HTML Content</h3>
   <p>If necessary, text may be embedded directly within a Gridgen expression. The <code>( )</code> and <code>[ ]</code> element operators work here too. This example shows two separate four-chord sequences with text between them. But because it's a single expression, the <code>af</code> aligns all eight chords.</p>
-  <pre>
-A 1 chord 6 5 1 + 5 4 3 + 4 2 5 + dupe d+ dupe d+ dupe d+
-is one ( octave em ) lower than
-A 1 chord 4 7 1 + 3 6 3 + 2 5 5 + dupe d+ dupe d+ dupe d+ af</pre>
-<p class="display">
+  <p class="listing">
+A 1 chord 6 5 1 + 5 4 3 + 4 2 5 + dupe d+ dupe d+ dupe d+<br>
+is one ( octave em ) lower than<br>
+A 1 chord 4 7 1 + 3 6 3 + 2 5 5 + dupe d+ dupe d+ dupe d+ af<p/>
+  <p class="display">
     <span class="gridgen">
       A 1 chord 6 5 1 + 5 4 3 + 4 2 5 + dupe d+ dupe d+ dupe d+
       is one ( octave em ) lower than
