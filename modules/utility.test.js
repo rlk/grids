@@ -171,29 +171,49 @@ test('evaluate pushes Chord', () => {
     .toEqual(new Chord('C', 1));
 });
 
+test('evaluate pushes Chords', () => {
+  expect(evaluate('C 1 chord C 2 chord'))
+    .toEqual([new Chord('C', 1), new Chord('C', 2)]);
+});
+
 test('evaluate adds Stop', () => {
-  expect(evaluate('C 1 chord 5 3 1 +'))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', false)]));
+  expect(evaluate('C 5 chord 5 5 1 +'))
+    .toEqual(new Chord('C', 5, [new Stop(5, 5, 5, '+', false)]));
 });
 
 test('evaluate adds decor Stop', () => {
-  expect(evaluate('C 1 chord 5 3 1 (+)'))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, '+', true)]));
+  expect(evaluate('C 5 chord 5 5 1 (+)'))
+    .toEqual(new Chord('C', 5, [new Stop(5, 5, 5, '+', true)]));
 });
 
 test('evaluate adds labeled Stop', () => {
-  expect(evaluate('C 1 chord 5 3 1 foo .'))
-    .toEqual(new Chord('C', 1, [new Stop(5, 3, 1, 'foo', false)]));
+  expect(evaluate('C 5 chord 5 5 1 foo .'))
+    .toEqual(new Chord('C', 5, [new Stop(5, 5, 5, 'foo', false)]));
 });
 
-test('evaluate adds Chord finger', () => {
-  expect(evaluate('C 1 chord 5 1 #'))
-    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1)));
+test('evaluate adds multiple stops', () => {
+  expect(evaluate('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 +'))
+    .toEqual(new Chord('C', 1, [
+      new Stop(5, 3, 1),
+      new Stop(4, 2, 3),
+      new Stop(3, 0, 5),
+    ]));
 });
 
-test('evaluate adds Chord fingers', () => {
-  expect(evaluate('C 1 chord 5 1 # 4 3 #'))
-    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1).setFinger(4, 3)));
+test('evaluate rotates stops', () => {
+  expect(evaluate('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 + /'))
+    .toEqual(new Chord('C', 1, [
+      new Stop(4, 2, 3),
+      new Stop(3, 0, 5),
+      new Stop(5, 3, 1),
+    ]));
+});
+
+test('evaluate quotes Stop', () => {
+  expect(evaluate("C 5 chord 5 5 1 + C 1 chord 0 ' "))
+    .toEqual([
+      new Chord('C', 5, [new Stop(5, 5, 5, '+', false)]),
+      new Chord('C', 1, [new Stop(5, 5, 5, '+', false)])]);
 });
 
 test('evaluate sets Optional', () => {
@@ -211,41 +231,32 @@ test('evaluate sets Text', () => {
     .toEqual(new Chord('C', 1, [], new Options().setText('hello')));
 });
 
-test('evaluate adds Chord', () => {
-  expect(evaluate('C 1 chord'))
-    .toEqual(new Chord('C', 1));
+test('evaluate sets Chord finger', () => {
+  expect(evaluate('C 1 chord 5 1 #'))
+    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1)));
 });
 
-test('evaluate adds Chords', () => {
-  expect(evaluate('C 1 chord C 2 chord'))
-    .toEqual([new Chord('C', 1), new Chord('C', 2)]);
+test('evaluate sets Chord fingers', () => {
+  expect(evaluate('C 1 chord 5 1 # 4 3 #'))
+    .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1).setFinger(4, 3)));
 });
 
-test('evaluate adds Chord with stops', () => {
-  expect(evaluate('C 1 chord 5 3 1 + 4 2 3 + 3 0 5 +'))
-    .toEqual(new Chord('C', 1, [
-      new Stop(5, 3, 1),
-      new Stop(4, 2, 3),
-      new Stop(3, 0, 5),
-    ]));
-});
-
-test('evaluate adds Chord drop', () => {
+test('evaluate drops Chord', () => {
   expect(evaluate('C 1 chord C 2 chord drop'))
     .toEqual(new Chord('C', 1));
 });
 
-test('evaluate adds Chord swap', () => {
+test('evaluate swaps Chords', () => {
   expect(evaluate('C 1 chord C 2 chord swap'))
     .toEqual([new Chord('C', 2), new Chord('C', 1)]);
 });
 
-test('evaluate adds Chord dupe', () => {
+test('evaluate dupes Chord', () => {
   expect(evaluate('C 1 chord C 2 chord dupe'))
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 2)]);
 });
 
-test('evaluate adds Chord over', () => {
+test('evaluate overs Chord', () => {
   expect(evaluate('C 1 chord C 2 chord over'))
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 1)]);
 });

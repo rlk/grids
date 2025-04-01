@@ -144,6 +144,15 @@ export function evaluate(text, debug) {
       const c = stack.pop();
       stack.push(c.add(s, f, i, l));
 
+    } else if (word === "'") {
+      const j = stack.pop();
+      const c = stack.pop();
+      const b = stack.pop();
+      stack.push(b, c.push(b.stops[j]));
+
+    } else if (word === '/') {
+      stack.push(stack.pop().rot());
+
       // Chord options
 
     } else if (word === '?') {
@@ -204,13 +213,13 @@ export function evaluate(text, debug) {
       // Bar constructors
 
     } else if (word === '|:') {
-      stack.push(toElement('span', 'bar', '𝄆')); // &#x1D106;
+      stack.push(toElement('span', 'bar', '𝄆'));
 
     } else if (word === '|') {
-      stack.push(toElement('span', 'bar', '𝄀')); // &#x1D100;
+      stack.push(toElement('span', 'bar', '𝄀'));
 
     } else if (word === ':|') {
-      stack.push(toElement('span', 'bar', '𝄇')); // &#x1D107;
+      stack.push(toElement('span', 'bar', '𝄇'));
 
       // Stack-mapping operators
 

@@ -119,7 +119,12 @@ test('Chord.copy', () => {
   expect(CMA7_5.copy()).toEqual(CMA7_5);
 });
 
-// Chord builders
+// Stop handlers
+
+test('Chord.push', () => {
+  expect(new Chord('C', 5).push(new Stop(4, 5, 5, 'x', true)))
+    .toEqual(new Chord('C', 5, [new Stop(4, 5, 5, 'x', true)]));
+})
 
 test('Chord.add', () => {
   expect(new Chord('C', 5).add(4, 5, 1, 'x', true))
@@ -144,6 +149,15 @@ test('Chord.add multiple', () => {
         new Stop(3, 7, 2, '+'),
         new Stop(2, 6, 4, '+'),
         new Stop(1, 7, 7, '+')]));
+})
+
+test('Chord.rot', () => {
+  expect(new Chord('C', 5).add(4, 5, 1).add(3, 4, 3).add(2, 3, 5).rot())
+    .toEqual(
+      new Chord('C', 5, [
+        new Stop(3, 4, 7, '+'),
+        new Stop(2, 3, 2, '+'),
+        new Stop(4, 5, 5, '+')]));
 })
 
 // Chord.isValid

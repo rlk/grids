@@ -78,9 +78,18 @@ export class Chord {
     return Object.assign(new Chord(), this, { options: this.options.copy() });
   }
 
+  push(stop) {
+    this.stops.push(stop.copy());
+    return this;
+  }
+
   add(string, fret, interval, label = '+', decor = false) {
     this.stops.push(new Stop(string, fret, toDegree(this.degree + interval - 1), label, decor));
     return this;
+  }
+
+  rot() {
+    return this.copy().setStops([...this.stops.slice(1), this.stops[0]]);
   }
 
   isValid() {
