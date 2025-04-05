@@ -118,7 +118,7 @@ class Interpreter {
         push(b);
         push(c.push(b.stops[j]));
 
-      } else if (word === '/') {
+      } else if (word === '@') {
         push(pop().rot());
 
       } else if (word === '?') {
