@@ -21,204 +21,230 @@
 import { Chord, alignMarks, alignFrets } from './chord.js';
 import { toElement, toNode } from './utility.js';
 
-export function interpret(text, debug) {
-  var stack = []
-
-  function outerElement(tagName) {
-    var element = document.createElement(tagName);
-    var child = stack.pop();
-    while (child !== '(') {
-      element.prepend(toNode(child, 'span'));
-      child = stack.pop();
-    }
-    stack.push(element);
+class Interpreter {
+  constructor() {
+    this.dictionary = {};
   }
 
-  function innerElement(tagName) {
-    const child = stack.pop();
+  outerElement(tagName, push, pop) {
+    var child = pop();
+    var element = document.createElement(tagName);
+    while (child !== '(') {
+      element.prepend(toNode(child, 'span'));
+      child = pop();
+    }
+    push(element);
+  }
+
+  innerElement(tagName, push, pop) {
+    const child = pop();
     if (child !== '[') {
       var element = document.createElement(tagName);
       element.append(toNode(child, 'span'));
-      innerElement(tagName);
-      stack.push(element);
+      this.innerElement(tagName, push, pop);
+      push(element);
     }
   }
 
-  const words = text.trim().split(/[ \n]+/);
-  for (const word of words) {
+  definition(words) {
+    const key = words.shift();
+    var value = [];
+    var word = words.shift();
+    while (word !== ';') {
+      value.push(word);
+      word = words.shift();
+    }
+    this.dictionary[key] = value;
+  }
 
-    // Chord constructor
+  interpret(text, debug) {
+    var words = text.trim().split(/[ \n]+/);
+    var stack = [];
 
-    if (word === 'chord') {
-      const d = stack.pop();
-      const k = stack.pop();
-      stack.push(new Chord(k, d));
+    function push(x) {
+      stack.push(x);
+    }
 
-      // Stop constructors
+    function pop() {
+      return stack.pop();
+    }
 
-    } else if (
-      word === '+' || word === 'x' || word === '=' ||
-      word === '^' || word === 'o' || word === '_') {
-      const i = stack.pop();
-      const f = stack.pop();
-      const s = stack.pop();
-      const c = stack.pop();
-      stack.push(c.add(s, f, i, word, false));
+    while (words.length > 0) {
+      const word = words.shift();
 
-    } else if (
-      word === '(+)' || word === '(x)' || word === '(=)' ||
-      word === '(^)' || word === '(o)' || word === '(_)') {
-      const i = stack.pop();
-      const f = stack.pop();
-      const s = stack.pop();
-      const c = stack.pop();
-      stack.push(c.add(s, f, i, word.at(1), true));
+      if (word === 'chord') {
+        const d = pop();
+        const k = pop();
+        push(new Chord(k, d));
 
-    } else if (word === '.') {
-      const l = stack.pop();
-      const i = stack.pop();
-      const f = stack.pop();
-      const s = stack.pop();
-      const c = stack.pop();
-      stack.push(c.add(s, f, i, l));
+      } else if (
+        word === '+' || word === 'x' || word === '=' ||
+        word === '^' || word === 'o' || word === '_') {
+        const i = pop();
+        const f = pop();
+        const s = pop();
+        const c = pop();
+        push(c.add(s, f, i, word, false));
 
-    } else if (word === "'") {
-      const j = stack.pop();
-      const c = stack.pop();
-      const b = stack.pop();
-      stack.push(b, c.push(b.stops[j]));
+      } else if (
+        word === '(+)' || word === '(x)' || word === '(=)' ||
+        word === '(^)' || word === '(o)' || word === '(_)') {
+        const i = pop();
+        const f = pop();
+        const s = pop();
+        const c = pop();
+        push(c.add(s, f, i, word.at(1), true));
 
-    } else if (word === '/') {
-      stack.push(stack.pop().rot());
+      } else if (word === '.') {
+        const l = pop();
+        const i = pop();
+        const f = pop();
+        const s = pop();
+        const c = pop();
+        push(c.add(s, f, i, l));
 
-      // Chord options
+      } else if (word === "'") {
+        const j = pop();
+        const c = pop();
+        const b = pop();
+        push(b);
+        push(c.push(b.stops[j]));
 
-    } else if (word === '?') {
-      const c = stack.pop();
-      c.options.setOptional(true);
-      stack.push(c);
+      } else if (word === '/') {
+        push(pop().rot());
 
-    } else if (word === '$') {
-      const c = stack.pop();
-      c.options.setNoSymbol(true);
-      stack.push(c);
+      } else if (word === '?') {
+        const c = pop();
+        c.options.setOptional(true);
+        push(c);
 
-    } else if (word === '!') {
-      const t = stack.pop();
-      const c = stack.pop();
-      c.options.setText(t);
-      stack.push(c);
+      } else if (word === '$') {
+        const c = pop();
+        c.options.setNoSymbol(true);
+        push(c);
 
-    } else if (word === '#') {
-      const f = stack.pop();
-      const s = stack.pop();
-      const c = stack.pop();
-      c.options.setFinger(s, f);
-      stack.push(c);
+      } else if (word === '!') {
+        const t = pop();
+        const c = pop();
+        c.options.setText(t);
+        push(c);
 
-      // Chord operators
+      } else if (word === '#') {
+        const f = pop();
+        const s = pop();
+        const c = pop();
+        c.options.setFinger(s, f);
+        push(c);
 
-    } else if (word === 's+') {
-      stack.push(stack.pop().incString());
+      } else if (word === 's+') {
+        push(pop().incString());
 
-    } else if (word === 's-') {
-      stack.push(stack.pop().decString());
+      } else if (word === 's-') {
+        push(pop().decString());
 
-    } else if (word === 'd+') {
-      stack.push(stack.pop().incDegree());
+      } else if (word === 'd+') {
+        push(pop().incDegree());
 
-    } else if (word === 'd-') {
-      stack.push(stack.pop().decDegree());
+      } else if (word === 'd-') {
+        push(pop().decDegree());
 
-    } else if (word === '4+') {
-      stack.push(stack.pop().incDegree().incDegree().incDegree().decString());
+      } else if (word === '4+') {
+        push(pop().incDegree().incDegree().incDegree().decString());
 
-    } else if (word === '5-') {
-      stack.push(stack.pop().decDegree().decDegree().decDegree().decDegree().incString());
+      } else if (word === '5-') {
+        push(pop().decDegree().decDegree().decDegree().decDegree().incString());
 
-    } else if (word === 'i+') {
-      stack.push(stack.pop().incInversion());
+      } else if (word === 'i+') {
+        push(pop().incInversion());
 
-    } else if (word === 'i-') {
-      stack.push(stack.pop().decInversion());
+      } else if (word === 'i-') {
+        push(pop().decInversion());
 
-    } else if (word === 'o+') {
-      stack.push(stack.pop().incOctave());
+      } else if (word === 'o+') {
+        push(pop().incOctave());
 
-    } else if (word === 'o-') {
-      stack.push(stack.pop().decOctave());
+      } else if (word === 'o-') {
+        push(pop().decOctave());
 
-      // Bar constructors
+      } else if (word === '|:') {
+        push(toElement('span', 'bar', '𝄆'));
 
-    } else if (word === '|:') {
-      stack.push(toElement('span', 'bar', '𝄆'));
+      } else if (word === '|') {
+        push(toElement('span', 'bar', '𝄀'));
 
-    } else if (word === '|') {
-      stack.push(toElement('span', 'bar', '𝄀'));
+      } else if (word === ':|') {
+        push(toElement('span', 'bar', '𝄇'));
 
-    } else if (word === ':|') {
-      stack.push(toElement('span', 'bar', '𝄇'));
+      } else if (word === 'af') {
+        alignFrets(stack.filter(x => x instanceof Chord));
 
-      // Stack-mapping operators
+      } else if (word === 'am') {
+        alignMarks(stack.filter(x => x instanceof Chord));
 
-    } else if (word === 'af') {
-      alignFrets(stack.filter(x => x instanceof Chord));
+      } else if (word === 'drop') {
+        pop();
 
-    } else if (word === 'am') {
-      alignMarks(stack.filter(x => x instanceof Chord));
+      } else if (word === 'swap') {
+        const a = pop();
+        const b = pop();
+        push(a);
+        push(b);
 
-      // Stack operators
+      } else if (word === 'dupe') {
+        const a = pop();
+        if (a instanceof Element) {
+          push(a);
+          push(a.cloneNode(true));
+        } else if (a instanceof Chord) {
+          push(a);
+          push(a.copy());
+        } else {
+          push(a);
+          push(a);
+        }
 
-    } else if (word === 'drop') {
-      stack.pop();
+      } else if (word === 'over') {
+        const a = pop();
+        const b = pop();
+        push(b);
+        push(a);
+        push(b.copy());
 
-    } else if (word === 'swap') {
-      const a = stack.pop();
-      const b = stack.pop();
-      stack.push(a, b);
+      } else if (word === 'class') {
+        var n = pop();
+        var e = pop();
+        e.setAttribute('class', n);
+        push(e);
 
-    } else if (word === 'dupe') {
-      const a = stack.pop();
-      if (a instanceof Element) {
-        stack.push(a, a.cloneNode(true));
-      } else if (a instanceof Chord) {
-        stack.push(a, a.copy());
+      } else if (word === ')') {
+        this.outerElement(pop(), push, pop);
+
+      } else if (word === ']') {
+        this.innerElement(pop(), push, pop);
+
+      } else if (word === ':') {
+        this.definition(words);
+
+      } else if (word in this.dictionary) {
+        words = this.dictionary[word].concat(words);
+
+      } else if (isNaN(word) || word.trim().length == 0) {
+        push(word);
+
       } else {
-        stack.push(a, a);
+        push(parseInt(word, 10));
       }
 
-    } else if (word === 'over') {
-      const a = stack.pop();
-      const b = stack.pop();
-      const c = b.copy();
-      stack.push(b, a, c);
-
-      // HTML element operators
-
-    } else if (word === ')') {
-      outerElement(stack.pop());
-
-    } else if (word === ']') {
-      innerElement(stack.pop());
-
-    } else if (word === 'class') {
-      var name = stack.pop();
-      var element = stack.pop();
-      element.setAttribute('class', name);
-      stack.push(element);
-
-      // Operands
-
-    } else if (isNaN(word) || word.trim().length == 0) {
-      stack.push(word);
-
-    } else {
-      stack.push(parseInt(word, 10));
+      if (debug) {
+        console.log(`${stack.map(e => e instanceof Element ? e.outerHTML : e).join(' ')} ← ${word}`);
+      }
     }
-
-    if (debug) {
-      console.log(stack.map(e => e instanceof Element ? e.outerHTML : e).join(' '));
-    }
+    return stack.length == 1 ? stack[0] : stack;
   }
-  return stack.length == 1 ? stack[0] : stack;
+}
+
+var impl = new Interpreter();
+
+export function interpret(text, debug) {
+  return impl.interpret(text, debug);
 }
