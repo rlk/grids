@@ -315,6 +315,11 @@ test('interpret creates 3-word definition', () => {
   expect(interpret(': p 2 3 4 ; p p')).toEqual([2, 3, 4, 2, 3, 4]);
 });
 
+test('interpret persists definitions', () => {
+  expect(interpret(': p 1 ;')).toEqual([]);
+  expect(interpret('p p')).toEqual([1, 1]);
+});
+
 test('interpret creates chord function', () => {
   expect(interpret(': dd d+ d+ ; C 1 chord dd'))
     .toEqual(new Chord('C', 3));
@@ -335,9 +340,10 @@ test('debug logging appears', () => {
 
   expect(interpret('A B C', true)).toEqual(['A', 'B', 'C']);
 
-  expect(logSpy).toHaveBeenCalledWith('A ← A');
-  expect(logSpy).toHaveBeenCalledWith('A B ← B');
-  expect(logSpy).toHaveBeenCalledWith('A B C ← C');
+  expect(logSpy).toHaveBeenCalledWith('← A');
+  expect(logSpy).toHaveBeenCalledWith('A ← B');
+  expect(logSpy).toHaveBeenCalledWith('A B ← C');
+  expect(logSpy).toHaveBeenCalledWith('A B C');
 });
 
 test('debug logging displays HTML', () => {
@@ -345,8 +351,9 @@ test('debug logging displays HTML', () => {
 
   expect(interpret('( A b )', true).outerHTML).toBe("<b> A </b>");
 
-  expect(logSpy).toHaveBeenCalledWith('( ← (');
-  expect(logSpy).toHaveBeenCalledWith('( A ← A');
-  expect(logSpy).toHaveBeenCalledWith('( A b ← b');
-  expect(logSpy).toHaveBeenCalledWith('<b> A </b> ← )');
+  expect(logSpy).toHaveBeenCalledWith('← (');
+  expect(logSpy).toHaveBeenCalledWith('( ← A');
+  expect(logSpy).toHaveBeenCalledWith('( A ← b');
+  expect(logSpy).toHaveBeenCalledWith('( A b ← )');
+  expect(logSpy).toHaveBeenCalledWith('<b> A </b>');
 });

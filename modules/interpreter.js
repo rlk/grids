@@ -69,8 +69,16 @@ class Interpreter {
       return stack.pop();
     }
 
+    function toLog(x) {
+      return x instanceof Element ? x.outerHTML : x;
+    }
+
     while (words.length > 0) {
       const word = words.shift();
+
+      if (debug) {
+        console.log(`${[...stack.map(toLog), '←', word].join(' ')}`);
+      }
 
       if (word === 'chord') {
         const d = pop();
@@ -234,10 +242,9 @@ class Interpreter {
       } else {
         push(parseInt(word, 10));
       }
-
-      if (debug) {
-        console.log(`${stack.map(e => e instanceof Element ? e.outerHTML : e).join(' ')} ← ${word}`);
-      }
+    }
+    if (debug) {
+      console.log(`${stack.map(toLog).join(' ')}`);
     }
     return stack.length == 1 ? stack[0] : stack;
   }
