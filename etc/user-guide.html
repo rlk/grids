@@ -146,7 +146,7 @@
   <dl>
     <dt><i>&lt;chord&gt;</i> <code>$</code></dt>
     <dd>Omit the chord symbol.</dd>
-    <dt><i>&lt;chord&gt;</i> <code>?</code></dt>
+    <dt><i>&lt;chord&gt;</i> <code>*</code></dt>
     <dd>Mark the chord as optional. The chord's symbol will be shown in parentheses.</dd>
     <dt><i>&lt;chord&gt;</i> <i>&lt;text&gt;</i> <code>!</code></dt>
     <dd>Add a small text appearing beneath a chord. This can be used to annotate a chord with a description or performance notes. See <a href="#noting-time">Noting time</a> for examples.</dd>
@@ -154,7 +154,7 @@
     <dd>Add a finger number at the bottom of a chord. There is at most one number shown per <i>&lt;string&gt;</i>. <i>&lt;Finger&gt;</i> is usually a number between 1 and&nbsp;4.</dd>
   </dl>
 
-  <h3>Chord Manipulation Operators</h3>
+  <h3 id="chord-manipulation-operators">Chord Manipulation Operators</h3>
   <p>The following operations replace the chord at the top of a stack with the result of a calculation based on that chord.</p>
   <dl>
     <dt><i>&lt;chord&gt;</i> <code>s+</code></dt>
@@ -179,6 +179,11 @@
     <dd>Replace <i>&lt;chord&gt;</i> with the chord a fifth lower, on the next higher set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">G<sup>7</sup></span> rooted on 6. This is an abbreviation for <code>d- d- d- d- s+</code>.</dd>
   </dl>
   <p>It's possible for these operations to produce an &ldquo;invalid&rdquo; chord—a chord that uses negative fret numbers or non-existent strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
+    <dl>
+      <dt><i>&lt;A&gt; &lt;B&gt;</i> <code>?</code></dt>
+      <dd>If chord &lt;A&gt; is valid, leave only &lt;A&gt; at the top of the stack. Otherwise, leave only &lt;B&gt; at the top of the stack.</dd>
+    </dl>
+  </p>
 
   <h3 id="chord-alignment-operators">Chord Alignment Operators</h3>
   <p>Chord alignment operators take a sequence of chords, equalize their size, and align them visually.</p>

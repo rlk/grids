@@ -128,7 +128,7 @@ class Interpreter {
       } else if (word === '@') {
         push(pop().rot());
 
-      } else if (word === '?') {
+      } else if (word === '*') {
         const c = pop();
         c.options.setOptional(true);
         push(c);
@@ -150,6 +150,11 @@ class Interpreter {
         const c = pop();
         c.options.setFinger(s, f);
         push(c);
+
+      } else if (word === '?') {
+        const b = pop();
+        const a = pop();
+        push(a.isValid() ? a : b);
 
       } else if (word === 's+') {
         push(pop().incString());
