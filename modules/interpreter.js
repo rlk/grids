@@ -23,7 +23,14 @@ import { toElement, toNode } from './utility.js';
 
 class Interpreter {
   constructor() {
-    this.dictionary = {};
+    this.dictionary = {
+      '|': ['(', '𝄀', 'span', ')', 'bar', 'class'],
+      '|:': ['(', '𝄆', 'span', ')', 'bar', 'class'],
+      ':|': ['(', '𝄇', 'span', ')', 'bar', 'class'],
+
+      '4+': ['d+', 'd+', 'd+', 's-'],
+      '5-': ['d-', 'd-', 'd-', 'd-', 's+'],
+    };
   }
 
   outerElement(tagName, push, pop) {
@@ -156,12 +163,6 @@ class Interpreter {
       } else if (word === 'd-') {
         push(pop().decDegree());
 
-      } else if (word === '4+') {
-        push(pop().incDegree().incDegree().incDegree().decString());
-
-      } else if (word === '5-') {
-        push(pop().decDegree().decDegree().decDegree().decDegree().incString());
-
       } else if (word === 'i+') {
         push(pop().incInversion());
 
@@ -173,15 +174,6 @@ class Interpreter {
 
       } else if (word === 'o-') {
         push(pop().decOctave());
-
-      } else if (word === '|:') {
-        push(toElement('span', 'bar', '𝄆'));
-
-      } else if (word === '|') {
-        push(toElement('span', 'bar', '𝄀'));
-
-      } else if (word === ':|') {
-        push(toElement('span', 'bar', '𝄇'));
 
       } else if (word === 'af') {
         alignFrets(stack.filter(x => x instanceof Chord));
