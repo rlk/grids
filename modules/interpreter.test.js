@@ -93,7 +93,7 @@ test('interpret quotes Stop', () => {
 });
 
 test('interpret sets Optional', () => {
-  expect(interpret('C 1 chord ?'))
+  expect(interpret('C 1 chord *'))
     .toEqual(new Chord('C', 1, [], new Options().setOptional(true)));
 });
 
@@ -118,17 +118,17 @@ test('interpret sets Chord fingers', () => {
 });
 
 test('interpret chooses first valid', () => {
-  expect(interpret('C 1 chord 2 1 1 + C 2 chord 2 3 2 + |'))
+  expect(interpret('C 1 chord 2 1 1 + C 2 chord 2 3 2 + ?'))
     .toEqual(new Chord('C', 1, [new Stop(2, 1, 1)]));
 });
 
 test('interpret chooses left valid', () => {
-  expect(interpret('C 1 chord 2 1 1 + C 2 chord 0 1 1 + |'))
+  expect(interpret('C 1 chord 2 1 1 + C 2 chord 0 1 1 + ?'))
     .toEqual(new Chord('C', 1, [new Stop(2, 1, 1)]));
 });
 
 test('interpret chooses right valid', () => {
-  expect(interpret('C 2 chord 0 1 1 + C 1 chord 2 1 1 + |'))
+  expect(interpret('C 2 chord 0 1 1 + C 1 chord 2 1 1 + ?'))
     .toEqual(new Chord('C', 1, [new Stop(2, 1, 1)]));
 });
 
