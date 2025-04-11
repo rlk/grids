@@ -60,7 +60,7 @@
       over d- over d- over d- over d- over d- over d- am
     </span>
   </p>
-  <p>Gridgen content appears within HTML elements with the &ldquo;gridgen&rdquo; class. Each element's textContent is interpreted as a chord calculation expression, the result of which replaces that element in the document, to be styled with CSS. This User Guide is an example. Consult the source to see how it's constructed.</p>
+  <p>Gridgen content appears within HTML elements with the “gridgen” class. Each element's textContent is interpreted as a chord calculation expression, the result of which replaces that element in the document, to be styled with CSS. This User Guide is an example. Consult the source to see how it's constructed.</p>
   <p>These chord manipulations and diagrams are based on the works of <a href="https://www.tedgreene.com/">Ted Green</a>.</p>
   <ul>
     <li id="cc">Greene, Ted. <i>Chord Chemistry.</i> Alfred Music Publishing, 1971.</li>
@@ -137,7 +137,7 @@
     <dt id="blank-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>_</code></dt>
     <dd>Add a blank stop to a chord. A blank stop does not appear on the grid, but it can be used to influence <a href="#chord-alignment-operators">alignment operations</a> and <a href="#chord-symbol-inference">symbol inference</a>. For example, if a chord voicing omits the root, then the symbol inference will likely fail for lack of information. Adding a root using a blank stop informs the inference without altering the appearance.</dd>
     <dt id="decor-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>(+)</code> or <code>(x)</code> or <code>(=)</code> or <code>(^)</code> or <code>(o)</code> or <code>(_)</code></dt>
-    <dd>Add a &ldquo;decoration&rdquo; stop to a chord. Decoration stops appear exactly like their counterparts above, but they do not contribute to the chord symbol. They may be used to notate a melody or bass line without altering the tune's basic changes.</dd>
+    <dd>Add a “decoration” stop to a chord. Decoration stops appear exactly like their counterparts above, but they do not contribute to the chord symbol. They may be used to notate a melody or bass line without altering the tune's basic changes.</dd>
     <dt><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <i>&lt;label&gt;</i> <code>.</code></dt>
     <dd>Add a stop with an arbitrary label to a chord. See <a href="#arbitrary-stop-labels">Arbitrary stop labels</a> for examples.</dd>
   </dl>
@@ -178,7 +178,7 @@
     <dt><i>&lt;chord&gt;</i> <code>5-</code></dt>
     <dd>Replace <i>&lt;chord&gt;</i> with the chord a fifth lower, on the next higher set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">G<sup>7</sup></span> rooted on 6. This is an abbreviation for <code>d- d- d- d- s+</code>.</dd>
   </dl>
-  <p>It's possible for these operations to produce an &ldquo;invalid&rdquo; chord—a chord that uses negative fret numbers or non-existent strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
+  <p>It's possible for these operations to produce an “invalid” chord—a chord that uses negative fret numbers or non-existent strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
     <dl>
       <dt><i>&lt;A&gt; &lt;B&gt;</i> <code>?</code></dt>
       <dd>If chord &lt;A&gt; is valid, leave only &lt;A&gt; at the top of the stack. Otherwise, leave only &lt;B&gt; at the top of the stack. See <a href="#dealing-with-invalid-chords">below</a> for examples.</dd>
@@ -188,9 +188,9 @@
   <h3 id="chord-alignment-operators">Chord Alignment Operators</h3>
   <p>Chord alignment operators take a sequence of chords, equalize their size, and align them visually.</p>
   <dl>
-    <dt><i>&lt;&middot; &middot; &middot;&gt;</i> <code>af</code></dt>
+    <dt><i>&lt;· · ·&gt;</i> <code>af</code></dt>
     <dd>Align all of the chords on the stack by fret. Specifically, set the bounds of each grid to the same value across all chords. Stretch the grid to accommodate a wide range.</dd>
-    <dt><i>&lt;&middot; &middot; &middot;&gt;</i> <code>am</code></dt>
+    <dt><i>&lt;· · ·&gt;</i> <code>am</code></dt>
     <dd>Align all of the chords on the stack by mark. Specifically, set the bounds of each grid such that the marked fret (usually the root) lies in the same position in all chords.</dd>
   </dl>
   <p>This is almost always desirable, as each unaligned grid is displayed with minimal size. As a group, they will appear visually inconsistent.</p>
@@ -198,9 +198,9 @@
   <h3>HTML Structure Operators</h3>
   <p>These operators enable the construction of arbitrary HTML entities and parent-child relationships. Most any HTML structure may be produced, but table structures are particularly useful. See the <a href="#html-structure">examples below</a>.</p>
   <dl>
-    <dt id="inner"><code>(</code> <i>&lt;&middot; &middot; &middot;&gt; &lt;tag&gt;</i> <code>)</code></dt>
+    <dt id="inner"><code>(</code> <i>&lt;· · ·&gt; &lt;tag&gt;</i> <code>)</code></dt>
     <dd>Pop the operands between the <code>(</code> and <code>)</code> and push a new HTML <i>&lt;tag&gt;</i> element containing them all. Given N operands, this operator leaves one Element with N children on the stack.</dd>
-    <dt id="outer"><code>[</code> <i>&lt;&middot; &middot; &middot;&gt; &lt;tag&gt;</i> <code>]</code></dt>
+    <dt id="outer"><code>[</code> <i>&lt;· · ·&gt; &lt;tag&gt;</i> <code>]</code></dt>
     <dd>Pop the operands between the <code>[</code> and <code>]</code> and push a new HTML <i>&lt;tag&gt;</i> element containing each. Given N operands, this operator leaves N Elements with 1 child on the stack.</dd>
     <dt id="class"><i>&lt;element&gt; &lt;class&gt;</i> <code>class</code></dt>
     <dd>Add the <i>&lt;class&gt;</i> to the <i>&lt;element&gt;</i>, leaving the <i>&lt;element&gt;</i> on the stack.</dd>
@@ -268,7 +268,7 @@
       af
     </span>
   </p>
-  <p>Alternatively, bar markers can indicate full measures, and can imply beat count, They also provide the opportunity to add repeat markers. For example, here's the melody and accompaniment to the lyric &ldquo;You say to-ma-to, I say to-mah-to.&rdquo;</p>
+  <p>Alternatively, bar markers can indicate full measures, and can imply beat count, They also provide the opportunity to add repeat markers. For example, here's the melody and accompaniment to the lyric “You say to-ma-to, I say to-mah-to.”</p>
   <p class="display">
     <span class="gridgen">
       |:
@@ -283,7 +283,7 @@
   </p>
 
   <h3>Overlaying Stops</h3>
-  <p>Overlaid stops appear when an elaboration or a melody reuses a chord tone. The &ldquo;to-ma-to, to-mah-to&rdquo; sequence just above is an example.</p>
+  <p>Overlaid stops appear when an elaboration or a melody reuses a chord tone. The “to-ma-to, to-mah-to” sequence just above is an example.</p>
   <p>Order sometimes matters. Stops are displayed in the order they are added to a chord. Later stops are displayed topmost. Here's a grid showing each of the standard markers—dot, circle, X, square, and diamond—overlaid with each other standard marker. It should be clear that dot and X should appear on top, while square, diamond, and circle must appear on the bottom.</code></p>
   <p class="display" style="zoom:150%">
     <span class="gridgen">
@@ -314,9 +314,9 @@
   <h3>Stop Styling</h3>
   <p>Stops are defined as SVG elements with classes that indicate their musical meaning:</p>
   <ul>
-    <li>Classes &ldquo;pitch1&rdquo; through &ldquo;pitch12&rdquo; give the pitch.</li>
-    <li>Classes &ldquo;degree1&rdquo; through &ldquo;degree7&rdquo; give the scale degree within the key.</li>
-    <li>Classes &ldquo;interval1&rdquo; through &ldquo;interval7&rdquo; give the interval within the chord.</li>
+    <li>Classes “pitch1” through “pitch12” give the pitch.</li>
+    <li>Classes “degree1” through “degree7” give the scale degree within the key.</li>
+    <li>Classes “interval1” through “interval7” give the interval within the chord.</li>
   </ul>
   <p>To use these, define a CSS class to apply to the Gridgen element or its container. Then use <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Descendant_combinator">descendant combinators</a> to select pitches, degrees, and intervals among that container's children. Note that the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/important">!important</a> property is needed if local changes are to override the SVG's existing CSS. See the source of this document for examples.</p>
   <p>Here's a chord scale with stops colored by interval.</p>
@@ -385,7 +385,7 @@
   </p>
 
   <h3>The Diatonic Cycle of 4ths</h3>
-  <p>(<a href="#mcp">MCP</a>, p. 49) discusses &ldquo;The Diatonic Cycle of 4ths in Major Keys.&rdquo; The first example there is straightforwardly reproduced by defining only the first two chords, <span class="chord">Cma<sup>7</sup></span> and <span class="chord">Fma<sup>7</sup></span>. Subsequent chords are each generated by an <code>over d-</code> operation. Specifically, the initial two chords on the stack are separated by a fourth. Then, <code>over</code> duplicates the <em>second</em> element from the top of the stack, and <code>d-</code> moves that duplicate down one degree.</p>
+  <p>(<a href="#mcp">MCP</a>, p. 49) discusses “The Diatonic Cycle of 4ths in Major Keys.” The first example there is straightforwardly reproduced by defining only the first two chords, <span class="chord">Cma<sup>7</sup></span> and <span class="chord">Fma<sup>7</sup></span>. Subsequent chords are each generated by an <code>over d-</code> operation. Specifically, the initial two chords on the stack are separated by a fourth. Then, <code>over</code> duplicates the <em>second</em> element from the top of the stack, and <code>d-</code> moves that duplicate down one degree.</p>
   <p class="display">
     <span class="gridgen">
       C 1 chord 6 8 1 + 5 10 5 + 3 9 3 + 2 12 7 x
@@ -427,7 +427,7 @@
   </ul>
 
   <h3>Console Debug Logging</h3>
-  <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the &ldquo;debug&rdquo; class to the &ldquo;gridgen&ldquo; element. Check the console now to see how <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</code> gets turned into <span class="gridgen debug">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</span></p>
+  <p>If an expression is not displaying correctly, the process of evaluation can be dumped to the console log by adding the “debug” class to the “gridgen” element. Check the console now to see how <code>F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</code> gets turned into <span class="gridgen debug">F 4 chord 4 8 1 + 3 7 3 + 2 6 5 +</span></p>
 
   <h3 id="html-structure">HTML Structure</h3>
   <p>This example demonstrates the <code>( )</code> and <code>[ ]</code> element operators with a non-trivial HTML structure.</p>
