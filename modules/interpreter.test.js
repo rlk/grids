@@ -152,6 +152,16 @@ test('interpret overs Chord', () => {
     .toEqual([new Chord('C', 1), new Chord('C', 2), new Chord('C', 1)]);
 });
 
+test('interpret applies inc octave', () => {
+  expect(interpret('C 1 chord 5 3 1 + o+'))
+    .toEqual(new Chord('C', 1).add(5, 15, 1));
+});
+
+test('interpret applies dec octave', () => {
+  expect(interpret('C 1 chord 5 15 1 + o-'))
+    .toEqual(new Chord('C', 1).add(5, 3, 1));
+});
+
 test('interpret applies inc string', () => {
   expect(interpret('C 1 chord 5 5 2 + s+'))
     .toEqual(new Chord('C', 1).add(6, 10, 2));
@@ -160,6 +170,16 @@ test('interpret applies inc string', () => {
 test('interpret applies dec string', () => {
   expect(interpret('C 1 chord 5 5 2 + s-'))
     .toEqual(new Chord('C', 1).add(4, 0, 2));
+});
+
+test('interpret applies inc fret', () => {
+  expect(interpret('C 1 chord f+'))
+    .toEqual(new Chord('C♯', 1));
+});
+
+test('interpret applies dec fret', () => {
+  expect(interpret('C 1 chord f-'))
+    .toEqual(new Chord('B', 1));
 });
 
 test('interpret applies inc degree', () => {
@@ -190,16 +210,6 @@ test('interpret applies inc inversion', () => {
 test('interpret applies dec inversion', () => {
   expect(interpret('C 1 chord 5 7 3 + 4 5 5 + 3 5 1 + i-'))
     .toEqual(new Chord('C', 1).add(5, 3, 1).add(4, 2, 3).add(3, 0, 5));
-});
-
-test('interpret applies inc octave', () => {
-  expect(interpret('C 1 chord 5 3 1 + o+'))
-    .toEqual(new Chord('C', 1).add(5, 15, 1));
-});
-
-test('interpret applies dec octave', () => {
-  expect(interpret('C 1 chord 5 15 1 + o-'))
-    .toEqual(new Chord('C', 1).add(5, 3, 1));
 });
 
 test('interpret aligns Chords at fret', () => {

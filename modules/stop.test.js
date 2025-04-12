@@ -115,6 +115,24 @@ test('Stop.decString temporarily invalid', () => {
   expect(new Stop(1, 1, 4, 'x', true).decString().incString()).toEqual(new Stop(1, 1, 4, 'x', true));
 });
 
+// Stop.incFret / Stop.decFret
+
+test('Stop.incFret', () => {
+  expect(new Stop(2, 1, 1, 'x', true).incFret()).toEqual(new Stop(2, 2, 1, 'x', true));
+});
+
+test('Stop.decFret', () => {
+  expect(new Stop(2, 2, 1, 'x', true).decFret()).toEqual(new Stop(2, 1, 1, 'x', true));
+});
+
+test('Stop.decFret invalid', () => {
+  expect(new Stop(2, 0, 7).decFret().isValid()).toBe(false);
+});
+
+test('Stop.decFret temporarily invalid', () => {
+  expect(new Stop(2, 0, 7, 'x', true).decFret().incFret()).toEqual(new Stop(2, 0, 7, 'x', true));
+});
+
 // Stop.incDegree / Stop.decDegree
 
 test('Stop.incDegree', () => {

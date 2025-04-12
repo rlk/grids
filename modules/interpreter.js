@@ -156,11 +156,23 @@ class Interpreter {
         const a = pop();
         push(a.isValid() ? a : b);
 
+      } else if (word === 'o+') {
+        push(pop().incOctave());
+
+      } else if (word === 'o-') {
+        push(pop().decOctave());
+
       } else if (word === 's+') {
         push(pop().incString());
 
       } else if (word === 's-') {
         push(pop().decString());
+
+      } else if (word === 'f+') {
+        push(pop().incFret());
+
+      } else if (word === 'f-') {
+        push(pop().decFret());
 
       } else if (word === 'd+') {
         push(pop().incDegree());
@@ -173,12 +185,6 @@ class Interpreter {
 
       } else if (word === 'i-') {
         push(pop().decInversion());
-
-      } else if (word === 'o+') {
-        push(pop().incOctave());
-
-      } else if (word === 'o-') {
-        push(pop().decOctave());
 
       } else if (word === 'af') {
         alignFrets(stack.filter(x => x instanceof Chord));

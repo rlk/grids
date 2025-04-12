@@ -80,7 +80,7 @@
     <li><a href="I-IV-V-in-five-keys.html">I-IV-V in Five Keys</a></li>
     <li><a href="I-IV-V-in-five-positions.html">I-IV-V in Five Positions</a></li>
     <li><a href="c-I-V-triads.html">I-V Triads in C</a></li>
-    <li><a href="c-diatonic-chords-in-five-forms.html">Diatanic Chords in C in Five Forms</a></li>
+    <li><a href="c-diatonic-chords-in-five-forms.html">Diatonic Chords in C in Five Forms</a></li>
     <li><a href="c-seventh-arpeggios.html">Diatonic Seventh Arpeggios in C in Five Positions</a></li>
     <li><a href="chord-scales-long.html">Chord Scales (Long Layout)</a></li>
     <li><a href="chord-scales-short.html">Chord Scales (Short Layout)</a></li>
@@ -116,8 +116,8 @@
 
   <h3 id="chord-constructor">Chord Constructor</h3>
   <dl>
-    <dt><i>&lt;key&gt;</i> <i>&lt;degree&gt;</i> <code>chord</code></dt>
-    <dd>Create a new chord and push it onto the stack. <i>&lt;Key&gt;</i> is a symbol like <code>C</code> or <code>B♭</code> and <i>&lt;degree&gt;</i> is the chord degree in the range 1 to 7. This is the fundamental constructor of Gridgen chords and all other operators operate on these.</dd>
+    <dt><i>‹key›</i> <i>‹degree›</i> <code>chord</code></dt>
+    <dd>Create a new chord and push it onto the stack. <i>‹Key›</i> is a symbol like <code>C</code> or <code>B♭</code> and <i>‹degree›</i> is the chord degree in the range 1 to 7. This is the fundamental constructor of Gridgen chords and all other operators operate on these.</dd>
   </dl>
   <p id='recognized-keys'>Gridgen only accepts keys with up to 7 flats, or 7 sharps. No key with double flats or double sharps in the signature is recognized. Even with this restriction, there are a few enharmonic keys.</p>
   <table class="data">
@@ -141,75 +141,79 @@
 
   <h3>Chord Attribute Operators</h3>
   <p>These operators add attributes to chords. The most important of these attributes are the stops that define the notes of the chord. Greene notation uses five distinct symbols, the dot, X, square and diamond, to be played in that order. An open circle is an optional stop. (<a href="#cc">CC</a> p.?)</p>
-  <p>The stop appears at the given <i>&lt;string&gt;</i> and <i>&lt;fret&gt;</i>. The stop's voice within the chord has <i>&lt;interval&gt;</i> in the range 1 to 7. These values are popped from the stack, and the <i>&lt;chord&gt;</i> operand is pushed back onto the stack after the attribute is set.</p>
+  <p>The stop appears at the given <i>‹string›</i> and <i>‹fret›</i>. The stop's voice within the chord has <i>‹interval›</i> in the range 1 to 7. These values are popped from the stack, and the <i>‹chord›</i> operand is pushed back onto the stack after the attribute is set.</p>
   <dl>
-    <dt id="dot-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>+</code></dt>
+    <dt id="dot-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>+</code></dt>
     <dd>Add a dot stop to a chord.</dd>
-    <dt id="x-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>x</code></dt>
+    <dt id="x-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>x</code></dt>
     <dd>Add an X stop to a chord.</dd>
-    <dt id="square-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>=</code></dt>
+    <dt id="square-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>=</code></dt>
     <dd>Add a square stop to a chord.</dd>
-    <dt id="diamond-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>^</code></dt>
+    <dt id="diamond-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>^</code></dt>
     <dd>Add a diamond stop to a chord.</dd>
-    <dt id="circle-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>o</code></dt>
+    <dt id="circle-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>o</code></dt>
     <dd>Add a circle stop to a chord.</dd>
-    <dt id="blank-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>_</code></dt>
+    <dt id="blank-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>_</code></dt>
     <dd>Add a blank stop to a chord. A blank stop does not appear on the grid, but it can be used to influence <a href="#chord-alignment-operators">alignment operations</a> and <a href="#chord-symbol-inference">symbol inference</a>. For example, if a chord voicing omits the root, then the symbol inference will likely fail for lack of information. Adding a root using a blank stop informs the inference without altering the appearance.</dd>
-    <dt id="decor-stop"><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <code>(+)</code> or <code>(x)</code> or <code>(=)</code> or <code>(^)</code> or <code>(o)</code> or <code>(_)</code></dt>
+    <dt id="decor-stop"><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <code>(+)</code> or <code>(x)</code> or <code>(=)</code> or <code>(^)</code> or <code>(o)</code> or <code>(_)</code></dt>
     <dd>Add a “decoration” stop to a chord. Decoration stops appear exactly like their counterparts above, but they do not contribute to the chord symbol. They may be used to notate a melody or bass line without altering the tune's basic changes.</dd>
-    <dt><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;fret&gt;</i> <i>&lt;interval&gt;</i> <i>&lt;label&gt;</i> <code>.</code></dt>
+    <dt><i>‹chord›</i> <i>‹string›</i> <i>‹fret›</i> <i>‹interval›</i> <i>‹label›</i> <code>.</code></dt>
     <dd>Add a stop with an arbitrary label to a chord. See <a href="#arbitrary-stop-labels">Arbitrary stop labels</a> for examples.</dd>
   </dl>
   <h3>Chord Option Operators</h3>
   <p>Chord options determine how chords are displayed.</p>
   <dl>
-    <dt><i>&lt;chord&gt;</i> <code>$</code></dt>
+    <dt><i>‹chord›</i> <code>$</code></dt>
     <dd>Omit the chord symbol.</dd>
-    <dt><i>&lt;chord&gt;</i> <code>*</code></dt>
+    <dt><i>‹chord›</i> <code>*</code></dt>
     <dd>Mark the chord as optional. The chord's symbol will be shown in parentheses.</dd>
-    <dt><i>&lt;chord&gt;</i> <i>&lt;text&gt;</i> <code>!</code></dt>
+    <dt><i>‹chord›</i> <i>‹text›</i> <code>!</code></dt>
     <dd>Add a small text appearing beneath a chord. This can be used to annotate a chord with a description or performance notes. See <a href="#noting-time">Noting time</a> for examples.</dd>
-    <dt><i>&lt;chord&gt;</i> <i>&lt;string&gt;</i> <i>&lt;finger&gt;</i> <code>#</code></dt>
-    <dd>Add a finger number at the bottom of a chord. There is at most one number shown per <i>&lt;string&gt;</i>. <i>&lt;Finger&gt;</i> is usually a number between 1 and&nbsp;4.</dd>
+    <dt><i>‹chord›</i> <i>‹string›</i> <i>‹finger›</i> <code>#</code></dt>
+    <dd>Add a finger number at the bottom of a chord. There is at most one number shown per <i>‹string›</i>. <i>‹Finger›</i> is usually a number between 1 and&nbsp;4.</dd>
   </dl>
 
   <h3 id="chord-manipulation-operators">Chord Manipulation Operators</h3>
   <p>The following operations replace the chord at the top of a stack with the result of a calculation based on that chord.</p>
   <dl>
-    <dt><i>&lt;chord&gt;</i> <code>s+</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the next higher set of strings (higher in number, not in pitch). The chord is moved up 5 frets. (<a href="#mcp">MCP</a> p.18)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>s-</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the next lower set of strings. The chord is moved down 5 frets. (<a href="#mcp">MCP</a> p.19)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>d+</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the next higher chord in the diatonic chord scale, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">Dmi<sup>7</sup></span>. (<a href="#mcp">MCP</a> p.17)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>d-</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the next lower chord in the diatonic chord scale, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">Bmi<sup>7♭5</sup></span>. (<a href="#mcp">MCP</a> p.17)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>i+</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the next higher chord in the systematic inversion. (<a href="#cc">CC</a> p.9)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>i-</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the next lower chord in the systematic inversion. (<a href="#cc">CC</a> p.9)</dd>
-    <dt><i>&lt;chord&gt;</i> <code>o+</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the same strings, one octave higher.</dd>
-    <dt><i>&lt;chord&gt;</i> <code>o-</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord on the same strings, one octave lower.</dd>
-    <dt><i>&lt;chord&gt;</i> <code>4+</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord a fourth higher, on the next lower set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">Fma<sup>7</sup></span> rooted on 4. This is an abbreviation for <code>d+ d+ d+ s-</code>.</dd>
-    <dt><i>&lt;chord&gt;</i> <code>5-</code></dt>
-    <dd>Replace <i>&lt;chord&gt;</i> with the chord a fifth lower, on the next higher set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">G<sup>7</sup></span> rooted on 6. This is an abbreviation for <code>d- d- d- d- s+</code>.</dd>
+    <dt><i>‹chord›</i> <code>s+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord on the next higher set of strings (higher in number, not in pitch). The chord is moved up 5 frets. (<a href="#mcp">MCP</a> p.18)</dd>
+    <dt><i>‹chord›</i> <code>s-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord on the next lower set of strings. The chord is moved down 5 frets. (<a href="#mcp">MCP</a> p.19)</dd>
+    <dt><i>‹chord›</i> <code>d+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the next higher chord in the diatonic chord scale, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">Dmi<sup>7</sup></span>. (<a href="#mcp">MCP</a> p.17)</dd>
+    <dt><i>‹chord›</i> <code>d-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the next lower chord in the diatonic chord scale, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">Bmi<sup>7♭5</sup></span>. (<a href="#mcp">MCP</a> p.17)</dd>
+    <dt><i>‹chord›</i> <code>f+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord transposed to the key one fret higher, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">C♯ma<sup>7</sup></span>. Enharmonic keys: C → C♯, F → F♯.</dd>
+    <dt><i>‹chord›</i> <code>f-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord transposed to the key one fret lower, e.g. <span class="chord">Cma<sup>7</sup></span> becomes <span class="chord">Bma<sup>7</sup></span>. Enharmonic keys: E → D♭, G → G♭.</dd>
+    <dt><i>‹chord›</i> <code>i+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the next higher chord in the systematic inversion. (<a href="#cc">CC</a> p.9)</dd>
+    <dt><i>‹chord›</i> <code>i-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the next lower chord in the systematic inversion. (<a href="#cc">CC</a> p.9)</dd>
+    <dt><i>‹chord›</i> <code>o+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord on the same strings, one octave higher.</dd>
+    <dt><i>‹chord›</i> <code>o-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord on the same strings, one octave lower.</dd>
+    <dt><i>‹chord›</i> <code>4+</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord a fourth higher, on the next lower set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">Fma<sup>7</sup></span> rooted on 4. This is an abbreviation for <code>d+ d+ d+ s-</code>.</dd>
+    <dt><i>‹chord›</i> <code>5-</code></dt>
+    <dd>Replace <i>‹chord›</i> with the chord a fifth lower, on the next higher set of strings. <span class="chord">Cma<sup>7</sup></span> rooted on 5 becomes <span class="chord">G<sup>7</sup></span> rooted on 6. This is an abbreviation for <code>d- d- d- d- s+</code>.</dd>
   </dl>
   <p>It's possible for these operations to produce an “invalid” chord—a chord that uses negative fret numbers or non-existent strings. Such invalid chords are well-defined, and useful as temporary values. However, if they are displayed, they might appear impossible.
     <dl>
-      <dt><i>&lt;A&gt; &lt;B&gt;</i> <code>?</code></dt>
-      <dd>If chord &lt;A&gt; is valid, leave only &lt;A&gt; at the top of the stack. Otherwise, leave only &lt;B&gt; at the top of the stack. See <a href="#dealing-with-invalid-chords">below</a> for examples.</dd>
+      <dt><i>‹A› ‹B›</i> <code>?</code></dt>
+      <dd>If chord ‹A› is valid, leave only ‹A› at the top of the stack. Otherwise, leave only ‹B› at the top of the stack. See <a href="#dealing-with-invalid-chords">below</a> for examples.</dd>
     </dl>
   </p>
 
   <h3 id="chord-alignment-operators">Chord Alignment Operators</h3>
   <p>Chord alignment operators take a sequence of chords, equalize their size, and align them visually.</p>
   <dl>
-    <dt><i>&lt;· · ·&gt;</i> <code>af</code></dt>
+    <dt><i>‹· · ·›</i> <code>af</code></dt>
     <dd>Align all of the chords on the stack by fret. Specifically, set the bounds of each grid to the same value across all chords. Stretch the grid to accommodate a wide range.</dd>
-    <dt><i>&lt;· · ·&gt;</i> <code>am</code></dt>
+    <dt><i>‹· · ·›</i> <code>am</code></dt>
     <dd>Align all of the chords on the stack by mark. Specifically, set the bounds of each grid such that the marked fret (usually the root) lies in the same position in all chords.</dd>
   </dl>
   <p>This is almost always desirable, as each unaligned grid is displayed with minimal size. As a group, they will appear visually inconsistent.</p>
@@ -217,12 +221,12 @@
   <h3>HTML Structure Operators</h3>
   <p>These operators enable the construction of arbitrary HTML entities and parent-child relationships. Most any HTML structure may be produced, but table structures are particularly useful. See the <a href="#html-structure">examples below</a>.</p>
   <dl>
-    <dt id="inner"><code>(</code> <i>&lt;· · ·&gt; &lt;tag&gt;</i> <code>)</code></dt>
-    <dd>Pop the operands between the <code>(</code> and <code>)</code> and push a new HTML <i>&lt;tag&gt;</i> element containing them all. Given N operands, this operator leaves one Element with N children on the stack.</dd>
-    <dt id="outer"><code>[</code> <i>&lt;· · ·&gt; &lt;tag&gt;</i> <code>]</code></dt>
-    <dd>Pop the operands between the <code>[</code> and <code>]</code> and push a new HTML <i>&lt;tag&gt;</i> element containing each. Given N operands, this operator leaves N Elements with 1 child on the stack.</dd>
-    <dt id="class"><i>&lt;element&gt; &lt;class&gt;</i> <code>class</code></dt>
-    <dd>Add the <i>&lt;class&gt;</i> to the <i>&lt;element&gt;</i>, leaving the <i>&lt;element&gt;</i> on the stack.</dd>
+    <dt id="inner"><code>(</code> <i>‹· · ·› ‹tag›</i> <code>)</code></dt>
+    <dd>Pop the operands between the <code>(</code> and <code>)</code> and push a new HTML <i>‹tag›</i> element containing them all. Given N operands, this operator leaves one Element with N children on the stack.</dd>
+    <dt id="outer"><code>[</code> <i>‹· · ·› ‹tag›</i> <code>]</code></dt>
+    <dd>Pop the operands between the <code>[</code> and <code>]</code> and push a new HTML <i>‹tag›</i> element containing each. Given N operands, this operator leaves N Elements with 1 child on the stack.</dd>
+    <dt id="class"><i>‹element› ‹class›</i> <code>class</code></dt>
+    <dd>Add the <i>‹class›</i> to the <i>‹element›</i>, leaving the <i>‹element›</i> on the stack.</dd>
   </dl>
 
   <h3>HTML Shortcuts</h3>
@@ -238,14 +242,14 @@
   <h3>General Stack Operators</h3>
   <p>These operators are similar to those of the <a href="https://en.wikipedia.org/wiki/Forth_(programming_language)">Forth programming language</a>.</p>
   <dl>
-    <dt id="drop"><i>&lt;A&gt;</i> <code>drop</code></dt>
+    <dt id="drop"><i>‹A›</i> <code>drop</code></dt>
     <dd>Pop the top element from the stack.</dd>
-    <dt id="dupe"><i>&lt;A&gt;</i> <code>dupe</code></dt>
-    <dd>Duplicate the top element on the stack. The stack will contain <i>&lt;A&gt;</i> <i>&lt;A&gt;</i>.</dd>
-    <dt id="swap"><i>&lt;A&gt;</i> <i>&lt;B&gt;</i> <code>swap</code></dt>
-    <dd>Swap the top two elements on the stack. The stack will contain <i>&lt;B&gt;</i> <i>&lt;A&gt;</i>.</dd>
-    <dt id="over"><i>&lt;A&gt;</i> <i>&lt;B&gt;</i> <code>over</code></dt>
-    <dd>Duplicate the second element to the top of the stack. The stack will contain <i>&lt;A&gt;</i> <i>&lt;B&gt;</i> <i>&lt;A&gt;</i>.</dd>
+    <dt id="dupe"><i>‹A›</i> <code>dupe</code></dt>
+    <dd>Duplicate the top element on the stack. The stack will contain <i>‹A›</i> <i>‹A›</i>.</dd>
+    <dt id="swap"><i>‹A›</i> <i>‹B›</i> <code>swap</code></dt>
+    <dd>Swap the top two elements on the stack. The stack will contain <i>‹B›</i> <i>‹A›</i>.</dd>
+    <dt id="over"><i>‹A›</i> <i>‹B›</i> <code>over</code></dt>
+    <dd>Duplicate the second element to the top of the stack. The stack will contain <i>‹A›</i> <i>‹B›</i> <i>‹A›</i>.</dd>
   </dl>
 
   <h2>Samples</h2>

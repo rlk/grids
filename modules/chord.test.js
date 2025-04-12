@@ -208,6 +208,36 @@ test('Chord.decString temporarily invalid', () => {
   expect(CMA7_5.decString().incString()).toEqual(CMA7_5);
 });
 
+// Chord.incFret / Chord.decFret
+
+test('Chord.incFret', () => {
+  expect(CMA7_5.incFret())
+    .toEqual(
+      new Chord('C♯', 1, [
+        new Stop(5, 4, 1),
+        new Stop(4, 6, 5),
+        new Stop(3, 5, 7),
+        new Stop(2, 6, 3)]));
+});
+
+test('Chord.decFret', () => {
+  expect(CMA7_5.decFret())
+    .toEqual(
+      new Chord('B', 1, [
+        new Stop(5, 2, 1),
+        new Stop(4, 4, 5),
+        new Stop(3, 3, 7),
+        new Stop(2, 4, 3)]));
+});
+
+test('Chord.decFret invalid', () => {
+  expect(AMI7_5.decFret().isValid()).toBe(false);
+});
+
+test('Chord.decFret temporarily invalid', () => {
+  expect(AMI7_5.decFret().incFret()).toEqual(AMI7_5);
+});
+
 // Chord.incDegree / Chord.decDegree
 
 test('Chord.incDegree', () => {

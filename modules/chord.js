@@ -25,31 +25,68 @@ import { symbolFromOffsets } from './symbol.js'
 import { createGrid } from './grid.js'
 
 const pitchOfName = {
-  'C♭': 12, 'C': 1, 'C♯': 2,
-  'D♭': 2, 'D': 3, 'D♯': 4,
-  'E♭': 4, 'E': 5, 'E♯': 6,
-  'F♭': 5, 'F': 6, 'F♯': 7,
-  'G♭': 7, 'G': 8, 'G♯': 9,
-  'A♭': 9, 'A': 10, 'A♯': 11,
-  'B♭': 11, 'B': 12, 'B♯': 1,
+  'C♭': 12, 'C':  1, 'C♯':  2,
+  'D♭':  2, 'D':  3, 'D♯':  4,
+  'E♭':  4, 'E':  5, 'E♯':  6,
+  'F♭':  5, 'F':  6, 'F♯':  7,
+  'G♭':  7, 'G':  8, 'G♯':  9,
+  'A♭':  9, 'A': 10, 'A♯': 11,
+  'B♭': 11, 'B': 12, 'B♯':  1,
 };
-const nameOfDegreePerKey = {
-  'C': { 1: 'C', 2: 'D', 3: 'E', 4: 'F', 5: 'G', 6: 'A', 7: 'B' },
-  'F': { 1: 'F', 2: 'G', 3: 'A', 4: 'B♭', 5: 'C', 6: 'D', 7: 'E' },
-  'B♭': { 1: 'B♭', 2: 'C', 3: 'D', 4: 'E♭', 5: 'F', 6: 'G', 7: 'A' },
-  'E♭': { 1: 'E♭', 2: 'F', 3: 'G', 4: 'A♭', 5: 'B♭', 6: 'C', 7: 'D' },
-  'A♭': { 1: 'A♭', 2: 'B♭', 3: 'C', 4: 'D♭', 5: 'E♭', 6: 'F', 7: 'G' },
-  'D♭': { 1: 'D♭', 2: 'E♭', 3: 'F', 4: 'G♭', 5: 'A♭', 6: 'B♭', 7: 'C' },
-  'G♭': { 1: 'G♭', 2: 'A♭', 3: 'B♭', 4: 'C♭', 5: 'D♭', 6: 'E♭', 7: 'F' },
-  'C♭': { 1: 'C♭', 2: 'D♭', 3: 'E♭', 4: 'F♭', 5: 'G♭', 6: 'A♭', 7: 'B♭' },
-  'G': { 1: 'G', 2: 'A', 3: 'B', 4: 'C', 5: 'D', 6: 'E', 7: 'F♯' },
-  'D': { 1: 'D', 2: 'E', 3: 'F♯', 4: 'G', 5: 'A', 6: 'B', 7: 'C♯' },
-  'A': { 1: 'A', 2: 'B', 3: 'C♯', 4: 'D', 5: 'E', 6: 'F♯', 7: 'G♯' },
-  'E': { 1: 'E', 2: 'F♯', 3: 'G♯', 4: 'A', 5: 'B', 6: 'C♯', 7: 'D♯' },
-  'B': { 1: 'B', 2: 'C♯', 3: 'D♯', 4: 'E', 5: 'F♯', 6: 'G♯', 7: 'A♯' },
-  'F♯': { 1: 'F♯', 2: 'G♯', 3: 'A♯', 4: 'B', 5: 'C♯', 6: 'D♯', 7: 'E♯' },
-  'C♯': { 1: 'C♯', 2: 'D♯', 3: 'E♯', 4: 'F♯', 5: 'G♯', 6: 'A♯', 7: 'B♯' },
+
+const nameOfDegree = {
+  'C♯': [ null, 'C♯', 'D♯', 'E♯', 'F♯', 'G♯', 'A♯', 'B♯' ], // = D♭
+  'F♯': [ null, 'F♯', 'G♯', 'A♯', 'B',  'C♯', 'D♯', 'E♯' ], // = G♭
+  'B':  [ null, 'B',  'C♯', 'D♯', 'E',  'F♯', 'G♯', 'A♯' ], // = C♭
+  'E':  [ null, 'E',  'F♯', 'G♯', 'A',  'B',  'C♯', 'D♯' ],
+  'A':  [ null, 'A',  'B',  'C♯', 'D',  'E',  'F♯', 'G♯' ],
+  'D':  [ null, 'D',  'E',  'F♯', 'G',  'A',  'B',  'C♯' ],
+  'G':  [ null, 'G',  'A',  'B',  'C',  'D',  'E',  'F♯' ],
+  'C':  [ null, 'C',  'D',  'E',  'F',  'G',  'A',  'B'  ],
+  'F':  [ null, 'F',  'G',  'A',  'B♭', 'C',  'D',  'E'  ],
+  'B♭': [ null, 'B♭', 'C',  'D',  'E♭', 'F',  'G',  'A'  ],
+  'E♭': [ null, 'E♭', 'F',  'G',  'A♭', 'B♭', 'C',  'D'  ],
+  'A♭': [ null, 'A♭', 'B♭', 'C',  'D♭', 'E♭', 'F',  'G'  ],
+  'D♭': [ null, 'D♭', 'E♭', 'F',  'G♭', 'A♭', 'B♭', 'C'  ], // = C♯
+  'G♭': [ null, 'G♭', 'A♭', 'B♭', 'C♭', 'D♭', 'E♭', 'F'  ], // = F♯
+  'C♭': [ null, 'C♭', 'D♭', 'E♭', 'F♭', 'G♭', 'A♭', 'B♭' ], // = B
 };
+
+const incKey = {
+  'C♯': 'D',
+  'F♯': 'G',
+  'B':  'C',
+  'E':  'F',
+  'A':  'B♭',
+  'D':  'E♭',
+  'G':  'A♭',
+  'C':  'C♯',
+  'F':  'F♯',
+  'B♭': 'B',
+  'E♭': 'E',
+  'A♭': 'A',
+  'D♭': 'D',
+  'G♭': 'C',
+  'C♭': 'C',
+}
+
+const decKey = {
+  'C♯': 'C',
+  'F♯': 'F',
+  'B':  'B♭',
+  'E':  'E♭',
+  'A':  'A♭',
+  'D':  'D♭',
+  'G':  'G♭',
+  'C':  'B',
+  'F':  'E',
+  'B♭': 'A',
+  'E♭': 'D',
+  'A♭': 'G',
+  'D♭': 'C',
+  'G♭': 'F',
+  'C♭': 'B♭',
+}
 
 export class Chord {
   constructor(key = 'C', degree = 1, stops = [], options = new Options()) {
@@ -57,6 +94,11 @@ export class Chord {
     this.degree = degree
     this.stops = stops
     this.options = options
+  }
+
+  setKey(key) {
+    this.key = key;
+    return this;
   }
 
   setDegree(degree) {
@@ -96,7 +138,7 @@ export class Chord {
     return this.stops.every(stop => stop.isValid())
       && this.degree >= 1
       && this.degree <= 7
-      && this.key in nameOfDegreePerKey;
+      && this.key in nameOfDegree;
   }
 
   minFret() {
@@ -121,6 +163,14 @@ export class Chord {
 
   decString() {
     return this.copy().setStops(this.stops.map(stop => stop.decString()));
+  }
+
+  incFret() {
+    return this.copy().setStops(this.stops.map(stop => stop.incFret())).setKey(incKey[this.key]);
+  }
+
+  decFret() {
+    return this.copy().setStops(this.stops.map(stop => stop.decFret())).setKey(decKey[this.key]);
   }
 
   incDegree() {
@@ -156,7 +206,7 @@ export class Chord {
   }
 
   symbol() {
-    const name = nameOfDegreePerKey[this.key][this.degree];
+    const name = nameOfDegree[this.key][this.degree];
     const root = pitchOfName[name];
 
     var offsets = new Array(8);
@@ -176,7 +226,7 @@ export class Chord {
       const stop = this.stops.toSorted((a, b) => b.string - a.string)[0];
 
       if (stop.interval(this.degree) != 1) {
-        const name = nameOfDegreePerKey[this.key][stop.degree];
+        const name = nameOfDegree[this.key][stop.degree];
 
         switch (toOffset(stop.pitch() - pitchOfName[name])) {
           case -1: return flatten(name);

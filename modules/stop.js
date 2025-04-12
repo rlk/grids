@@ -60,19 +60,27 @@ export class Stop {
   }
 
   incString() {
-    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label, this.decor)
+    return new Stop(this.string + 1, this.string == 2 ? this.fret + 4 : this.fret + 5, this.degree, this.label, this.decor);
   }
 
   decString() {
-    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label, this.decor)
+    return new Stop(this.string - 1, this.string == 3 ? this.fret - 4 : this.fret - 5, this.degree, this.label, this.decor);
+  }
+
+  incFret() {
+    return new Stop(this.string, this.fret + 1, this.degree, this.label, this.decor);
+  }
+
+  decFret() {
+    return new Stop(this.string, this.fret - 1, this.degree, this.label, this.decor);
   }
 
   incDegree() {
-    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], toDegree(this.degree + 1), this.label, this.decor)
+    return new Stop(this.string, this.fret + pitchIncAtDegree[this.degree], toDegree(this.degree + 1), this.label, this.decor);
   }
 
   decDegree() {
-    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], toDegree(this.degree - 1), this.label, this.decor)
+    return new Stop(this.string, this.fret - pitchDecAtDegree[this.degree], toDegree(this.degree - 1), this.label, this.decor);
   }
 
   incToDegree(degree) {
@@ -84,11 +92,11 @@ export class Stop {
   }
 
   incOctave() {
-    return new Stop(this.string, this.fret + 12, this.degree, this.label, this.decor)
+    return new Stop(this.string, this.fret + 12, this.degree, this.label, this.decor);
   }
 
   decOctave() {
-    return new Stop(this.string, this.fret - 12, this.degree, this.label, this.decor)
+    return new Stop(this.string, this.fret - 12, this.degree, this.label, this.decor);
   }
 
   toString() {
