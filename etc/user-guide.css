@@ -3,7 +3,8 @@ body {
   line-height: 175%;
 }
 
-code, p.listing {
+code,
+p.listing {
   font-family: "Noto Sans Mono", "Courier New Bold", monospace;
   background: #CCFFCC;
   padding-left: 4px;
@@ -38,7 +39,10 @@ h4 {
   margin-left: 12%;
 }
 
-p, ul, dl, pre {
+p,
+ul,
+dl,
+pre {
   margin-left: 12%;
   margin-right: 12%;
 }
@@ -73,4 +77,21 @@ footer {
   display: inline-block;
   margin-left: 1em;
   margin-right: 1em;
+}
+
+.data {
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+}
+
+.data td,
+.data th {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.data tr.ruled {
+  border-bottom: 1pt solid #CCC;
 }
