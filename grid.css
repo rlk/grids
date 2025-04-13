@@ -96,9 +96,21 @@ body.tune {
     font-size: smaller;
 }
 
+.block {
+    display: inline-block;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.column {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .chord {
     font-variant: small-caps;
-  }
+}
 
 .center {
     text-align: center;

@@ -117,6 +117,11 @@ test('interpret sets Chord fingers', () => {
     .toEqual(new Chord('C', 1, [], new Options().setFinger(5, 1).setFinger(4, 3)));
 });
 
+test('interpret sets Chord min/max', () => {
+  expect(interpret('C 1 chord 7 9 -'))
+    .toEqual(new Chord('C', 1, [], new Options().setGridMin(7).setGridMax(9)));
+});
+
 test('interpret chooses first valid', () => {
   expect(interpret('C 1 chord 2 1 1 + C 2 chord 2 3 2 + ?'))
     .toEqual(new Chord('C', 1, [new Stop(2, 1, 1)]));

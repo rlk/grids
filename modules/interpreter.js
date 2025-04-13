@@ -151,6 +151,14 @@ class Interpreter {
         c.options.setFinger(s, f);
         push(c);
 
+      } else if (word === '-') {
+        const z = pop();
+        const a = pop();
+        const c = pop();
+        c.options.setGridMin(a);
+        c.options.setGridMax(z);
+        push(c);
+
       } else if (word === '?') {
         const b = pop();
         const a = pop();
