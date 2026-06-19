@@ -436,7 +436,7 @@
   <p>As noted, <a href="#chord-manipulation-operators">Chord Manipulation Operators</a> can produce invalid chords that won't display properly. Validity can almost always be achieved using another chord manipulation operator, but determining when this is necessary can be a manual process. The <code>?</code> operator can automate some of these fixes.</p>
   <p>If a <code>d-</code> or <code>i-</code> operation shifts a chord off the end of the fretboard, then <code>dupe o+ ?</code> moves it up an octave. Specifically, this duplicates the chord, moves the duplicate up an octave, and selects either the original or the duplicate as needed. This way, the chord is only moved up an octave <em>if necessary</em>.</p>
   <p>If a <code>d+</code> or <code>i+</code> shifts a chord up into the high frets, making it uncomfortable to play, then <code>dupe o- swap ?</code> moves it down an octave. Note that this is the reverse of the previous example. This operation <em>prefers</em> the duplicate (due to the <code>swap</code>), but only selects it if it's valid.</p>
-  <p>If both options are invalid, <code>|</code> will return the second one. A chain of <code>|</code> operators can be used to handle complex fixes.</p>
+  <p>If both options are invalid, <code>?</code> will return the second one. A chain of <code>?</code> operators can be used to handle complex fixes.</p>
 
   <h3 id="chord-symbol-inference">Chord Symbol Inference</h3>
   <p>Gridgen maintains a small dictionary of chord formulas that it uses to infer the chord symbol shown at the top of each grid.</p>
